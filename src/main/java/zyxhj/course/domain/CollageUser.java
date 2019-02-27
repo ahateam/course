@@ -35,6 +35,16 @@ public class CollageUser {
 	public String sn;
 
 	/**
+	 * 身份证号
+	 */
+	public String idNumber;
+
+	/**
+	 * 手机号
+	 */
+	public String mobile;
+
+	/**
 	 * 学生年级（教师不填）
 	 */
 	public String grade;

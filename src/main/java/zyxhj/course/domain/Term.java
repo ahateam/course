@@ -17,5 +17,6 @@ public class Term {
 	public Date endDate;
 
 	public String remark;
+	
 
 }
