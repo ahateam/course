@@ -40,12 +40,11 @@ public class ClassroomController extends Controller {
 			des = "添加楼号", //
 			ret = "返回添加教室信息")
 	public APIResponse addbuild(//
-			@P(t = "教室编号") Long classroomId, //
 			@P(t = "楼号") String buildNum //
 	) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Classroom c = classRoomService.addbuild(conn, classroomId,buildNum);
+			Classroom c = classRoomService.addbuild(conn,buildNum);
 			return APIResponse.getNewSuccessResp(c);
 		}
 	}

@@ -12,6 +12,7 @@ import zyxhj.course.domain.CourseSchedule;
 import zyxhj.course.domain.attach.Classroom;
 import zyxhj.course.repository.ClassroomRepository;
 import zyxhj.course.repository.CourseScheduleRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class ClassRoomService {
@@ -101,9 +102,9 @@ public class ClassRoomService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Classroom addbuild(DruidPooledConnection conn, Long classroomId, String buildNum) throws Exception {
+	public Classroom addbuild(DruidPooledConnection conn , String buildNum) throws Exception {
 		Classroom c = new Classroom();
-		c.Id = classroomId;
+		c.Id = IDUtils.getSimpleId();
 		c.buildNum = buildNum;
 		classroomRepository.insert(conn, c);
 		return c;
