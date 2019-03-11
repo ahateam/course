@@ -4,30 +4,25 @@ import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
-/**
- * 学院
- */
-@RDSAnnEntity(alias = "tb_institution")
-public class Institution {
+@RDSAnnEntity(alias = "tb_classroom")
+public class Classroom {
 
 	/**
-	 * 学院id
+	 * 教室id
 	 */
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long Id;
 	
 	/**
-	 * 学院名称
+	 * 教室名
 	 */
 	@RDSAnnField(column = RDSAnnField.TEXT)
-	public String institutionName;
+	public String classroomName;
 	
 	/**
-	 * 院校id
+	 * 楼号
 	 */
-	@RDSAnnID
-	@RDSAnnField(column = RDSAnnField.ID)
-	public Long colleageId;
-	
+	@RDSAnnField(column = RDSAnnField.TEXT)
+	public String buildNum;
 }

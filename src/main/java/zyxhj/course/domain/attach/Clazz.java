@@ -4,24 +4,39 @@ import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
-/**
- * 专业
- */
-@RDSAnnEntity(alias = "tb_major")
-public class Major {
+@RDSAnnEntity(alias = "tb_clazz")
+public class Clazz {
 
 	/**
-	 * 专业id
+	 * 班级id
 	 */
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
-	public Long id;
+	public Long Id;
 	
 	/**
-	 * 专业名称
+	 * 班级名称
 	 */
 	@RDSAnnField(column = RDSAnnField.TEXT)
-	public String majorName;
+	public String clazzName;
+	
+	/**
+	 * 年级
+	 */
+	@RDSAnnField(column = RDSAnnField.TEXT)
+	public String grade;
+	
+	/**
+	 * 专业id
+	 */
+	@RDSAnnField(column = RDSAnnField.ID)
+	public Long majorId;
+	
+	/**
+	 * 教师id
+	 */
+	@RDSAnnField(column = RDSAnnField.ID)
+	public Long teacherId;
 	
 	/**
 	 * 系部id
@@ -33,7 +48,7 @@ public class Major {
 	 * 学院id
 	 */
 	@RDSAnnField(column = RDSAnnField.ID)
-	public Long institutionId;
+	public Long instiutionId;
 	
 	/**
 	 * 院校id
