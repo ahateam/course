@@ -44,7 +44,6 @@ public class TeacherController extends Controller {
 			ret = "返回添加教师信息"
 			)
 	public APIResponse addTeacher(//
-			@P(t = "教师编号") Long teacherId,//
 			@P(t = "教师名称") String teacherName,//
 			@P(t = "教师电话" ,r = false) String teacherPhone,//
 			@P(t = "教师邮箱" ,r = false) String teacherEmail,//
@@ -55,7 +54,7 @@ public class TeacherController extends Controller {
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Teacher t = teacherService.addTeacher(conn, teacherId, teacherName, teacherPhone, departId,institutionId,collageId,information);
+			Teacher t = teacherService.addTeacher(conn, teacherName, teacherPhone,teacherEmail, departId,institutionId,collageId,information);
 			return APIResponse.getNewSuccessResp(t);
 		}
 	}
@@ -73,6 +72,7 @@ public class TeacherController extends Controller {
 			@P(t = "系部id" ,r = false)  Long departId,//
 			@P(t = "学院id" ,r = false)  Long institutionId,//
 			@P(t = "院校id" ,r = false)  Long collageId ,//
+			@P(t = "专业id" ,r = false)  Long majorId ,//
 			@P(t = "信息" ,r = false)  String information //
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {

@@ -37,12 +37,11 @@ public class CollageController extends Controller {
 			ret = "返回添加院校信息"
 			)
 	public APIResponse addCollage(//
-			@P(t = "院校编号") Long collageId,//
 			@P(t = "院校名称") String collageName
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Collage c = collageService.addCollage(conn,collageId,collageName);
+			Collage c = collageService.addCollage(conn,collageName);
 			return APIResponse.getNewSuccessResp(c);
 		}
 	}

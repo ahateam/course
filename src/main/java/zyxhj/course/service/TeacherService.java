@@ -9,10 +9,14 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.attach.Clazz;
 import zyxhj.course.domain.attach.Course;
+import zyxhj.course.domain.attach.Dept;
 import zyxhj.course.domain.attach.Teacher;
 import zyxhj.course.repository.ClazzRepository;
 import zyxhj.course.repository.CourseRepository;
+import zyxhj.course.repository.DepartRepository;
+import zyxhj.course.repository.MajorRepository;
 import zyxhj.course.repository.TeacherRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class TeacherService {
@@ -21,12 +25,14 @@ public class TeacherService {
 	private  TeacherRepository teacherRepository;
 	private  ClazzRepository clazzRepository;
 	private  CourseRepository courseRepository;
+	private DepartRepository departRepository;
 
 	public TeacherService() {
 		try {
 			teacherRepository = Singleton.ins(TeacherRepository.class);
 			clazzRepository = Singleton.ins(ClazzRepository.class);
 			courseRepository = Singleton.ins(CourseRepository.class);
+			departRepository = Singleton.ins(DepartRepository.class);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -46,12 +52,13 @@ public class TeacherService {
 	 * @param information 
 	 * @return
 	 */
-	public Teacher addTeacher(DruidPooledConnection conn, Long teacherId, String teacherName,
-			String teacherPhone, Long departId, Long institutionId, Long collageId, String information) throws Exception {
+	public Teacher addTeacher(DruidPooledConnection conn, String teacherName,
+			String teacherPhone,String teacherEmail, Long departId, Long institutionId, Long collageId, String information) throws Exception {
 		Teacher t = new Teacher();
-		t.Id = teacherId;
+		t.Id = IDUtils.getSimpleId();
 		t.teacherName = teacherName;
 		t.teacherPhone = teacherPhone;
+		t.teacherEmail = teacherEmail;
 		t.departId = departId;
 		t.institutionId = institutionId;
 		t.collageId = collageId;
@@ -90,6 +97,7 @@ public class TeacherService {
 		t.Id = teacherId;
 		t.teacherName = teacherName;
 		t.teacherPhone = teacherPhone;
+		
 		t.departId = departId;
 		t.institutionId = institutionId;
 		t.information = information;

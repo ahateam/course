@@ -37,9 +37,9 @@ public class ClassRoomService {
 	 * @param courseName
 	 * @return
 	 */
-	public Classroom addClassroom(DruidPooledConnection conn,Long classroomId,String classroomName,String buildNum) throws Exception{
+	public Classroom addClassroom(DruidPooledConnection conn,String classroomName,String buildNum) throws Exception{
 		Classroom c = new Classroom();
-		c.Id = classroomId;
+		c.Id = IDUtils.getSimpleId();
 		c.classroomName = classroomName;
 		c.buildNum = buildNum;
 		classroomRepository.insert(conn, c);

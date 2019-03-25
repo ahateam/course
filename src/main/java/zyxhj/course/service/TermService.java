@@ -10,6 +10,7 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.Term;
 import zyxhj.course.repository.TermRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class TermService {
@@ -41,10 +42,10 @@ public class TermService {
 	 * @param remark
 	 * @return
 	 */
-	public Term addTerm(DruidPooledConnection conn,Long termId,String termName,Date startDate,Date endDate,String remark) throws Exception{
+	public Term addTerm(DruidPooledConnection conn,String termName,Date startDate,Date endDate,String remark) throws Exception{
 	
 		Term t = new Term();
-		t.id = termId;
+		t.id = IDUtils.getSimpleId();
 		t.name = termName;
 		t.startDate = startDate;
 		t.endDate = endDate;

@@ -9,6 +9,7 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.attach.Course;
 import zyxhj.course.repository.CourseRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class CourseService {
@@ -40,10 +41,10 @@ public class CourseService {
 	 * @param depatId
 	 * @return
 	 */
-	public Course addCourse(DruidPooledConnection conn, Long courseId, String courseName, Long knowledge, Long majorId,
+	public Course addCourse(DruidPooledConnection conn,  String courseName, Long knowledge, Long majorId,
 			Long teacherId, Long depatId, Long institutionId, Long collageId) throws Exception {
 		Course c = new Course();
-		c.Id = courseId;
+		c.Id = IDUtils.getSimpleId();
 		c.courseName = courseName;
 		c.knowledge = knowledge;
 		c.majorId = majorId;

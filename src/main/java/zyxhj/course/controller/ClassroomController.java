@@ -55,13 +55,12 @@ public class ClassroomController extends Controller {
 			des = "添加教室", //
 			ret = "返回添加教室信息")
 	public APIResponse addClassroom(//
-			@P(t = "教室编号") Long classroomId, //
 			@P(t = "教室名称") String classroomName,//
 			@P(t = "楼号") String buildNum //
 	) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Classroom c = classRoomService.addClassroom(conn, classroomId, classroomName,buildNum);
+			Classroom c = classRoomService.addClassroom(conn , classroomName,buildNum);
 			return APIResponse.getNewSuccessResp(c);
 		}
 	}

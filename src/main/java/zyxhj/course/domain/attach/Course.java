@@ -17,7 +17,7 @@ public class Course {
 	/**
 	 * 课程名称
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String courseName;
 	
 	/**

@@ -38,14 +38,13 @@ public class InstitutionController extends Controller {
 			ret = "返回添加学院信息"
 			)
 	public APIResponse addInstitution(//
-			@P(t = "学院id") Long institutionId,//
 			@P(t = "学院名称") String institutionName,//
-			@P(t = "院校id" ,r = false) Long colleageId
+			@P(t = "院校id" ,r = false) Long collageId
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
 
-			Institution i = institutionService.addInstitution(conn,institutionId, institutionName,colleageId);
+			Institution i = institutionService.addInstitution(conn, institutionName,collageId);
 			return APIResponse.getNewSuccessResp(i);
 		}
 	}
@@ -58,11 +57,11 @@ public class InstitutionController extends Controller {
 	public APIResponse upInstitution(//
 			@P(t = "学院id") Long institutionId,//
 			@P(t = "学院名称") String institutionName,//
-			@P(t = "院校id" ,r = false) Long colleageId
+			@P(t = "院校id" ,r = false) Long collageId
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Institution i = institutionService.upInstitution(conn,institutionId, institutionName,colleageId);
+			Institution i = institutionService.upInstitution(conn,institutionId, institutionName,collageId);
 			return APIResponse.getNewSuccessResp(i);
 		}
 	}

@@ -12,6 +12,7 @@ import zyxhj.course.domain.attach.Major;
 import zyxhj.course.repository.ClazzRepository;
 import zyxhj.course.repository.CourseRepository;
 import zyxhj.course.repository.MajorRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class MajorService {
@@ -40,13 +41,14 @@ public class MajorService {
 	 * @param deptId
 	 * @return
 	 */
-	public Major addMajor(DruidPooledConnection conn, Long majorId, String majorName, Long deptId) throws Exception {
+	public Major addMajor(DruidPooledConnection conn, String majorName, Long deptId, Long institutionId, Long collageId)
+			throws Exception {
 		Major m = new Major();
-		m.id = majorId;
+		m.id = IDUtils.getSimpleId();
 		m.majorName = majorName;
-		if (null != deptId) {
-			m.deptId = deptId;
-		}
+		m.deptId = deptId;
+		m.institutionId = institutionId;
+		m.collageId = collageId;
 		majorRepository.insert(conn, m);
 		return m;
 	}
@@ -57,7 +59,7 @@ public class MajorService {
 	 * @param conn
 	 * @param majorId
 	 */
-	public void deleteMajor(DruidPooledConnection conn, Long majorId) throws Exception{
+	public void deleteMajor(DruidPooledConnection conn, Long majorId) throws Exception {
 		majorRepository.deleteByKey(conn, "id", majorId);
 	}
 
@@ -68,15 +70,18 @@ public class MajorService {
 	 * @param majorId
 	 * @param majorName
 	 * @param deptId
-	 * @return 
+	 * @param collageId
+	 * @param institutionId
+	 * @return
 	 */
-	public Major upMajor(DruidPooledConnection conn, Long majorId, String majorName, Long deptId) throws Exception{
+	public Major upMajor(DruidPooledConnection conn, Long majorId, String majorName, Long deptId, Long institutionId,
+			Long collageId) throws Exception {
 		Major m = new Major();
 		m.id = majorId;
 		m.majorName = majorName;
-		if (null != deptId) {
-			m.deptId = deptId;
-		}
+		m.deptId = deptId;
+		m.institutionId = institutionId;
+		m.collageId = collageId;
 		majorRepository.updateByKey(conn, "id", majorId, m, true);
 		return m;
 	}
@@ -88,7 +93,7 @@ public class MajorService {
 	 * @param majorId
 	 * @return
 	 */
-	public Major queryById(DruidPooledConnection conn, Long majorId) throws Exception{
+	public Major queryById(DruidPooledConnection conn, Long majorId) throws Exception {
 		return majorRepository.getByKey(conn, "id", majorId);
 	}
 
@@ -99,7 +104,7 @@ public class MajorService {
 	 * @param majorId
 	 * @return
 	 */
-	public List<Course> queryCourseByMajorId(DruidPooledConnection conn, Long majorId) throws Exception{
+	public List<Course> queryCourseByMajorId(DruidPooledConnection conn, Long majorId) throws Exception {
 		return courseRepository.getListByKey(conn, "id", majorId, 512, 0);
 	}
 
@@ -110,7 +115,7 @@ public class MajorService {
 	 * @param majorId
 	 * @return
 	 */
-	public Integer countClazz(DruidPooledConnection conn, Long majorId) throws Exception{
+	public Integer countClazz(DruidPooledConnection conn, Long majorId) throws Exception {
 		return clazzRepository.countByKey(conn, "major_id", majorId);
 	}
 

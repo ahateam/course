@@ -43,7 +43,6 @@ public class CourseController extends Controller {
 			ret = "返回添加课程信息"
 			)
 	public APIResponse addCourse(//
-			@P(t = "课程编号") Long courseId,//
 			@P(t = "课程名称") String courseName,//
 			@P(t = "学识") Long knowledge,//
 			@P(t = "所属专业id" , r = false) Long majorId, //
@@ -56,7 +55,7 @@ public class CourseController extends Controller {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
 
-			Course c = courseService.addCourse(conn, courseId, courseName,knowledge,majorId,teacherId,depatId,institutionId,collageId);
+			Course c = courseService.addCourse(conn, courseName,knowledge,majorId,teacherId,depatId,institutionId,collageId);
 			return APIResponse.getNewSuccessResp(c);
 		}
 	}

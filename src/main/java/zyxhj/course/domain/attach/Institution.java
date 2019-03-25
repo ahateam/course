@@ -20,14 +20,13 @@ public class Institution {
 	/**
 	 * 学院名称
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String institutionName;
 	
 	/**
 	 * 院校id
 	 */
-	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
-	public Long colleageId;
+	public Long collageId;
 	
 }

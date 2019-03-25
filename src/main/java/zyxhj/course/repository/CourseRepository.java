@@ -21,17 +21,16 @@ public class CourseRepository extends RDSRepository<Course> {
 		if (StringUtils.isBlank(idNumber) && idNumber.length() >= 1) {
 
 			StringBuffer sb = new StringBuffer(
-					"SELECT * FROM 'tb_course' WHERE 'institution_id' = ? AND 'courseName' LIKE '%");
-			sb.append(idNumber).append("%' LIMIT ? OFFSET ? ");
+					" WHERE 'institution_id' = ? AND 'course_name' LIKE '%");
+			sb.append(idNumber).append("%'");
 
 			try {
-				return this.nativeGetList(conn, Singleton.ins(CourseRepository.class), sb.toString(),
-						new Object[] { institutionId, count, offset });
+				return this.getList(conn, sb.toString(), new Object[] { institutionId }, count, offset);
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 				return new ArrayList<Course>();
 			}
-
 		} else {
 			return new ArrayList<Course>();
 		}

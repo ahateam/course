@@ -20,7 +20,7 @@ public class Major {
 	/**
 	 * 专业名称
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String majorName;
 	
 	/**

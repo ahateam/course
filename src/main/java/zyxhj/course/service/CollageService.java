@@ -7,6 +7,7 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.attach.Collage;
 import zyxhj.course.repository.CollageRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class CollageService {
@@ -30,9 +31,9 @@ public class CollageService {
 	 * @param collageName
 	 * @return
 	 */
-	public Collage addCollage(DruidPooledConnection conn, Long collageId, String collageName) throws Exception {
+	public Collage addCollage(DruidPooledConnection conn, String collageName) throws Exception {
 		Collage c = new Collage();
-		c.Id = collageId;
+		c.Id = IDUtils.getSimpleId();
 		c.collageName = collageName;
 		collageRepository.insert(conn, c);
 		return c;

@@ -42,7 +42,6 @@ public class TermController extends Controller {
 			ret = "返回添加学期信息"
 			)
 	public APIResponse addTerm(//
-			@P(t = "学期编号") Long termId,//
 			@P(t = "第几学期") String termName,//
 			@P(t = "开始时间") Date startDate,//
 			@P(t = "结束时间") Date endDate, //
@@ -51,7 +50,7 @@ public class TermController extends Controller {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
 
-			Term t = termService.addTerm(conn, termId, termName, startDate, endDate, remark);
+			Term t = termService.addTerm(conn,  termName, startDate, endDate, remark);
 			return APIResponse.getNewSuccessResp(t);
 		}
 	}

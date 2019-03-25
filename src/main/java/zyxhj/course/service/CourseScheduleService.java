@@ -6,11 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.alibaba.fastjson.JSONObject;
 
 import zyxhj.course.domain.CourseSchedule;
 import zyxhj.course.domain.attach.Classroom;
 import zyxhj.course.repository.ClassroomRepository;
 import zyxhj.course.repository.CourseScheduleRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class CourseScheduleService {
@@ -28,41 +30,19 @@ public class CourseScheduleService {
 		}
 	}
 
-	/**
-	 * 添加课程安排记录
-	 * 
-	 * @param conn
-	 * @param CSId
-	 * @param termId
-	 * @param courseId
-	 * @param classroom
-	 * @param classesIds
-	 * @param teacherIds
-	 * @param weekStart
-	 * @param weekEnd
-	 * @param numDay
-	 * @param timeStart
-	 * @param timeEnd
-	 * @return
-	 * @throws Exception
-	 */
-	public CourseSchedule addCourseSchedule(DruidPooledConnection conn, Long cSId, Long termId, Long courseId,
-			Long classroomId, String classesIds, String teacherIds, Integer weekStart, Integer weekEnd, Integer numDay,
+	
+	 // 添加课程安排记录
+	public CourseSchedule addCourseSchedule(DruidPooledConnection conn , Long termId, Long courseId,
+			Long classroomId, JSONObject classesIds, JSONObject teacherIds, Integer weekStart, Integer weekEnd, Integer numDay,
 			Integer timeStart, Integer timeEnd) throws Exception {
 
 		CourseSchedule courseSchedule = new CourseSchedule();
-		courseSchedule.id = cSId;
+		courseSchedule.id = IDUtils.getSimpleId();
 		courseSchedule.termId = termId;
 		courseSchedule.courseId = courseId;
 		courseSchedule.classroomId = classroomId;
-		/*
-		 * String clasId = null; for (Long cla : classesIds) { clasId += cla + " "; }
-		 */
-		courseSchedule.classesIds = classesIds;
-		/*
-		 * String teaId = null; for (Long tea : teacherIds) { teaId += tea + " "; }
-		 */
-		courseSchedule.teacherIds = teacherIds;
+		courseSchedule.classesIds = classesIds.toJSONString();
+		courseSchedule.teacherIds = teacherIds.toJSONString();
 		courseSchedule.weekStart = weekStart;
 		courseSchedule.weekEnd = weekEnd;
 		courseSchedule.numDay = numDay;
@@ -80,36 +60,14 @@ public class CourseScheduleService {
 
 
 
-	/**
-	 * 删除课程安排记录
-	 * 
-	 * @param conn
-	 * @param cSId
-	 * @throws Exception
-	 */
+	//删除课程安排记录
 	public void deleteCourseSchedule(DruidPooledConnection conn, Long cSId) throws Exception {
 		courseScheduleRepository.deleteByKey(conn, "id", cSId);
 	}
 
-	/**
-	 * 修改课程安排记录
-	 * 
-	 * @param conn
-	 * @param cSId
-	 * @param termId
-	 * @param courseId
-	 * @param classroom
-	 * @param classesIds
-	 * @param teacherIds
-	 * @param weekStart
-	 * @param weekEnd
-	 * @param numDay
-	 * @param timeStart
-	 * @param timeEnd
-	 * @throws Exception
-	 */
+	//修改课程安排记录
 	public CourseSchedule upCourseSchedule(DruidPooledConnection conn, Long cSId, Long termId, Long courseId,
-			Long classroomId, String classesIds, String teacherIds, Integer weekStart, Integer weekEnd, Integer numDay,
+			Long classroomId, JSONObject classesIds, JSONObject teacherIds, Integer weekStart, Integer weekEnd, Integer numDay,
 			Integer timeStart, Integer timeEnd) throws Exception {
 
 		CourseSchedule courseSchedule = new CourseSchedule();
@@ -117,14 +75,8 @@ public class CourseScheduleService {
 		courseSchedule.termId = termId;
 		courseSchedule.courseId = courseId;
 		courseSchedule.classroomId = classroomId;
-		/*
-		 * String clasId = null; for (Long cla : classesIds) { clasId += cla + " "; }
-		 */
-		courseSchedule.classesIds = classesIds;
-		/*
-		 * String teaId = null; for (Long tea : teacherIds) { teaId += tea + " "; }
-		 */
-		courseSchedule.teacherIds = teacherIds;
+		courseSchedule.classesIds = classesIds.toJSONString();
+		courseSchedule.teacherIds = teacherIds.toJSONString();
 		courseSchedule.weekStart = weekStart;
 		courseSchedule.weekEnd = weekEnd;
 		courseSchedule.numDay = numDay;
@@ -139,19 +91,7 @@ public class CourseScheduleService {
 		}
 	}
 
-	/**
-	 * 查询课程安排记录
-	 * 
-	 * @param conns
-	 * @param classroom
-	 * @param weekStart
-	 * @param weekEnd
-	 * @param numDay
-	 * @param timeStart
-	 * @param timeEnd
-	 * @return
-	 * @throws Exception
-	 */
+	//查询课程安排记录
 	public int queryCourseSchedule(DruidPooledConnection conn, Long classroomId, Integer weekStart, Integer weekEnd,
 			Integer numDay, Integer timeStart, Integer timeEnd) throws Exception {
 
@@ -165,9 +105,6 @@ public class CourseScheduleService {
 
 	/**
 	  * 获取楼号列表
-	 * @param conn
-	 * @return
-	 * @throws Exception
 	 */
 	public List<Classroom> getBulidNum(DruidPooledConnection conn) throws Exception{
 		return classroomRepository.getBulidNum(conn);
@@ -175,10 +112,6 @@ public class CourseScheduleService {
 	
 	/**
 	 * 根据楼号获取当前楼的所有教室
-	 * @param conn
-	 * @param bulidNum
-	 * @return
-	 * @throws Exception
 	 */
 	public List<Classroom> getClassroom(DruidPooledConnection conn, String bulidNum) throws Exception{
 		return classroomRepository.getListByKey(conn, "bulid_num", bulidNum, 512, 0);
@@ -186,12 +119,6 @@ public class CourseScheduleService {
 	
 	/**
 	 * 查询当前教室课程安排
-	 * 
-	 * @param conn
-	 * @param bulidNum 
-	 * @param classroom
-	 * @return
-	 * @throws Exception
 	 */
 	public List<CourseSchedule> getCourseSchedule(DruidPooledConnection conn, String classroomName, String bulidNum) throws Exception {
 		Long classroomId = classroomRepository.getClassroomId(conn,classroomName,bulidNum); //根据教室信息查询id

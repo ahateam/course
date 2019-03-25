@@ -31,14 +31,9 @@ public class Teacher {
 	/**
 	 * 教师邮箱
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String teacherEmail;
 	
-	/**
-	 * 专业id
-	 */
-	@RDSAnnField(column = RDSAnnField.ID)
-	public Long majorId;
 	
 	/**
 	 *系部id
@@ -61,6 +56,6 @@ public class Teacher {
 	/**
 	 * 信息
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String information;
 }

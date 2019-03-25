@@ -44,7 +44,7 @@ public class Test {
 
 			// RDSUtils.dropTableByEntity(dsRds, Clazz.class);
 
-			 RDSUtils.createTableByEntity(dsRds, Teacher.class);
+			// RDSUtils.createTableByEntity(dsRds, Teacher.class);
 			 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -17,12 +17,12 @@ public class Classroom {
 	/**
 	 * 教室名
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String classroomName;
 	
 	/**
 	 * 楼号
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String buildNum;
 }

@@ -41,18 +41,22 @@ public class CourseScheduleRepository extends RDSRepository<CourseSchedule> {
 			Integer numDay, Integer timeStart, Integer timeEnd) throws Exception{
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("WHERE classroom = ? ");
+		sb.append("WHERE classroom_id = ? ");
 		sb.append("AND num_day = ? ");
 		sb.append("AND week_start < ? ");
 		sb.append("AND week_end > ? ");
 		sb.append("OR week_start < ? ");
 		sb.append("AND week_end > ? ");
+		sb.append("OR week_start > ? ");
+		sb.append("AND week_end < ? ");
 		sb.append("AND time_start < ? ");
 		sb.append("AND time_end > ? ");
 		sb.append("OR time_start < ? ");
 		sb.append("AND time_end > ? ");
+		sb.append("OR time_start > ? ");
+		sb.append("AND time_end < ? ");
 		
-		Object[] whereParams = {classroomId,numDay,weekStart,weekStart,weekEnd,weekEnd,timeStart,timeStart,timeEnd,timeEnd};
+		Object[] whereParams = {classroomId,numDay,weekStart,weekStart,weekEnd,weekEnd,weekStart,weekEnd,timeStart,timeStart,timeEnd,timeEnd,timeStart,timeEnd};
 		System.out.println(sb.toString());
 		CourseSchedule courseSchedule = get(conn,sb.toString(), whereParams);
 		if(courseSchedule != null) {

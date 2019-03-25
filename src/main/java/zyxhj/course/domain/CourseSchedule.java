@@ -15,7 +15,7 @@ public class CourseSchedule {
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long id;
 
-	@RDSAnnField(column = RDSAnnField.LONG)
+	@RDSAnnField(column = RDSAnnField.ID)
 	public Long termId;
 
 	/**
@@ -26,9 +26,9 @@ public class CourseSchedule {
 	public Long courseId;
 
 	/**
-	 * 教室信息id
+	 * 教室id
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.ID)
 	public Long classroomId;
 
 	/**

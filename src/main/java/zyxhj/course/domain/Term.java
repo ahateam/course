@@ -23,7 +23,7 @@ public class Term {
 	/**
 	 * 第几学期
 	 */
-	@RDSAnnField(column = RDSAnnField.SHORT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String name;
 	
 	/**
@@ -41,7 +41,7 @@ public class Term {
 	/**
 	 * 备注
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String remark;
 	
 

@@ -1,6 +1,5 @@
 package zyxhj.course.service;
 
-
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +11,7 @@ import zyxhj.course.domain.attach.Dept;
 import zyxhj.course.domain.attach.Major;
 import zyxhj.course.repository.DepartRepository;
 import zyxhj.course.repository.MajorRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class DeptService {
@@ -29,21 +29,22 @@ public class DeptService {
 		}
 	}
 
-	
 	/**
 	 * 添加系部
+	 * 
 	 * @param conn
 	 * @param deptId
 	 * @param deptName
-	 * @param collageId 
-	 * @param institutionId 
+	 * @param collageId
+	 * @param institutionId
 	 * @param nstitutionId
 	 * @return
 	 */
-	public Dept addDept(DruidPooledConnection conn,Long deptId,String deptName, Long institutionId, Long collageId) throws Exception{
-		
+	public Dept addDept(DruidPooledConnection conn, String deptName, Long institutionId, Long collageId)
+			throws Exception {
+
 		Dept d = new Dept();
-		d.id = deptId;
+		d.id = IDUtils.getSimpleId();
 		d.departNmae = deptName;
 		d.institutionId = institutionId;
 		d.collageId = collageId;
@@ -53,19 +54,22 @@ public class DeptService {
 
 	/**
 	 * 删除系部
+	 * 
 	 * @param conn
 	 * @param deptId
 	 */
-	public void deleteDept(DruidPooledConnection conn,Long deptId) throws Exception {
+	public void deleteDept(DruidPooledConnection conn, Long deptId) throws Exception {
 		departRepository.deleteByKey(conn, "id", deptId);
 	}
-	
+
 	/**
 	 * 修改系部
+	 * 
 	 * @param conn
 	 * @param deptId
 	 */
-	public Dept upDept(DruidPooledConnection conn,Long deptId,String deptName, Long institutionId, Long collageId) throws Exception{
+	public Dept upDept(DruidPooledConnection conn, Long deptId, String deptName, Long institutionId, Long collageId)
+			throws Exception {
 		Dept d = new Dept();
 		d.id = deptId;
 		d.departNmae = deptName;
@@ -74,24 +78,21 @@ public class DeptService {
 		departRepository.updateByKey(conn, "id", deptId, d, true);
 		return d;
 	}
-	
+
 	/**
 	 * 根据系部id查询当前系部下所有专业
+	 * 
 	 * @param conn
 	 * @param deptId
 	 * @return
 	 */
-	public List<Major> queryMajorById(DruidPooledConnection conn,Long deptId) throws Exception{
-		
+	public List<Major> queryMajorById(DruidPooledConnection conn, Long deptId) throws Exception {
+
 		return majorRepository.getListByKey(conn, "dept_id", deptId, 32, 0);
 	}
 
-
-	public Dept queryDeptById(DruidPooledConnection conn, Long deptId) throws Exception{
+	public Dept queryDeptById(DruidPooledConnection conn, Long deptId) throws Exception {
 		return departRepository.getByKey(conn, "id", deptId);
 	}
-	
-	
-	
-}
 
+}

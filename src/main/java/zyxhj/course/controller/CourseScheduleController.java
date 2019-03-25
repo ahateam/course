@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.alibaba.fastjson.JSONObject;
 
 import zyxhj.course.domain.CourseSchedule;
-import zyxhj.course.domain.attach.Classroom;
 import zyxhj.course.service.CourseScheduleService;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.APIResponse;
@@ -43,12 +43,11 @@ public class CourseScheduleController extends Controller {
 			ret = "返回创建对象" //
 	)
 	public APIResponse addCourseSchedule(//
-			@P(t = "课程安排编号") Long CSId, //
 			@P(t = "学期编号") Long termId, //
 			@P(t = "课程编号") Long courseId, //
 			@P(t = "教室id") Long classroomId, //
-			@P(t = "班级信息（可能多个，合班课）") String classesIds, //
-			@P(t = "教师信息（可能多个）") String teacherIds, //
+			@P(t = "班级信息（可能多个，合班课）") JSONObject classesIds, //
+			@P(t = "教师信息（可能多个）") JSONObject teacherIds, //
 			@P(t = "开始周") Integer weekStart, //
 			@P(t = "结束周") Integer weekEnd, //
 			@P(t = "周几") Integer numDay, //
@@ -57,7 +56,7 @@ public class CourseScheduleController extends Controller {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
 
-			CourseSchedule courseSchedule = courseScheduleService.addCourseSchedule(conn, CSId, termId, courseId,
+			CourseSchedule courseSchedule = courseScheduleService.addCourseSchedule(conn, termId, courseId,
 					classroomId, classesIds, teacherIds, weekStart, weekEnd, numDay, timeStart, timeEnd);
 			return APIResponse.getNewSuccessResp(courseSchedule);
 		}
@@ -86,8 +85,8 @@ public class CourseScheduleController extends Controller {
 			@P(t = "学期编号") Long termId,
 			@P(t = "课程编号", r = false) Long courseId,//
 			@P(t = "教室信息", r = false) Long classroomId,
-			@P(t = "班级信息（可能多个，合班课）", r = false) String classesIds,//
-			@P(t = "教师信息（可能多个）", r = false) String teacherIds,
+			@P(t = "班级信息（可能多个，合班课）", r = false) JSONObject classesIds,//
+			@P(t = "教师信息（可能多个）", r = false) JSONObject teacherIds,
 			@P(t = "开始周", r = false) Integer weekStart, //
 			@P(t = "结束周", r = false) Integer weekEnd,
 			@P(t = "周几", r = false) Integer numDay, //

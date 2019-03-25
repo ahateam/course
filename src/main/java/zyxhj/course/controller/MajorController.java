@@ -41,14 +41,14 @@ public class MajorController extends Controller {
 			ret = "返回添加专业信息"
 			)
 	public APIResponse addClazz(//
-			@P(t = "专业编号") Long majorId,//
 			@P(t = "专业名称") String majorName,//
-			@P(t = "系部id" ,r = false) Long departId,//
-			@P(t = "院系id" ,r = false) Long institutionId
+			@P(t = "系部id" ,r = false) Long departId , //
+			@P(t = "学院id" ,r = false) Long  institutionId, //
+			@P(t = "院校id" ,r = false) Long collageId  //
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Major m = majorService.addMajor(conn, majorId, majorName, departId);
+			Major m = majorService.addMajor(conn,  majorName, departId,institutionId,collageId);
 			return APIResponse.getNewSuccessResp(m);
 		}
 	}
@@ -59,14 +59,15 @@ public class MajorController extends Controller {
 			ret = "返回修改信息"
 			)
 	public APIResponse upMajor(//
-			@P(t = "专业编号") Long majorId,//
-			@P(t = "专业名称") String majorName,//
-			@P(t = "系部id" ,r = false) Long departId,//
-			@P(t = "院系id" ,r = false) Long institutionId
+			@P(t = "专业编号") Long majorId, //
+			@P(t = "专业名称") String majorName, //
+			@P(t = "系部id", r = false) Long departId ,//
+			@P(t = "学院id" ,r = false) Long  institutionId, //
+			@P(t = "院校id" ,r = false) Long collageId  //
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Major m = majorService.upMajor(conn, majorId, majorName, departId);
+			Major m = majorService.upMajor(conn, majorId, majorName, departId,institutionId,collageId);
 			return APIResponse.getNewSuccessResp(m);
 		}
 	}

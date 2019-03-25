@@ -17,7 +17,7 @@ public class Dept {
 	/**
 	 * 系部名称
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String departNmae;
 	
 	/**

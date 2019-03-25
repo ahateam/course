@@ -8,12 +8,14 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.attach.Institution;
 import zyxhj.course.repository.InstitutionRepository;
+import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 
 public class InstitutionService {
 	private static Logger log = LoggerFactory.getLogger(InstitutionService.class);
 
 	private InstitutionRepository institutionRepository;
+	
 	public InstitutionService() {
 		try {
 			institutionRepository = Singleton.ins(InstitutionRepository.class);
@@ -30,12 +32,14 @@ public class InstitutionService {
 	 * @param colleageId
 	 * @return
 	 */
-	public Institution addInstitution(DruidPooledConnection conn,Long institutionId,String institutionName,Long colleageId) throws Exception{
+	public Institution addInstitution(DruidPooledConnection conn,String institutionName,Long collageId) throws Exception{
 		Institution i = new Institution();
-		i.Id = institutionId;
+		
+		i.Id = IDUtils.getSimpleId();
 		i.institutionName = institutionName;
-		i.colleageId = colleageId;
-		institutionRepository.insert(conn, i);
+			i.collageId = collageId;
+			institutionRepository.insert(conn, i);
+		
 		return i;
 	}
 	
@@ -55,12 +59,12 @@ public class InstitutionService {
 	 * @param institutionName
 	 * @param colleageId
 	 */
-	public Institution upInstitution(DruidPooledConnection conn,Long institutionId,String institutionName,Long colleageId) throws Exception{
+	public Institution upInstitution(DruidPooledConnection conn,Long institutionId,String institutionName,Long collageId) throws Exception{
 		
 		Institution i = new Institution();
 		i.Id = institutionId;
 		i.institutionName = institutionName;
-		i.colleageId = colleageId;
+			i.collageId = collageId;
 		institutionRepository.updateByKey(conn, "id", institutionId, i, true);
 		return i;
 	}

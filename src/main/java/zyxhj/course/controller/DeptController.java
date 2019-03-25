@@ -40,14 +40,13 @@ public class DeptController extends Controller {
 			ret = "返回添加信息"
 			)
 	public APIResponse addDept(//
-			@P(t = "系部编号") Long deptId,//
 			@P(t = "系部名称") String deptName,//
-			@P(t = "学院id") Long institutionId,//
-			@P(t = "院校id") Long collageId
+			@P(t = "学院id") Long institutionId ,//
+			@P(t = "学院id") Long collageId //
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			 Dept d = deptService.addDept(conn,deptId,deptName,institutionId,collageId);
+			 Dept d = deptService.addDept(conn,deptName,institutionId,collageId);
 			return APIResponse.getNewSuccessResp(d);
 		}
 	}
@@ -61,7 +60,7 @@ public class DeptController extends Controller {
 			@P(t = "系部编号") Long deptId,//
 			@P(t = "系部名称") String deptName,//
 			@P(t = "学院id") Long institutionId,//
-			@P(t = "院校id") Long collageId
+			@P(t = "学院id") Long collageId //
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
@@ -69,7 +68,6 @@ public class DeptController extends Controller {
 			return APIResponse.getNewSuccessResp(d);
 		}
 	}
-	
 	
 	@POSTAPI(//
 			path = "deleteDept" ,//

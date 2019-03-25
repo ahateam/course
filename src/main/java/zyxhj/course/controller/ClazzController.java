@@ -44,7 +44,6 @@ public class ClazzController extends Controller {
 			ret = "返回添加信息"
 			)
 	public APIResponse addClazz(//
-			@P(t = "班级编号") Long clazzId,//
 			@P(t = "班级名称") String clazzName,//
 			@P(t = "年级") String grade,//
 			@P(t = "系部id" ,r = false) Long majorId,//
@@ -55,7 +54,7 @@ public class ClazzController extends Controller {
 			) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
 			// User user = ServiceUtils.userAuth(conn, userId);// user鉴权
-			Clazz c = clazzService.addClazz(conn, clazzId, clazzName,grade, majorId, teacherId,departId,instiutionId,collageId);
+			Clazz c = clazzService.addClazz(conn, clazzName,grade, majorId, teacherId,departId,instiutionId,collageId);
 			return APIResponse.getNewSuccessResp(c);
 		}
 	}

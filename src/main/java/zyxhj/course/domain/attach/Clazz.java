@@ -17,13 +17,13 @@ public class Clazz {
 	/**
 	 * 班级名称
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String clazzName;
 	
 	/**
 	 * 年级
 	 */
-	@RDSAnnField(column = RDSAnnField.TEXT)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String grade;
 	
 	/**
