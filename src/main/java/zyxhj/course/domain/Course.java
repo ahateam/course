@@ -1,4 +1,4 @@
-package zyxhj.course.domain.attach;
+package zyxhj.course.domain;
 
 import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;

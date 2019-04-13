@@ -1,32 +1,28 @@
-package zyxhj.course.domain.attach;
+package zyxhj.course.domain;
 
 import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
 /**
- * 学院
+ * 院校
  */
-@RDSAnnEntity(alias = "tb_institution")
-public class Institution {
-
+@RDSAnnEntity(alias = "tb_collage")
+public class Collage {
+	
 	/**
-	 * 学院id
+	 * 院校id
 	 */
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long Id;
 	
 	/**
-	 * 学院名称
+	 * 院校名称
 	 */
 	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
-	public String institutionName;
+	public String collageName;
 	
-	/**
-	 * 院校id
-	 */
-	@RDSAnnField(column = RDSAnnField.ID)
-	public Long collageId;
+	
 	
 }

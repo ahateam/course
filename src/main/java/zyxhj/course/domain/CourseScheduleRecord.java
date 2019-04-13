@@ -11,7 +11,7 @@ import zyxhj.utils.data.rds.RDSAnnID;
  *
  */
 @RDSAnnEntity(alias = "tb_schedule_record")
-public class CourseSchedule {
+public class CourseScheduleRecord {
 
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
@@ -39,19 +39,7 @@ public class CourseSchedule {
 	public String teacherIds;
 
 	/**
-	 * 类型（按周定义，按日期定义）
-	 */
-	@RDSAnnField(column = RDSAnnField.BYTE)
-	public Byte type;
-
-	/**
-	 * 周几（在按周定义类型中使用）
-	 */
-	@RDSAnnField(column = RDSAnnField.INTEGER)
-	public Integer weekday;
-
-	/**
-	 * 日期，（在按日期定义类型中使用）
+	 * 日期
 	 */
 	@RDSAnnField(column = RDSAnnField.TIME)
 	public Date date;
