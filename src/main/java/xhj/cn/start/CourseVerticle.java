@@ -18,6 +18,10 @@ public class CourseVerticle extends ZeroVerticle {
 		return "course";
 	}
 
+	public int port() {
+		return 8080;
+	}
+
 	protected void init() throws Exception {
 
 		DataSourceUtils.initDataSourceConfig();
