@@ -13,7 +13,7 @@
                         active-text-color="#ffd04b"
                         style="overflow: hidden;width: 160px;background: #545c64;"
                 >
-                    <span v-for="(item,key) in menuList" >
+                    <span v-for="(item,key) in menuList"  :key="key">
                         <el-menu-item v-if="item.child.length ==0"    :index="''+key" @click="navActive(item,key)" >
                             <i class="iconfont icon-box" :class="item.icon"></i>
                             <span slot="title">{{item.title}}</span>
@@ -23,7 +23,7 @@
                                 <i class="el-icon-location"></i>
                                 <span>{{item.title}}</span>
                             </template>
-                                <el-menu-item :index="key+'-'+key1" v-for="(item1,key1) in item.child" @click="navActive1(key,item1,key1)">{{item1.title}}</el-menu-item>
+                                <el-menu-item :index="key+'-'+key1" v-for="(item1,key1) in item.child" @click="navActive1(key,item1,key1)" :key="key+'-'+key1">{{item1.title}}</el-menu-item>
                         </el-submenu>
                     </span>
                 </el-menu>
