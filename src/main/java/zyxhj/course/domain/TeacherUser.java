@@ -73,7 +73,7 @@ public class TeacherUser {
 	 * 老师所教课程名称
 	 */
 	@RDSAnnField(column = RDSAnnField.TEXT)
-	public Long TcourseName;
+	public Long TcourseName; 
 	
 	
 }

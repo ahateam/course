@@ -2,7 +2,7 @@ package xhj.cn.start;
 
 import io.vertx.core.Vertx;
 import zyxhj.core.controller.TestController;
-import zyxhj.course.controller.TempController;
+import zyxhj.course.controller.CollageController;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.ZeroVerticle;
 import zyxhj.utils.data.DataSourceUtils;
@@ -28,7 +28,7 @@ public class CourseVerticle extends ZeroVerticle {
 
 		initCtrl(ctrlMap, Singleton.ins(TestController.class, "test"));
 
-		initCtrl(ctrlMap, Singleton.ins(TempController.class, "temp"));
+		initCtrl(ctrlMap, Singleton.ins(CollageController.class, "collage"));
 
 	}
 

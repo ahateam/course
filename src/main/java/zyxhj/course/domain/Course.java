@@ -15,16 +15,12 @@ import zyxhj.utils.data.rds.RDSAnnID;
  */
 @RDSAnnEntity(alias = "tb_course") public class Course {
 
-	/**
-	 * 课程大纲id
-	 */
-	@RDSAnnID
-	@RDSAnnField(column = RDSAnnField.ID)
-	public Long collageId;
+
 	
 	/**
 	 * 课程id
 	 */
+	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long courseId;
 	
@@ -38,18 +34,22 @@ import zyxhj.utils.data.rds.RDSAnnID;
 	 * 学时
 	 */
 	@RDSAnnField(column = RDSAnnField.FLOAT)
-	public Long knowledge;
+	public Float knowledge;
+	
+	
+	
+	/**
+	 * 学院id，留着，但不展示
+	 */
+	@RDSAnnField(column = RDSAnnField.ID) 
+	public Long institutionId;
+	
 	
 	/**
 	 * 上课时间
 	 */
 	@RDSAnnField(column = RDSAnnField.TIME)
 	public Long courseTime;
-	
-	/**
-	 * 学院id，留着，但不展示
-	 */
-	@RDSAnnField(column = RDSAnnField.ID) public Long institutionId;
 	
 	/**
 	  * 所属专业班级id,即所教的专业班级，
@@ -68,8 +68,6 @@ import zyxhj.utils.data.rds.RDSAnnID;
 	 */
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long positionName;
-	
-
 	
 	/**
 	 * 课程类型ID，课带，独立，混合

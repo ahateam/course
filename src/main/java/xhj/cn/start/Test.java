@@ -2,8 +2,10 @@ package xhj.cn.start;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
 
+import zyxhj.course.domain.CollageClass;
 import zyxhj.utils.data.DataSource;
 import zyxhj.utils.data.DataSourceUtils;
+import zyxhj.utils.data.rds.RDSUtils;
 
 public class Test {
 
@@ -11,7 +13,7 @@ public class Test {
 
 	static {
 		DataSourceUtils.initDataSourceConfig();
-		// contentService = ContentService.getInstance();
+//		 contentService = ContentService.getInstance();
 
 		try {
 			conn = (DruidPooledConnection) DataSourceUtils.getDataSource("rdsDefault").openConnection();
@@ -31,9 +33,9 @@ public class Test {
 		try {
 			DataSource dsRds = DataSourceUtils.getDataSource("rdsDefault");
 
-			// RDSUtils.dropTableByEntity(dsRds, Clazz.class);
+//			 RDSUtils.dropTableByEntity(dsRds, CollageClass.class);  // 删表
 
-			// RDSUtils.createTableByEntity(dsRds, Teacher.class);
+//			 RDSUtils.createTableByEntity(dsRds, CollageClass.class); // 建表
 			 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
