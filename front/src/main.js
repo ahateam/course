@@ -7,6 +7,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/icon/iconfont.css'
 import constData from './data/constData'
 
+import uitl from 'ahaapi'
+
 // import "./mock/index"
 // import axios from "axios"
 // Vue.prototype.$ajax= axios
@@ -23,7 +25,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$college = college
 Vue.prototype.$constData = constData
-
+Vue.prototype.$util = uitl
 
 new Vue({
   router,

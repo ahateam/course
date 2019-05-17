@@ -6,6 +6,8 @@ const  collegeNotice = ()=>import('./notice/collegeNotice')
 const  collegeExamine = ()=>import('./examine/collegeExamine')
 const  collegeClassroomExamine = ()=>import('./examine/classroomExamine')
 const  collegeRoom = ()=>import('./room/collegeRoom')
+const collegeFree = ()=>import('./free/collegeFree')
+
 
 let routes=[
     {
@@ -48,6 +50,11 @@ let routes=[
         name:'collegeRoom',
         component:collegeRoom
     },
+    {
+        path:'/collegeFree',
+        name:'collegeFree',
+        component:collegeFree
+    }
 ]
 
 export default routes

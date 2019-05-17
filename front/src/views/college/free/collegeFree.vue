@@ -1,140 +1,98 @@
-<!--******   学院工作量   ***********-->
 <template>
     <div>
-            <el-row class="row-box" style="text-align: center">
-                <el-select v-model="schoolYear" placeholder="学年" >
-                    <el-option
-                            v-for="item in year"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select v-model="schoolMonth" placeholder="学期" >
-                    <el-option
-                            v-for="item in month"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select v-model="schoolMonth" placeholder="专业" >
-                    <el-option
-                            v-for="item in month"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select v-model="schoolMonth" placeholder="年纪" >
-                    <el-option
-                            v-for="item in month"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-row>
-            <el-row class="row-box" style="text-align: center">
-                <span style="font-size: 30px">xxx学院实验课程大纲</span><br>
-            </el-row>
+        <div>
             <el-row class="row-box" >
-                <el-col :span="20" :offset="1">
-                    <el-button type="primary">新增课程</el-button>
-                    <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
+                <el-col :span="24">
+                        <el-button type="primary" class="nav-btn"  @click="importModal =true">批量导入档期</el-button>
                 </el-col>
             </el-row>
-            <el-row class="row-box">
-            <el-table
-                    :data="tableData"
-                    border
-                    style="width: 90%;margin-left: 5%;margin-top: 10px">
-                <el-table-column
-                        label="序号"
-                        type="index"
-                        width="50">
-                </el-table-column>
-                <el-table-column
-                        prop="lecturerName"
-                        label="课程名称"
-                >
-                </el-table-column>
-                <el-table-column
-                        prop="workNum"
-                        label="课程编码"
-                >
-                </el-table-column>
-                <el-table-column
-                        prop="position"
-                        label="课程学分"
-                >
-                </el-table-column>
+            <el-row class="row-box1">
+                <el-row>
+                    <el-col :span="24">
+                        <span style="font-size: 1.6rem;color: #666;">档期列表</span>
+                    </el-col>
+                </el-row>
+                <el-row class="row-box1">
+                    <el-col :span="24">
+                        <template>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%"
+                            >
+                                <el-table-column
+                                        prop="grade"
+                                        label="年级">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="courseNode"
+                                        label="课程名称"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="courseType"
+                                        label="课程类别"
+                                        >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="teacherName"
+                                        label="教师姓名"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="studentNumber"
+                                        label="学生数">
+                                </el-table-column>
 
-                <el-table-column
-                        prop="subordinateDepartments"
-                        label="学时">
-                </el-table-column>
-                <el-table-column
-                        label="考核方式">
-                </el-table-column>
-                <el-table-column
-                        label="课程性质">
-                </el-table-column>
-                <el-table-column
-                        label="上课年纪">
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="100">
-                    <template slot-scope="scope">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                        <el-button type="text" size="small">编辑</el-button>
-                    </template>
-                </el-table-column>
+                                <el-table-column
+                                        prop="college"
+                                        label="上课地点"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        label="操作"
+                                        width="250">
+                                    <template slot-scope="scope">
 
-            </el-table>
+                                        <!--<el-button @click="editVoteBtn(scope.row)" type="text" size="small">编辑</el-button>-->
+                                        <!--<el-button @click="editStatus(scope.row)" type="text" size="small">更改状态</el-button>-->
+                                        <!--&lt;!&ndash;<el-button @click="putRes(scope.row)" type="text" size="small">结论打印</el-button>&ndash;&gt;-->
+                                        <el-button @click="delModal(scope.row)" type="text" size="small" style="color: #f44;">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </template>
+                    </el-col>
+                    <el-col :span="24" style="margin-top: 20px">
+                        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
+                            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
+                            <el-button type="primary" :disabled="page==1"   @click="changePage(page-1)">上一页</el-button>
+                            <el-button type="primary" :disabled="pageOver ==true"  @click="changePage(page+1)">下一页</el-button>
+                        </div>
+                    </el-col>
+                </el-row>
             </el-row>
-            <!--<el-popover-->
-                    <!--placement="top"-->
-                    <!--width="600"-->
-                    <!--trigger="click">-->
-                <!--<span style="font-size: 30px">新增实验课程</span>-->
-                <!--<el-form ref="form" :model="form" label-width="80px" class="form">-->
-                    <!--<el-form-item label="课程名称" >-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="课程学分">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="课程学时">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="面向专业">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="考核方式">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="课程性质">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item size="large">-->
-                        <!--<el-button type="primary" @click="onSubmit">立即创建</el-button>-->
-                        <!--<el-button>取消</el-button>-->
-                    <!--</el-form-item>-->
-                <!--</el-form>-->
-            <!--</el-popover>-->
+
+            <el-dialog
+                    title="删除信息"
+                    :visible.sync="dialogVisible"
+                    width="30%">
+                <span>是否确认删除该信息</span>
+                <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary"  @click="delBtn" >确 定</el-button>
+            </span>
+            </el-dialog>
 
 
-        <!--批量导入弹窗-->
-        <el-dialog
-                title="上传课程大纲表格"
-                :visible.sync="importModal"
-                width="30%"
-                :before-close="handleClose"
-                center
-                @close="closeBtn">
+            <!--批量导入弹窗-->
+            <el-dialog
+                    title="上传课程大纲表格"
+                    :visible.sync="importModal"
+                    width="30%"
+                    :before-close="handleClose"
+                    center
+                    @close="closeBtn">
             <span>
                         <div class="file-msg">
                             目前只支持后缀为 '.xlsx'的Excl文件.
@@ -161,36 +119,33 @@
                                 上传成功！
                             </div>
                         </div>
-
-
-
             </span>
-            <span slot="footer" class="dialog-footer">
+                <span slot="footer" class="dialog-footer">
                 <el-button @click="importModal = false">取 消</el-button>
                 <el-button type="primary"   @click="doUpload"  >确认上传数据表格</el-button>
             </span>
-        </el-dialog>
+            </el-dialog>
+
+
+        </div>
     </div>
-
-
 </template>
 
 <script>
     import ossAuth from '@/assets/oss/ossAuth'
     let client = ossAuth.client
-
     export default {
-        name:'collegeCourse',
-        data() {
-            return {
-                form:{
-                    name:""
-                },
-                schoolYear:'',
-                schoolMonth:'',
+        name: "free",
+        data(){
+            return{
                 tableData:[],
-                year:[],
-                month:[],
+                page:1,
+                count:10,
+                offset:0,
+                pageOver:false,
+
+                delId:'',
+                dialogVisible:false,
 
                 //上传文件相关
                 importModal:false,
@@ -200,17 +155,72 @@
                 num:0,          //上传进度
                 multipleSelection:[],
                 address:'',     //导入地址
-
             }
         },
         methods:{
-            onSubmit(){
+
+
+
+            //对接接口
+            //请求数据列表
+            getSchedule(cnt){
+              this.$college.getSchedule(cnt,(res)=>{
+
+                  if(res.data.rc == this.$util.RC.SUCCESS){
+                      this.tableData = this.$util.tryParseJson(res.data.c)
+                  }else{
+                      this.tableData = []
+                  }
+                  if(this.tableData.length<this.count){
+                      this.pageOver = true
+                  }else{
+                      this.pageOver = false
+                  }
+              })
+            },
+
+
+            //删除单个数据
+            delModal(info){
+                this.delId = info.id
+                this.dialogVisible = true
+            },
+            delBtn(){
+                let cnt = {
+                    schId: this.delId, // Long 课表id
+                };
+                this.$college.deleteSchedule(cnt,(res)=>{
+                    if(res.data.rc == this.$util.RC.SUCCESS){
+                        this.$message.success('删除成功')
+                    }else{
+                        this.$message.error('删除失败')
+                    }
+                    this.$router.push('/page')
+                })
+            },
+            //分页
+            changePage(page){
+                this.page = page
+                let cnt = {
+                    count: this.count, // Integer
+                    offset: (this.page-1)*this.count, // Integer
+                }
+                this.getSchedule(cnt)
 
             },
 
-            //对接接口
-            importAssets(cnt){
-                console.log(cnt)
+
+            //导入表格到后端数据库
+            importSchedules(cnt){
+                this.$college.importSchedules(cnt,(res)=>{
+                    if(res.data.rc == this.$util.RC.SUCCESS){
+                        this.$message.success('导入成功')
+                        this.$router.push('/page')
+                    }else{
+                        this.$message.error('导入失败')
+                        this.$router.push('/page')
+                    }
+                })
             },
 
             //上传文件相关
@@ -221,11 +231,18 @@
             },
             //讲已经导入到oss的文件传递给服务端进行数据库导入
             importFile( ){
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在导入数据库，请耐心等待...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 if(this.url != '' || this.url != undefined){
                     let cnt = {
                         url:this.url
                     }
-                    this.importAssets(cnt)
+                    this.importSchedules(cnt)
+                    loading.close()
                 }
 
             },
@@ -279,7 +296,6 @@
                         console.log(result)
                         console.log(err)
                     });
-
                 } catch (e) {
                     // 捕获超时异常
                     if (e.code === 'ConnectionTimeoutError') {
@@ -298,6 +314,19 @@
             },
         },
         mounted(){
+
+            //获取第一页的数据列表
+            let cnt = {
+                count: this.count, // Integer
+                offset: this.offset, // Integer
+            }
+            this.getSchedule(cnt)
+
+
+
+
+
+
             //获取年月日
             let date = new Date()
             let year =''+date.getFullYear()
@@ -310,12 +339,47 @@
                 day ='0'+ day
             }
             //拼接文件名
-            this.address = 'teachProgram/college/'+year+month+day+'/'
+            this.address = 'free/college/'+year+month+day+'/'
         }
-
     }
 </script>
+
 <style scoped lang="scss">
+    .row-box{
+        background: #fff;
+        padding: 15px;
+        font-size: 1.6rem;
+        color: #666;
+    }
+    .nav-btn {
+        float: left;
+    }
+
+    .row-box1 {
+        margin-top: 20px;
+        padding: 15px;
+        background: #fff;
+    }
+    .el-tag{
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
+    .row-box2{
+        margin-top: 20px;
+    }
+
     .row-box{
         margin-top: 15px;
     }
