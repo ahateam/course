@@ -98,5 +98,8 @@ public class CollageController extends Controller {
 			return APIResponse.getNewSuccessResp(collageService.getCollageClass(conn, count, offset));
 		}
 	}
+	
+	
+	
 
 }
