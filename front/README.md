@@ -1,5 +1,9 @@
 # course
 
+## 简介
+
+##### 贵阳理工学院二次排课前端页面
+
 ## Project setup
 ```
 npm install
