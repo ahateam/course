@@ -7,11 +7,11 @@ import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
 /**
- * 课程安排记录
+ * 课程安排（实验室）
  *
  */
-@RDSAnnEntity(alias = "tb_schedule_record")
-public class CourseScheduleRecord {
+@RDSAnnEntity(alias = "tb_course_schedule_lab")
+public class CourseScheduleLab {
 
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
@@ -19,6 +19,12 @@ public class CourseScheduleRecord {
 
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long termId;
+	
+	/**
+	 * 所属大纲id
+	 */
+	@RDSAnnField(column = RDSAnnField.ID)
+	public Long courseOutlineId;
 
 	/**
 	 * 课程编号
@@ -27,33 +33,37 @@ public class CourseScheduleRecord {
 	public Long courseId;
 
 	/**
+	 * 课程名称
+	 */
+	@RDSAnnField(column = RDSAnnField.TEXT_NAME)
+	public Long courseName;
+
+	/**
 	 * 教室id
 	 */
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long classroomId;
 
 	/**
-	 * 教师信息（可能多个）
+	 * 教师编号（可能多个）
 	 */
-	@RDSAnnField(column = RDSAnnField.ID)
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String teacherIds;
 
 	/**
-	 * 日期
+	 * 班级编号（可能多个）
 	 */
-	@RDSAnnField(column = RDSAnnField.TIME)
-	public Date date;
+	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
+	public String classIds;
 
 	/**
-	 * 开始时间（将来可以考虑按时间段去做，不用date型会比较方便）
+	 * 第几周
 	 */
-	@RDSAnnField(column = RDSAnnField.TIME)
-	public Date timeStart;
+	public Byte weekNum;
 
 	/**
-	 * 结束时间（将来可以考虑按时间段去做，不用date型会比较方便）
+	 * 第几节课
 	 */
-	@RDSAnnField(column = RDSAnnField.TIME)
-	public Date timeEnd;
+	public Byte lessonNum;
 
 }

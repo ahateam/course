@@ -2,7 +2,7 @@ package xhj.cn.start;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import zyxhj.course.domain.CollageClass;
+import zyxhj.course.domain.CourseOutline;
 import zyxhj.course.domain.Schedule;
 import zyxhj.utils.data.DataSource;
 import zyxhj.utils.data.DataSourceUtils;
