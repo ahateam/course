@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import zyxhj.course.domain.Schedule;
+import zyxhj.course.domain.TempSchedule;
 import zyxhj.course.repository.ScheduleRepository;
 import zyxhj.utils.ExcelUtils;
 import zyxhj.utils.IDUtils;
@@ -18,12 +18,12 @@ import zyxhj.utils.api.ServerException;
  * @author 16436
  *
  */
-public class ImportScheduleService {
-	private static Logger log = LoggerFactory.getLogger(ImportScheduleService.class);
+public class CourseService {
+	private static Logger log = LoggerFactory.getLogger(CourseService.class);
 
 	private ScheduleRepository scheduleRepository;
 
-	public ImportScheduleService() {
+	public CourseService() {
 		try {
 			scheduleRepository = Singleton.ins(ScheduleRepository.class);
 		} catch (Exception e) {
@@ -31,7 +31,7 @@ public class ImportScheduleService {
 		}
 	}
 
-	public void importSchedules(DruidPooledConnection conn, String url) throws Exception {
+	public void importTempSchedule(DruidPooledConnection conn, String url) throws Exception {
 
 		// 3行表头，23列，文件格式写死的
 		List<List<Object>> table = ExcelUtils.readExcelOnline(url, 3, 23, 0); // readExcelOnline(文件地址,表头，多少列，第几个文件(sheet1,sheet2))
@@ -77,7 +77,7 @@ public class ImportScheduleService {
 			String courseSelectionNum, String classTime, String college, String clazz, String courseSelectionCode,
 			String courseSelectionType, String knowledgeNum, String theoryKnowledgeNum, String experimentKnowledgeNum,
 			String computerKnowledgeNum) throws Exception {
-		Schedule s = new Schedule();
+		TempSchedule s = new TempSchedule();
 		s.id = IDUtils.getSimpleId();
 		s.grade = grade;
 		s.courseCode = courseCode;
@@ -107,7 +107,7 @@ public class ImportScheduleService {
 
 	}
 
-	public List<Schedule> getSchedule(DruidPooledConnection conn, Integer count, Integer offset) throws Exception {
+	public List<TempSchedule> getSchedule(DruidPooledConnection conn, Integer count, Integer offset) throws Exception {
 		return scheduleRepository.getList(conn, count, offset);
 	}
 

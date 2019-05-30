@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import zyxhj.course.service.ImportScheduleService;
+import zyxhj.course.service.CourseService;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.APIResponse;
 import zyxhj.utils.api.Controller;
@@ -16,14 +16,14 @@ public class ScheduleController extends Controller {
 
 	private static Logger log = LoggerFactory.getLogger(ScheduleController.class);
 	private DataSource dsRds;
-	private ImportScheduleService importScheduleService;
+	private CourseService importScheduleService;
 
 	public ScheduleController(String node) {
 		super(node);
 
 		try {
 			dsRds = DataSourceUtils.getDataSource("rdsDefault");
-			importScheduleService = Singleton.ins(ImportScheduleService.class);
+			importScheduleService = Singleton.ins(CourseService.class);
 			// tempService = Singleton.ins(TempService.class);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -34,14 +34,14 @@ public class ScheduleController extends Controller {
 	 * 
 	 */
 	@POSTAPI(//
-			path = "importSchedules", //
-			des = "导入课表" //
+			path = "importTempSchedule", //
+			des = "导入临时课表" //
 	)
-	public APIResponse importSchedules(//
+	public APIResponse importTempSchedule(//
 			@P(t = "excel文件url") String url//
 	) throws Exception {
 		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
-			importScheduleService.importSchedules(conn, url);
+			importScheduleService.importTempSchedule(conn, url);
 			return APIResponse.getNewSuccessResp();
 		}
 	}
