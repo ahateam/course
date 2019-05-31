@@ -8,14 +8,14 @@ import zyxhj.utils.api.Controller;
 import zyxhj.utils.data.DataSource;
 import zyxhj.utils.data.DataSourceUtils;
 
-public class TempController extends Controller {
+public class TermController extends Controller {
 
-	private static Logger log = LoggerFactory.getLogger(TempController.class);
+	private static Logger log = LoggerFactory.getLogger(TermController.class);
 
 	private DataSource dsRds;
 	// private TempService tempService;
 
-	public TempController(String node) {
+	public TermController(String node) {
 		super(node);
 
 		try {

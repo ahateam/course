@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.CourseOutline;
+import zyxhj.course.repository.TermRepository;
 
 public class CourseOutlineService {
 	private static Logger log = LoggerFactory.getLogger(CourseOutlineService.class);
@@ -55,7 +56,7 @@ public class CourseOutlineService {
 
 	// 分页查询课程大纲
 	public List<CourseOutline> getCourseOutline(DruidPooledConnection conn, Integer count, Integer offset) {
-		// SELECT 列名称 FROM 表名称 WHERE 条件
+		// SELECT 列名称 FROM 表名称 WHERE 条件   limit 每页显示的数量  offset 从第几条数据开始
 
 		// select * from tb_course_outline limit 10 offset 0
 		// 分页查询课程大纲

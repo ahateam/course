@@ -88,6 +88,12 @@ public class CourseOutline {
 	public Long departmentId;
 
 	/**
+	 * 学期id
+	 */
+	@RDSAnnField(column = RDSAnnField.ID)
+	public Long termId;
+
+	/**
 	 * 课程大纲名称。
 	 */
 	@RDSAnnField(column = RDSAnnField.TEXT_TITLE)
