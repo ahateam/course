@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import zyxhj.course.service.CourseService;
+import zyxhj.course.service.TempScheduleService;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.APIResponse;
 import zyxhj.utils.api.Controller;
@@ -16,14 +16,14 @@ public class ScheduleController extends Controller {
 
 	private static Logger log = LoggerFactory.getLogger(ScheduleController.class);
 	private DataSource dsRds;
-	private CourseService importScheduleService;
+	private TempScheduleService importScheduleService;
 
 	public ScheduleController(String node) {
 		super(node);
 
 		try {
 			dsRds = DataSourceUtils.getDataSource("rdsDefault");
-			importScheduleService = Singleton.ins(CourseService.class);
+			importScheduleService = Singleton.ins(TempScheduleService.class);
 			// tempService = Singleton.ins(TempService.class);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

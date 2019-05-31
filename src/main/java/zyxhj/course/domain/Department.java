@@ -1,5 +1,6 @@
 package zyxhj.course.domain;
 
+import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
@@ -7,6 +8,7 @@ import zyxhj.utils.data.rds.RDSAnnID;
  * 院系
  *
  */
+@RDSAnnEntity(alias = "tb_department")
 public class Department {
 
 	@RDSAnnID

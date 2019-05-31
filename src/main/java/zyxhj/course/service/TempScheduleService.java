@@ -6,24 +6,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.alibaba.fastjson.JSONObject;
 
 import zyxhj.course.domain.TempSchedule;
 import zyxhj.course.repository.ScheduleRepository;
 import zyxhj.utils.ExcelUtils;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
-import zyxhj.utils.api.ServerException;
 
 /**
  * @author 16436
  *
  */
-public class CourseService {
-	private static Logger log = LoggerFactory.getLogger(CourseService.class);
+public class TempScheduleService {
+	private static Logger log = LoggerFactory.getLogger(TempScheduleService.class);
 
 	private ScheduleRepository scheduleRepository;
 
-	public CourseService() {
+	public TempScheduleService() {
 		try {
 			scheduleRepository = Singleton.ins(ScheduleRepository.class);
 		} catch (Exception e) {
@@ -31,6 +31,7 @@ public class CourseService {
 		}
 	}
 
+	// 导入档期到临时表
 	public void importTempSchedule(DruidPooledConnection conn, String url) throws Exception {
 
 		// 3行表头，23列，文件格式写死的
@@ -111,8 +112,32 @@ public class CourseService {
 		return scheduleRepository.getList(conn, count, offset);
 	}
 
-	public void deleteSchedule(DruidPooledConnection conn,Long schId) throws Exception {
+	public void deleteSchedule(DruidPooledConnection conn, Long schId) throws Exception {
 		scheduleRepository.deleteByKey(conn, "id", schId);
+	}
+
+	// 正式导入全校课程
+	public void ImportCourseScheduleTerm() {
+		// 从数据库中把需要的数据拿出来
+
+		// 执行解析 操作
+
+		// 解析中需要的值放入到CourseScheduleTerm实体类中
+
+		// 添加到档期表ImportCourseScheduleTerm 注：主要是以班级的课程档期为主s
+
+	}
+
+	// 根据多个班级编号读取班级信息
+	public JSONObject getCourseScheduleTermByclasss(DruidPooledConnection conn, String clazzs) {
+
+		// 将clazzs转换为json格式 遍历json
+
+		// 查询班级的档期 将值放入到一个JSONObject中 {clazz1:[{xxx},{xxxx}],clazz2[{xxxx},{xxx}]}
+
+		// 最后返回JSONObject
+
+		return null;
 	}
 
 }

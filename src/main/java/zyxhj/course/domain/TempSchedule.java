@@ -5,7 +5,7 @@ import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
 /**
- * 教师档期表 TODO 不完善 测试用
+ * 导入档期临时表
  */
 @RDSAnnEntity(alias = "tb_temp_schedule")
 public class TempSchedule {
