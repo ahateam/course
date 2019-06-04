@@ -57,6 +57,7 @@ public class CourseScheduleLab {
 	/**
 	 * 第几周
 	 */
+	@RDSAnnField(column = RDSAnnField.BYTE)
 	public Byte weekNum;
 
 	/**

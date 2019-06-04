@@ -55,6 +55,9 @@ public class TempSchedule {
 
 	@RDSAnnField(column = RDSAnnField.SHORT_TEXT)
 	public String classTime;
+	
+	@RDSAnnField(column = "VARCHAR(255)")
+	public String classAddress;
 
 	@RDSAnnField(column = "VARCHAR(255)")
 	public String college;

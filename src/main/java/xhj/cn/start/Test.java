@@ -2,9 +2,7 @@ package xhj.cn.start;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import zyxhj.course.domain.CourseOutline;
 import zyxhj.course.domain.TempSchedule;
-import zyxhj.course.domain.Term;
 import zyxhj.utils.data.DataSource;
 import zyxhj.utils.data.DataSourceUtils;
 import zyxhj.utils.data.rds.RDSUtils;
@@ -35,10 +33,10 @@ public class Test {
 		try {
 			DataSource dsRds = DataSourceUtils.getDataSource("rdsDefault");
 
-		// RDSUtils.dropTableByEntity(dsRds, Term.class);  // 删表
-			
-			 RDSUtils.createTableByEntity(dsRds, Term.class); // 建表
-			 
+			// RDSUtils.dropTableByEntity(dsRds, Term.class); // 删表
+
+			// RDSUtils.createTableByEntity(dsRds, TempSchedule.class); // 建表
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

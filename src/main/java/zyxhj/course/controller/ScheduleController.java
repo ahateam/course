@@ -73,4 +73,17 @@ public class ScheduleController extends Controller {
 		}
 	}
 
+	@POSTAPI(//
+			path = "ImportCourseScheduleTerm", //
+			des = "正式导入全校课程" //
+	)
+	public APIResponse ImportCourseScheduleTerm(//
+			@P(t = "课表id") Long termId//
+	) throws Exception {
+		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
+			importScheduleService.ImportCourseScheduleTerm(conn, termId);
+			return APIResponse.getNewSuccessResp();
+		}
+	}
+
 }
