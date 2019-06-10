@@ -36,6 +36,10 @@
                 教师登录
             </el-button>
 
+            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="loginBtn('3')">
+                实验室管理员登录
+            </el-button>
+
             <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="loginBtn('2')">
                 学院管理员登录
             </el-button>
@@ -83,7 +87,14 @@
                        localStorage.setItem('user_name','教师姓名')
                        localStorage.setItem('user_id','1')
                         this.$router.push('/home')
-                   }else if(key == this.$constData.grade.admin){
+                   }else if(key == this.$constData.grade.laboratory){
+                       //管理员登录
+                       localStorage.setItem('grade',this.$constData.grade.laboratory)
+                       localStorage.setItem('user_name','实验室姓名')
+                       localStorage.setItem('user_id','3')
+                       this.$router.push('/home')
+                   }
+                   else if(key == this.$constData.grade.admin){
                        //管理员登录
                        localStorage.setItem('grade',this.$constData.grade.admin)
                        localStorage.setItem('user_name','管理员姓名')

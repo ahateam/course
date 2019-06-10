@@ -5,11 +5,9 @@ import login from './views/login'
 import page from './views/page'
 
 import teacher from "./views/teacher/router.js"
+import laboratory from "./views/laboratory/router.js"
 import college from "./views/college/router.js"
 import admin from "./views/admin/router.js"
-
-
-
 Vue.use(Router)
 
 export default new Router({
@@ -26,12 +24,14 @@ export default new Router({
           name:'home',
           component:home,
           children:[
-              //教师
+              //教师s
               ...teacher,
-              //校级管理
+              // //校级管理
               ...admin,
-              //院级管理
-              ...college,
+              // //院级管理
+              ... college,
+              // //实验室管理
+              ...laboratory
           ]
       },
       {

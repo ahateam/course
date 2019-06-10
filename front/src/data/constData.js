@@ -7,7 +7,7 @@
 * @admin  校级管理权限
 * @college  二级学院管理权限
 * */
-const grade={teacher:'0',admin:'1',college:'2'}
+const grade={teacher:'0',admin:'1',college:'2',laboratory:'3'}
 
 
 export default {

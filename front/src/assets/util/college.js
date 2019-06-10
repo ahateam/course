@@ -18,4 +18,15 @@ api.getSchedule = function (cnt,callback) {
 api.deleteSchedule = function (cnt,callback) {
     util.call(baseUrl+'/sch/deleteSchedule', cnt, callback)
 }
+
+
+api.getSchedule = function (cnt,callback) {
+    util.call(baseUrl+'/sch/getSchedule', cnt, callback)
+}
+
+
+
+api.add = function (cnt,callback) {
+    util.call(baseUrl+'/add', cnt, callback)
+}
 export default api

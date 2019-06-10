@@ -10,8 +10,8 @@ import constData from './data/constData'
 import uitl from 'ahaapi'
 
 // import "./mock/index"
-// import axios from "axios"
-// Vue.prototype.$ajax= axios
+ import axios from "axios"
+ Vue.prototype.$ajax= axios
 
 import college from '@/assets/util/college'
 import pageTitle from './views/components/'

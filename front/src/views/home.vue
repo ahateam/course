@@ -92,6 +92,7 @@
             }
         },
         mounted() {
+            console.log(localStorage.getItem('grade'))
             const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
             if(localStorage.getItem('user_id') == '' || localStorage.getItem('user_id') == null){
                this.$message.error('登录信息失效，重新登录')
@@ -106,6 +107,9 @@
             }else if(localStorage.getItem('grade') == this.$constData.grade.college){
                 this.menuList = menu.collegeMenu
                 this.$router.push('/collegeHome')
+            }else if(localStorage.getItem('grade') == this.$constData.grade.laboratory){
+                this.menuList = menu.laboratoryMenu
+                this.$router.push('/laboratoryHome')
             }
             console.log(localStorage.getItem('grade'))
 

@@ -79,24 +79,31 @@ const collegeMenu = [
         icon:'course_guanli1',
         child:[]
     },
+    // {
+    //     path:'/collegePlan',
+    //     title:'排课管理',
+    //     icon:'course_908caidan_anpai',
+    //     child:[]
+    // },
+    // {
+    //     path:'/collegeExamine',
+    //     title:'审核管理',
+    //     icon:'course_xiugai1',
+    //     child:[]
+    // },
+    // {
+    //     path:'/collegeRoom',
+    //     title:'教室管理',
+    //     icon:'course_xiugai1',
+    //     child:[]
+    // },
     {
-        path:'/collegePlan',
-        title:'排课管理',
-        icon:'course_908caidan_anpai',
+        path:'/collegeSemester',
+        title:'学期管理',
+        icon:'course_tongzhi',
         child:[]
     },
-    {
-        path:'/collegeExamine',
-        title:'审核管理',
-        icon:'course_xiugai1',
-        child:[]
-    },
-    {
-        path:'/collegeRoom',
-        title:'教室管理',
-        icon:'course_xiugai1',
-        child:[]
-    },
+
     {
         path:'/collegeNotice',
         title:'通知管理',
@@ -148,9 +155,41 @@ const  teacherMenu=[
 ]
 
 
+//实验室
+const laboratoryMenu=[
+    {
+        path:'/laboratoryHome',
+        title:'实验室首页',
+        icon:'course_shouye',
+        child:[]
+    },
+    {
+        path:'/laboratoryPlan',
+        title:'排课管理',
+        icon:'course_908caidan_anpai',
+        child:[]
+    },
+    {
+        path:'/laboratoryRoom',
+        title:'教室管理',
+        icon:'course_xiugai1',
+        child:[]
+    },
+    {
+        path:'/laboratoryExamine',
+        title:'审核管理',
+        icon:'course_xiugai1',
+        child:[]
+    },
+
+
+]
+
+
 
 export default {
     adminMenu,
+    laboratoryMenu,
     collegeMenu,
     teacherMenu
 }

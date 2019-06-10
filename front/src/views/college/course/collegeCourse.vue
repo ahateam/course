@@ -40,7 +40,7 @@
             </el-row>
             <el-row class="row-box" >
                 <el-col :span="20" :offset="1">
-                    <el-button type="primary">新增课程</el-button>
+                    <router-link to="newCurriculum"> <el-button type="primary">新增课程</el-button></router-link>
                     <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
                 </el-col>
             </el-row>
