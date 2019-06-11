@@ -1,6 +1,7 @@
 <!--******   学院工作量   ***********-->
 <template>
     <div>
+        <page-title title-text="xxx学院课程大纲"></page-title>
             <el-row class="row-box" style="text-align: center">
                 <el-select v-model="schoolYear" placeholder="学年" >
                     <el-option
@@ -35,10 +36,9 @@
                     </el-option>
                 </el-select>
             </el-row>
-            <el-row class="row-box" style="text-align: center">
-                <span style="font-size: 30px">xxx学院实验课程大纲</span><br>
-            </el-row>
-            <el-row class="row-box" >
+
+
+        <el-row class="row-box" >
                 <el-col :span="20" :offset="1">
                     <router-link to="newCurriculum"> <el-button type="primary">新增课程</el-button></router-link>
                     <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>

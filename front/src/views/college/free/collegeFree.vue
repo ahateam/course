@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div><page-title title-text="xxx学院工作量统计"></page-title>
         <div>
             <el-row class="row-box" >
                 <el-col :span="24">
@@ -7,11 +7,6 @@
                 </el-col>
             </el-row>
             <el-row class="row-box1">
-                <el-row>
-                    <el-col :span="24">
-                        <span style="font-size: 1.6rem;color: #666;">档期列表</span>
-                    </el-col>
-                </el-row>
                 <el-row class="row-box1">
                     <el-col :span="24">
                         <template>
@@ -356,12 +351,10 @@
     }
 
     .row-box1 {
-        margin-top: 20px;
         padding: 15px;
         background: #fff;
     }
     .el-tag{
-        margin-top: 10px;
         margin-left: 10px;
     }
     .button-new-tag {
@@ -377,18 +370,18 @@
         vertical-align: bottom;
     }
     .row-box2{
-        margin-top: 20px;
+
     }
 
     .row-box{
-        margin-top: 15px;
+
     }
     .nav-btn{
         float: left;
         margin-left: 15px;
     }
     .row-box1{
-        margin-top: 20px;
+
         padding: 15px;
         background: #fff;
 
@@ -400,7 +393,7 @@
 
     }
     .content-box{
-        margin-top: 10px;
+
     }
     .info-text{
         font-size: 1.4rem;

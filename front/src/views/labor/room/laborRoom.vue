@@ -118,5 +118,7 @@
         text-align: center;
     }
 
-
+    .el-dialog__header /deep/{
+        padding: 0;
+    }
 </style>

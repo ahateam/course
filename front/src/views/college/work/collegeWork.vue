@@ -1,6 +1,7 @@
       <!--******   学院工作量   ***********-->
 <template>
     <div style="text-align: center;">
+        <page-title title-text="xxx学院工作量统计"></page-title>
         <el-select v-model="schoolYear" placeholder="学年" >
             <el-option
                     v-for="item in year"
@@ -17,7 +18,6 @@
                     :value="item.value">
             </el-option>
         </el-select><br>
-        <span style="font-size: 30px">xxx学院实验课程工作量统计</span><br>
         <span style="margin-left:45%">应有工作总量</span><span>.......</span>
         <span>实际工作总量</span><span>.......</span>
         <el-table

@@ -1,6 +1,6 @@
 <template>
     <div class="pageTitle">
-        <span style="font-size:30px">{{titleText}}</span>
+        <span style="font-size:24px">{{titleText}}</span>
 
     </div>
 </template>

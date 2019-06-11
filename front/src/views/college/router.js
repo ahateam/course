@@ -2,7 +2,7 @@ const  collegeHome = ()=>import('./home/collegeHome')
 const  collegeCourse = ()=>import('./course/collegeCourse')
 const  newCurriculum = ()=>import('./course/newCurriculum')
 
-//const  collegeWork = ()=>import('./work/collegeWork')
+const  collegeWork = ()=>import('./work/collegeWork')
 //const  collegePlan = ()=>import('./plan/collegePlan')
 const  collegeNotice = ()=>import('./notice/collegeNotice')
 //const  collegeExamine = ()=>import('./examine/collegeExamine')
@@ -40,11 +40,11 @@ let routes=[
         name:'collegeClassroomExamine',
         component:collegeClassroomExamine
     },
-    // {
-    //     path:'/collegeWork',
-    //     name:'collegeWork',
-    //     component:collegeWork
-    // },
+    {
+        path:'/collegeWork',
+        name:'collegeWork',
+        component:collegeWork
+    },
     // {
     //     path:'/collegePlan',
     //     name:'collegePlan',
