@@ -40,7 +40,7 @@
                 </el-header>
                 <el-main style="background: #f0f2f5;height: 100%;overflow: hidden"  >
                     <div class="main" style="min-height: 100%" >
-                        <router-view v-if="isRouterActive" ></router-view>
+                        <router-view></router-view>
                     </div>
                 </el-main>
             </el-container>
@@ -92,7 +92,6 @@
             }
         },
         mounted() {
-            console.log(localStorage.getItem('grade'))
             const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
             if(localStorage.getItem('user_id') == '' || localStorage.getItem('user_id') == null){
                this.$message.error('登录信息失效，重新登录')
@@ -103,15 +102,16 @@
                 this.$router.push('/teacherHome')
             }else if(localStorage.getItem('grade') == this.$constData.grade.admin){
                 this.menuList = menu.adminMenu
+
                 this.$router.push('/adminHome')
             }else if(localStorage.getItem('grade') == this.$constData.grade.college){
                 this.menuList = menu.collegeMenu
                 this.$router.push('/collegeHome')
             }else if(localStorage.getItem('grade') == this.$constData.grade.laboratory){
-                this.menuList = menu.laboratoryMenu
-                this.$router.push('/laboratoryHome')
+                this.menuList = menu.laborMenu
+                this.$router.push('/laborHome')
             }
-            console.log(localStorage.getItem('grade'))
+            //console.log(localStorage.getItem('grade'))
 
 
             this.$store.state.navDefaultActive = '0'

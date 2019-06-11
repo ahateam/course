@@ -16,7 +16,6 @@ import uitl from 'ahaapi'
 import college from '@/assets/util/college'
 import pageTitle from './views/components/'
 
-
 Vue.use(pageTitle)
 
 

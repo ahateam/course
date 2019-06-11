@@ -12,9 +12,9 @@
 </template>
 
 <script>
-    import chioceTime from "./laboratoryTime"
-    import chioceDetailed from "./laboratoryDetailed"
-    import teacherClass from "./laboratoryClass"
+    import chioceTime from "./chioceTime"
+    import chioceDetailed from "./chioceDetailed"
+    import teacherClass from "./teacherClass"
 
     export default {
         data() {

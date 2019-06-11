@@ -156,30 +156,49 @@ const  teacherMenu=[
 
 
 //实验室
-const laboratoryMenu=[
+const laborMenu=[
     {
-        path:'/laboratoryHome',
+        path:'/laborHome',
         title:'实验室首页',
         icon:'course_shouye',
         child:[]
     },
     {
-        path:'/laboratoryPlan',
-        title:'排课管理',
-        icon:'course_908caidan_anpai',
-        child:[]
-    },
-    {
-        path:'/laboratoryRoom',
+        path:'/laborRoom',
         title:'教室管理',
         icon:'course_xiugai1',
         child:[]
     },
+
     {
-        path:'/laboratoryExamine',
+        path:'/laborPlan',
+        title:'排课管理',
+        icon:'course_908caidan_anpai',
+        child:[]
+    },
+
+    {
+        path:'/laborExamine',
         title:'审核管理',
         icon:'course_xiugai1',
-        child:[]
+        child:[
+            {
+                path:'/laborClassroomApply',
+                title:'教室使用申请',
+            },
+            // {
+            //     path:'/laborClassroomRecord',
+            //     title:'教室使用记录',
+            // },
+            {
+                path:'/laborChangeClassApply',
+                title:'教师变课申请',
+            },
+            // {
+            //     path:'/laborChangeClassRecord',
+            //     title:'变课申请记录',
+            // },
+        ]
     },
 
 
@@ -189,7 +208,7 @@ const laboratoryMenu=[
 
 export default {
     adminMenu,
-    laboratoryMenu,
+    laborMenu,
     collegeMenu,
     teacherMenu
 }

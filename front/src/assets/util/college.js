@@ -2,8 +2,8 @@ import util from 'ahaapi'
 import baseUrl from './url'
 
 let api = {};
-console.log(baseUrl)
-console.log('开始调用ctrl');
+//console.log(baseUrl)
+//console.log('开始调用ctrl');
 
 
 //导入档期表
