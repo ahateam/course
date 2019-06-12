@@ -16,7 +16,32 @@
                 </el-table-column>
                 <el-table-column
                         prop="time"
-                        label="使用日期">
+                        align="left">
+
+                           <!--******** 表头  ********-->
+                    <template slot="header" slot-scope="scope">
+                        <p style="text-align: center;">使用日期</p>
+                        <el-button
+                                @click.native.prevent="deleteRow(scope.$index, tableData)"
+                                type="text"
+                                size="small">明天
+                        </el-button>
+                        <el-button
+                                @click.native.prevent="deleteRow(scope.$index, tableData)"
+                                type="text"
+                                size="small">后天
+                        </el-button>
+                        <el-button
+                                @click.native.prevent="deleteRow(scope.$index, tableData)"
+                                type="text"
+                                size="small">一周内
+                        </el-button>
+                    </template>
+
+                            <!--******** 表格内容  *******-->
+                    <template slot-scope="scope">
+                        {{new Date(parseInt(scope.row.time)).toLocaleDateString()}}
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="laboratoryBuild"
@@ -65,11 +90,13 @@
                                 size="small">详情
                         </el-button>
                         <el-button
+                                :disabled="scope.row.dis==='同意'"
                                 @click.native.prevent="deleteRow(scope.$index, tableData)"
                                 type="text"
                                 size="small">同意
                         </el-button>
                         <el-button
+                                :disabled="scope.row.dis==='不同意'"
                                 @click.native.prevent="deleteRow(scope.$index, tableData)"
                                 type="text"
                                 size="small">拒绝
@@ -92,7 +119,9 @@
         name: "classroomApply",
         data(){
             return{
-                tableData:[{dis:'同意'},{dis:'同意'},{dis:'不同意'},{dis:''},{dis:'同意'}],
+                tableData:[{time:"1560355200000",dis:'同意'},{time:"1560355200000",dis:'同意'},
+                    {time:"1560355200000",dis:'不同意'},
+                    {time:"1560355200000",dis:''},{time:"1560441600000",dis:'同意'}],
                 page:1,
                 count:10,
                 offset:0,
@@ -118,5 +147,7 @@
 </script>
 
 <style scoped>
-
+    .el-button+.el-button {
+        margin-left: 5px;
+    }
 </style>

@@ -68,13 +68,13 @@
                         >
                 </el-table-column>
             </el-table>
-            <el-pagination
-                    small
-                    layout="prev, pager, next"
-                    :pager-count="3"
-                    @current-change="current_change"
-                    :total="total">
-            </el-pagination>
+            <!--<el-pagination-->
+                    <!--small-->
+                    <!--layout="prev, pager, next"-->
+                    <!--:pager-count="3"-->
+                    <!--@current-change="current_change"-->
+                    <!--:total="total">-->
+            <!--</el-pagination>-->
         </div>
 
     </div>
@@ -135,7 +135,6 @@
         },
         mounted(){
             let that =this
-            console.error(parseFloat((that.options.length)/5)+"+++++++++++++++++++++")
                 that.total=that.tableData.length*(10/11)+10
 
 

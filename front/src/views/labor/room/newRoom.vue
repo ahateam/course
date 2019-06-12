@@ -141,6 +141,7 @@
 
         </el-table>
         </el-form>
+        {{ruleForm.time}}
     </div>
 </template>
 
