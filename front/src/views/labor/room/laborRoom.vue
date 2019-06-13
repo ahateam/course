@@ -1,7 +1,7 @@
 <template>
     <div>
         <page-title title-text="xxx学院实验管理"></page-title>
-        <el-button type="text" @click="dialogVisible = true">新增实验室</el-button>
+        <el-button type="text" style="margin: 0 5%" @click="dialogVisible = true">新增实验室</el-button>
 
         <el-table
                 :data="tableData"

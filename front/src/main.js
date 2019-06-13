@@ -8,8 +8,9 @@ import './assets/icon/iconfont.css'
 import constData from './data/constData'
 
 import uitl from 'ahaapi'
+import admin from './assets/util/admin'
 
-// import "./mock/index"
+
  import axios from "axios"
  Vue.prototype.$ajax= axios
 
@@ -23,6 +24,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 Vue.prototype.$college = college
+Vue.prototype.$admin = admin
 Vue.prototype.$constData = constData
 Vue.prototype.$util = uitl
 

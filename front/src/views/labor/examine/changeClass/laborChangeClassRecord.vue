@@ -1,10 +1,11 @@
 <template>
-    <div>变课记录</div>
+    <div>变课记录{{message}}</div>
 </template>
 
 <script>
     export default {
-        name: "laborChangeClassRecord"
+        name: "laborChangeClassRecord",
+        props:["message"]
     }
 </script>
 

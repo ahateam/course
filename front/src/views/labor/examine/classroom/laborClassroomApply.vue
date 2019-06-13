@@ -1,42 +1,31 @@
       <!--************    教室使用申请    ************-->
 <template>
-    <div>
+    <div class="changeDia">
         <pageTitle title-text="教室审核"></pageTitle>
-        <div style="margin: 0 5%">
+        <router-link to="laborClassroomRecord">
+            <el-button
+                style="margin: 0 5%"
+                type="text"
+                size="small">教室申请记录
+            </el-button>
+        </router-link>            <span style="color: red;">只可执行当前日期后的申请</span>
+
+        <div style="margin: 0 5%" class="changeDia">
             <el-table
+                    :row-style="tableRowClassName"
                     ref="filterTable"
                     border
                     :data="tableData"
-                    class="table"
-                    width="80%"
-            >
+                    width="80%">
                 <el-table-column
                         type="index"
                         label="序号">
                 </el-table-column>
                 <el-table-column
+                        label="使用日期"
                         prop="time"
-                        align="left">
-
-                           <!--******** 表头  ********-->
-                    <template slot="header" slot-scope="scope">
-                        <p style="text-align: center;">使用日期</p>
-                        <el-button
-                                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                                type="text"
-                                size="small">明天
-                        </el-button>
-                        <el-button
-                                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                                type="text"
-                                size="small">后天
-                        </el-button>
-                        <el-button
-                                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                                type="text"
-                                size="small">一周内
-                        </el-button>
-                    </template>
+                        align="left"
+                        sortable>
 
                             <!--******** 表格内容  *******-->
                     <template slot-scope="scope">
@@ -73,19 +62,28 @@
                         filter-placement="bottom-end">
                     <template slot-scope="scope">
                         <el-tag
-                                :type="scope.row.dis === '同意' ? 'success' : 'danger'"
-                                disable-transitions>{{scope.row.dis}}</el-tag>
+                                v-if="scope.row.dis !==''"
+                                effect="dark"
+                                :type="scope.row.dis === '同意' ? '' : 'success'"
+                                disable-transitions>{{scope.row.dis}}
+                        </el-tag>
+                        <el-tag
+                                effect="dark"
+                                type="warning"
+                                v-else
+                                >未处理
+                        </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
                         label="操作"
                         width="120">
-                    <template slot-scope="scope">
+                    <template slot-scope="scope" >
 
                         <el-button
                                 slot="reference"
-                                @click="applyRoom(tableData[scope.$index])"
+                                @click="dialog(scope.$index)"
                                 type="text"
                                 size="small">详情
                         </el-button>
@@ -97,10 +95,33 @@
                         </el-button>
                         <el-button
                                 :disabled="scope.row.dis==='不同意'"
-                                @click.native.prevent="deleteRow(scope.$index, tableData)"
+                                @click="refuse=true"
                                 type="text"
                                 size="small">拒绝
                         </el-button>
+
+
+
+                      <!--*****  拒绝理由   ****-->
+                        <el-dialog
+                                top="150px"
+                                title="拒绝申请教室"
+                                :visible.sync="refuse"
+                                width="30%">
+                            <el-form ref="form"  label-width="80px">
+                                <el-form-item label="拒绝理由">
+                                    <el-input type="textarea" v-model="tableData.desc" placeholder="请输10-50字"></el-input>
+                                </el-form-item>
+                            </el-form>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="refuse = false" size="small">取 消</el-button>
+                                <el-button type="primary" @click="refuse = false" size="small">确 定</el-button>
+                            </span>
+                        </el-dialog>
+
+
+
+
                     </template>
                 </el-table-column>
             </el-table>
@@ -111,21 +132,39 @@
             <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
             <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
         </div>
+
+          <!--******** 详情  *******-->
+        <el-dialog
+                title="详情"
+                :visible.sync="dialogVisible"
+                width="80%">
+            <laborDetails  :row="detailsRow"></laborDetails>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
+            </span>
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
+    import laborDetails from "./laborDetails";
     export default {
+
         name: "classroomApply",
         data(){
             return{
                 tableData:[{time:"1560355200000",dis:'同意'},{time:"1560355200000",dis:'同意'},
                     {time:"1560355200000",dis:'不同意'},
-                    {time:"1560355200000",dis:''},{time:"1560441600000",dis:'同意'}],
+                    {time:"1560355200000",dis:''},{time:"1560441600000",dis:'同意'},{time:"1560355200000",dis:''},],
                 page:1,
                 count:10,
                 offset:0,
                 pageOver:false,
+                dialogVisible:false,
+                detailsRow:[],
+                refuse:false
             }
         },
         methods:{
@@ -137,17 +176,47 @@
                 // }
             },
 
+            //是否同意赛选
             filterTag(value, row) {
                 return row.dis === value;
             },
 
+            //隔行换颜色
+            tableRowClassName({row, rowIndex}) {
+                if (row.dis === "") {
+                    return { "background-color": "oldlace" } //#f0f9eb
+                }
+                return '';
+            },
 
-        }
+            // 筛选使用日期
+            screenTime(future){
+                console.log(future)
+            },
+
+
+            dialog(rowIndex){
+                this.detailsRow.splice(0,1)
+                this.detailsRow[0]=this.tableData[rowIndex]
+                this.dialogVisible = true
+            }
+        },
+        components:{laborDetails}
     }
 </script>
 
 <style scoped>
-    .el-button+.el-button {
+    .el-table .warning-row  {
+        background: oldlace;
+    }
+
+    .el-table .success-row  {
+        background: #f0f9eb;
+    }
+
+    .el-button+.el-button  {
         margin-left: 5px;
     }
+    .changeDia /deep/ .el-dialog__body {padding: 15px 20px;}
+    .changeDia /deep/ .el-form-item {margin-bottom: 5px;}
 </style>

@@ -7,7 +7,10 @@
 <script>
     export default {
         name: "page",
-        created(){
+        data() {
+            return {}
+        },
+        mounted() {
             this.$router.go(-1)
         }
     }

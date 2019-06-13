@@ -7,6 +7,7 @@ const adminExamine  = ()=>import('./examine/adminExamine')
 const adminNotice  = ()=>import('./notice/adminNotice')
 const adminWork  = ()=>import('./work/adminWork')
 const  adminaddCurriculumExamine = ()=>import('./examine/addCurriculumExamine')
+const adminTerm =()=>import('./term/term')
 
 let routes=[
     {
@@ -54,6 +55,11 @@ let routes=[
         name:'addCurriculumExamine',
         component:adminaddCurriculumExamine
     },
+    {
+        path:'/adminTerm',
+        name:'adminTerm',
+        component:adminTerm
+    }
 
 ]
 

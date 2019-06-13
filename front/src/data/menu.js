@@ -10,6 +10,12 @@ const  adminMenu =[
         child:[]
     },
     {
+        path:'/adminTerm',
+        title:'学期管理',
+        icon:'course_shouye',
+        child:[]
+    },
+    {
         path:'/adminPlan',
         title:'排课管理',
         icon:'course_908caidan_anpai',
