@@ -51,30 +51,32 @@
                         width="50">
                 </el-table-column>
                 <el-table-column
-                        prop="lecturerName"
+                        prop="courseName"
                         label="课程名称"
                 >
                 </el-table-column>
                 <el-table-column
-                        prop="position"
-                        label="课程学分"
-                >
+                        prop="courseCredit"
+                        label="课程学分">
                 </el-table-column>
-
                 <el-table-column
-                        prop="subordinateDepartments"
+                        prop="courseTime"
                         label="学时">
                 </el-table-column>
                 <el-table-column
+                        prop="assessmentMode"
                         label="考核方式">
                 </el-table-column>
                 <el-table-column
+                        prop="courseNature"
                         label="课程性质">
                 </el-table-column>
                 <el-table-column
+                        prop="courseMajor"
                         label="上课专业">
                 </el-table-column>
                 <el-table-column
+                        prop="courseAge"
                         label="上课年纪">
                 </el-table-column>
                 <el-table-column
@@ -83,6 +85,7 @@
                     <template slot-scope="scope">
                         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                         <el-button type="text" size="small">编辑</el-button>
+                        <el-button type="text" size="small" @click="delCourseOutline(scope.row.courseCode)">删除</el-button>
                     </template>
                 </el-table-column>
 
@@ -160,7 +163,7 @@
                 },
                 schoolYear:'',
                 schoolMonth:'',
-                tableData:[],
+                tableData:[{}],
                 year:[],
                 month:[],
 
@@ -278,10 +281,42 @@
             changePage(page){
                 this.page = page
                 let cnt = {
+                    courseCollege:"大数据",
                     count:this.count,
                     offset:(this.page-1)*this.count
                 }
+                this.getCourseOutlineByTermId(cnt)
             },
+
+            //获取课程大纲
+            getCourseOutlineByTermId(cnt){
+                this.$college.getCourseOutlineByTermId(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                    this.tableData = this.$util.tryParseJson(res.data.c)
+                    }else{
+                        this.tableData = []
+                    }
+                    //判断是否到达最后一页
+                    if(this.tableData.length <this.count){
+                        this.pageOver= true
+                    }else{
+                        this.pageOver = false
+                    }
+                })
+            },
+
+            //删除大纲
+            delCourseOutline(code){
+                let cnt={
+                    courseCode:code
+                }
+                this.$college.delCourseOutline(cnt,(res)=> {
+                    if (res.data.rc === this.$util.RC.SUCCESS) {
+                        this.$message("删除成功，等待管理员审核")
+                    } else {
+                    }
+                })
+            }
         },
         mounted(){
             //获取年月日
@@ -297,6 +332,15 @@
             }
             //拼接文件名
             this.address = 'teachProgram/college/'+year+month+day+'/'
+
+
+            //获取课程大纲
+            let cnt={
+                courseCollege:"大数据",
+                offset:this.offset,
+                count:this.count
+            }
+            this.getCourseOutlineByTermId(cnt)
         },
         components:{newCurriculum}
 

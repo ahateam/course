@@ -19,14 +19,18 @@ api.deleteSchedule = function (cnt,callback) {
     util.call(baseUrl+'/sch/deleteSchedule', cnt, callback)
 }
 
-
-api.getSchedule = function (cnt,callback) {
-    util.call(baseUrl+'/sch/getSchedule', cnt, callback)
+//获取课程大纲
+api.getCourseOutlineByTermId = function (cnt,callback) {
+    util.call(baseUrl+'/sch/getCourseOutlineByTermId', cnt, callback)
 }
 
+//新增大纲
+api.createCourseOutline = function (cnt,callback) {
+    util.call(baseUrl+'/sch/createCourseOutline', cnt, callback)
+}
 
-
-api.add = function (cnt,callback) {
-    util.call(baseUrl+'/add', cnt, callback)
+//删除大纲
+api.delCourseOutline = function (cnt,callback) {
+    util.call(baseUrl+'/sch/delCourseOutline', cnt, callback)
 }
 export default api
