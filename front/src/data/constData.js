@@ -3,9 +3,10 @@
 
 /*
 * 权限登录
-* @teacher 教师权限
-* @admin  校级管理权限
-* @college  二级学院管理权限
+* @teacher 教师权限  0
+* @admin  校级管理权限  1
+* @college  学院管理权限 2
+* laboratory 实验室 3
 * */
 const grade={teacher:'0',admin:'1',college:'2',laboratory:'3'}
 

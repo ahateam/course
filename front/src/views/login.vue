@@ -1,6 +1,6 @@
 <template>
     <div class="login-container" >
-        <el-form class="login-form" label-position="left">
+        <el-form class="login-form" label-position="left" :rules="rules" :model="user">
 
             <div class="title-container">
                 <h3 class="title">
@@ -13,7 +13,7 @@
                     <i class="iconfont course_user"></i>
                  </span>
                 <el-input
-                        v-model="username"
+                        v-model="user.username"
                         placeholder="请输入账号"
                         type="text"
                 />
@@ -23,7 +23,7 @@
                     <i class="iconfont course_ziyuanxhdpi"></i>
                 </span>
                 <el-input
-                        v-model="password"
+                        v-model="user.password"
                         :type="passwordType"
                         placeholder="请输入密码"
                         name="password"
@@ -32,21 +32,26 @@
                     <i :class="passwordType === 'password' ? 'iconfont course_yanjing_bi' : 'iconfont course_yanjing_kai'"/>
                 </span>
             </el-form-item>
-            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click="loginBtn('0')">
-                教师登录
+
+            <el-radio-group v-model="user.adminId" >
+                <el-radio  v-for="(item,index) in adminLabel" :label="item.adminId" :key="index">{{item.name}}</el-radio>
+            </el-radio-group>
+
+            <el-button :loading="loading" type="primary" style="width:100%;margin:60px 0 0 0;" @click="judgeLogin()">
+                登录
             </el-button>
 
-            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="loginBtn('3')">
-                实验室管理员登录
-            </el-button>
+            <!--<el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="judgeLogin('3')">-->
+                <!--实验室管理员登录-->
+            <!--</el-button>-->
 
-            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="loginBtn('2')">
-                学院管理员登录
-            </el-button>
+            <!--<el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="judgeLogin('2')">-->
+                <!--学院管理员登录-->
+            <!--</el-button>-->
 
-            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="loginBtn('1')">
-                学校管理员登录
-            </el-button>
+            <!--<el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0" @click="judgeLogin('1')">-->
+                <!--学校管理员登录-->
+            <!--</el-button>-->
 
 
         </el-form>
@@ -61,10 +66,11 @@
         name: 'login',
         data() {
             return {
-                username: '',
-                password: '',
+                user:{username: '',password: '',adminId:""},
                 passwordType: 'password',
                 loading: false,
+                rules:{username:[{ min: 7, max: 10, message: '账号长度在 7 到 10 ', trigger: 'blur' }]},
+                adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},]
             }
         },
         methods: {
@@ -76,16 +82,37 @@
                     this.passwordType = 'password'
                 }
             },
+            judgeLogin(){
+                if(this.user.adminId==="") this.$message({message:"请选择权限",type:"warning"})
+                // let cnt={
+                //     username:parseInt(this.user.username),
+                //     //password:this.user.password,
+                //     adminId:this.user.adminId,
+                // }
+                //     this.$login.login(cnt,(res)=>{
+                //         console.log(JSON.parse(res.data.c))
+                //         console.error(this.$util.tryParseJson(res.data.c))
+                //     })
+                    //     .catch(){
+                    // this.$message({
+                    //     message: '获取异常',
+                    //     type: 'warning'
+                    // });
+
+                this.loginBtn(this.user.adminId)
+                },
+
             //登录
             loginBtn(key){
-                if(this.username == '' || this.password == ''){
+                if(this.user.username == '' || this.user.password == ''){
                     this.$message.error('请将账号密码输入完整')
                 }else{
                    if(key ==this.$constData.grade.teacher){
                        //教师登录
                        localStorage.setItem('grade',this.$constData.grade.teacher)
                        localStorage.setItem('user_name','教师姓名')
-                       localStorage.setItem('user_id','1')
+                       localStorage.setItem('user_id',key)
+                       console.log(localStorage.getItem('user_id'))
                         this.$router.push('/home')
                    }else if(key == this.$constData.grade.laboratory){
                        //管理员登录

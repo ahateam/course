@@ -17,4 +17,8 @@ api.getTerms = function (cnt,callback) {
 api.delTerm = function (cnt,callback) {
     util.call(baseUrl+'/course/delTerm', cnt, callback)
 }
+api.getTeacherUsers = function (cnt,callback) {
+    util.call(baseUrl+'/course/delTerm', cnt, callback)
+}
+
 export default api
