@@ -84,7 +84,7 @@
                         label="操作">
                     <template slot-scope="scope">
                         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                        <el-button type="text" size="small">编辑</el-button>
+                        <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
                         <el-button type="text" size="small" @click="delCourseOutline(scope.row.courseCode)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -99,7 +99,7 @@
                 title="上传课程大纲表格"
                 :visible.sync="importModal"
                 width="30%"
-                :before-close="handleClose"
+
                 center
                 @close="closeBtn">
             <span>
@@ -138,10 +138,19 @@
             </span>
         </el-dialog>
 
+         <!--*******   编辑大纲弹窗   ****-->
+        <el-dialog
+                :visible.sync="editCourse"
+                width="50%">
+                <edit v-show="editCollegeCourse!==''" :editCollegeCourse="editCollegeCourse"></edit>
+
+        </el-dialog>
+
+
         <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
             <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-            <el-button type="primary" :disabled="page==1"   @click="changePage(page-1)">上一页</el-button>
-            <el-button type="primary" :disabled="pageOver ==true"  @click="changePage(page+1)">下一页</el-button>
+            <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
+            <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
         </div>
 
     </div>
@@ -150,6 +159,7 @@
 </template>
 
 <script>
+    import edit from "./edit"
     import newCurriculum from "./newCurriculum"
     import ossAuth from '@/assets/oss/ossAuth'
     let client = ossAuth.client
@@ -158,12 +168,22 @@
         name:'collegeCourse',
         data() {
             return {
+                editCollegeCourse:[],
                 form:{
                     name:""
                 },
                 schoolYear:'',
                 schoolMonth:'',
-                tableData:[{}],
+                tableData:[{
+                    courseCode:10,//课程编码
+                    courseName: '数学',// 课程名称
+                    assessmentMode: '考试' ,//考核方式
+                    courseNature :"通时必修" ,//课程性质
+                    courseMajor: "大数据",// 上课专业
+                    courseAge: "大一上" ,//上课年纪
+                    courseCredit: 3,// 课程学分
+                    courseTime: 36 ,//课程学时
+                },{courseAge:12399999456}],
                 year:[],
                 month:[],
 
@@ -180,6 +200,7 @@
                 pageOver:false,
                 count:10,
                 offset:0,
+                editCourse:false,//编辑大纲弹窗
 
             }
         },
@@ -316,6 +337,14 @@
                     } else {
                     }
                 })
+            },
+
+
+            //编辑
+            edit(row){
+                this.editCollegeCourse=row
+                this.editCourse=true
+
             }
         },
         mounted(){
@@ -342,7 +371,7 @@
             }
             this.getCourseOutlineByTermId(cnt)
         },
-        components:{newCurriculum}
+        components:{newCurriculum,edit}
 
     }
 </script>

@@ -15,8 +15,8 @@
             <el-col :span="12">
             <el-form-item label="考核方式" style="float: left" prop="assessmentMode">
                 <el-select v-model="form.assessmentMode" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+                    <el-option label="考察" value="考察"></el-option>
+                    <el-option label="考试" value="考试"></el-option>
                 </el-select>
             </el-form-item>
             </el-col>

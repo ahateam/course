@@ -33,4 +33,10 @@ api.createCourseOutline = function (cnt,callback) {
 api.delCourseOutline = function (cnt,callback) {
     util.call(baseUrl+'/sch/delCourseOutline', cnt, callback)
 }
+
+//修改大纲
+
+api.editCourseOutline = function (cnt,callback) {
+    util.call(baseUrl+'/sch/editCourseOutline', cnt, callback)
+}
 export default api
