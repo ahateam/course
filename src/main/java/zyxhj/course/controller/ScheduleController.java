@@ -3,6 +3,7 @@ package zyxhj.course.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.service.TempScheduleService;
@@ -10,19 +11,18 @@ import zyxhj.utils.Singleton;
 import zyxhj.utils.api.APIResponse;
 import zyxhj.utils.api.Controller;
 import zyxhj.utils.data.DataSource;
-import zyxhj.utils.data.DataSourceUtils;
 
 public class ScheduleController extends Controller {
 
 	private static Logger log = LoggerFactory.getLogger(ScheduleController.class);
-	private DataSource dsRds;
+	private DruidDataSource dds;
 	private TempScheduleService importScheduleService;
 
 	public ScheduleController(String node) {
 		super(node);
 
 		try {
-			dsRds = DataSourceUtils.getDataSource("rdsDefault");
+			dds = DataSource.getDruidDataSource("rdsDefault.prop");
 			importScheduleService = Singleton.ins(TempScheduleService.class);
 			// tempService = Singleton.ins(TempService.class);
 		} catch (Exception e) {
@@ -40,7 +40,7 @@ public class ScheduleController extends Controller {
 	public APIResponse importTempSchedule(//
 			@P(t = "excel文件url") String url//
 	) throws Exception {
-		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
+		try (DruidPooledConnection conn = dds.getConnection()) {
 			importScheduleService.importTempSchedule(conn, url);
 			return APIResponse.getNewSuccessResp();
 		}
@@ -54,7 +54,7 @@ public class ScheduleController extends Controller {
 			Integer count, //
 			Integer offset //
 	) throws Exception {
-		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
+		try (DruidPooledConnection conn = dds.getConnection()) {
 
 			return APIResponse.getNewSuccessResp(importScheduleService.getSchedule(conn, count, offset));
 		}
@@ -67,7 +67,7 @@ public class ScheduleController extends Controller {
 	public APIResponse deleteSchedule(//
 			@P(t = "课表id") Long schId//
 	) throws Exception {
-		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
+		try (DruidPooledConnection conn = dds.getConnection()) {
 			importScheduleService.deleteSchedule(conn, schId);
 			return APIResponse.getNewSuccessResp();
 		}
@@ -80,7 +80,7 @@ public class ScheduleController extends Controller {
 	public APIResponse ImportCourseScheduleTerm(//
 			@P(t = "课表id") Long termId//
 	) throws Exception {
-		try (DruidPooledConnection conn = (DruidPooledConnection) dsRds.openConnection()) {
+		try (DruidPooledConnection conn = dds.getConnection()) {
 			importScheduleService.ImportCourseScheduleTerm(conn, termId);
 			return APIResponse.getNewSuccessResp();
 		}

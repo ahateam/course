@@ -3,23 +3,24 @@ package zyxhj.course.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.druid.pool.DruidDataSource;
+
 import zyxhj.utils.api.APIResponse;
 import zyxhj.utils.api.Controller;
 import zyxhj.utils.data.DataSource;
-import zyxhj.utils.data.DataSourceUtils;
 
 public class TermController extends Controller {
 
 	private static Logger log = LoggerFactory.getLogger(TermController.class);
 
-	private DataSource dsRds;
+	private DruidDataSource dds;
 	// private TempService tempService;
 
 	public TermController(String node) {
 		super(node);
 
 		try {
-			dsRds = DataSourceUtils.getDataSource("rdsDefault");
+			dds = DataSource.getDruidDataSource("rdsDefault.prop");
 
 			// tempService = Singleton.ins(TempService.class);
 		} catch (Exception e) {
