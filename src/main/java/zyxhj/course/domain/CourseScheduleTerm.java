@@ -47,10 +47,18 @@ public class CourseScheduleTerm {
 	/**
 	 * 第几周
 	 */
+	@RDSAnnField(column = RDSAnnField.BYTE)
 	public Byte weekNum;
+
+	/**
+	 * 周几
+	 */
+	@RDSAnnField(column = RDSAnnField.BYTE)
+	public Byte weekTime;
 
 	/**
 	 * 第几节课
 	 */
+	@RDSAnnField(column = RDSAnnField.BYTE)
 	public Byte lessonNum;
 }

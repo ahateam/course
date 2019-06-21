@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import zyxhj.course.service.CourseService;
+import zyxhj.course.service.TempScheduleService;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.APIResponse;
 import zyxhj.utils.api.Controller;
@@ -16,14 +16,14 @@ public class ScheduleController extends Controller {
 
 	private static Logger log = LoggerFactory.getLogger(ScheduleController.class);
 	private DruidDataSource dds;
-	private CourseService importScheduleService;
+	private TempScheduleService importScheduleService;
 
 	public ScheduleController(String node) {
 		super(node);
 
 		try {
 			dds = DataSource.getDruidDataSource("rdsDefault.prop");
-			importScheduleService = Singleton.ins(CourseService.class);
+			importScheduleService = Singleton.ins(TempScheduleService.class);
 			// tempService = Singleton.ins(TempService.class);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -69,6 +69,19 @@ public class ScheduleController extends Controller {
 	) throws Exception {
 		try (DruidPooledConnection conn = dds.getConnection()) {
 			importScheduleService.deleteSchedule(conn, schId);
+			return APIResponse.getNewSuccessResp();
+		}
+	}
+
+	@POSTAPI(//
+			path = "ImportCourseScheduleTerm", //
+			des = "正式导入全校课程" //
+	)
+	public APIResponse ImportCourseScheduleTerm(//
+			@P(t = "课表id") Long termId//
+	) throws Exception {
+		try (DruidPooledConnection conn = dds.getConnection()) {
+			importScheduleService.ImportCourseScheduleTerm(conn, termId);
 			return APIResponse.getNewSuccessResp();
 		}
 	}

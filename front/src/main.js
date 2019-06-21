@@ -8,10 +8,11 @@ import './assets/icon/iconfont.css'
 import constData from './data/constData'
 
 import uitl from 'ahaapi'
+import admin from './assets/util/admin'
+import login from './assets/util/login'
 
-// import "./mock/index"
-// import axios from "axios"
-// Vue.prototype.$ajax= axios
+ import axios from "axios"
+ Vue.prototype.$ajax= axios
 
 import college from '@/assets/util/college'
 import pageTitle from './views/components/'
@@ -23,7 +24,9 @@ Vue.use(pageTitle)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+Vue.prototype.$login = login
 Vue.prototype.$college = college
+Vue.prototype.$admin = admin
 Vue.prototype.$constData = constData
 Vue.prototype.$util = uitl
 

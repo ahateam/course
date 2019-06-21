@@ -1,85 +1,143 @@
 <template>
-    <div  class="main-box"  >
-
-
+    <div>
+        <pageTitle title-text="我的课表"></pageTitle>
         <el-table
+                class="classScheduleCard"
+                :data="tableData"
+                :span-method="objectSpanMethod"
                 border
-                :data="tableData1"
-                style="width: 100%;"
-               >
-           <el-table-column v-for="(frequency,index) in liu" :key="index" :label="frequency">
+                align="center">
+            <el-table-column
+                    prop="time"
+                    label="时间"
+                    width="50"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="section"
+                    label="节数"
+                    width="50"
+                    align="center">
+            </el-table-column>
 
-           </el-table-column>
-
-       </el-table>
-        <el-table
-                border
-                :data="tableData2"
-                style="width: 100%">
-            <el-table-column v-for="(frequency,index) in liu" :key="index" :label="frequency+6">
-
+            <el-table-column
+                    prop="one"
+                    label="星期一"
+                    align="center">
+                <template slot-scope="scope">
+                    {{sameCurriculum(curriculum[0].one,curriculum[0].two)}}
+                    <!--{{curriculum[scope.$index].one}}-{{curriculum[scope.$index].two}}-->
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="sections"
+                    label="星期二"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="sections"
+                    label="星期三"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="sections"
+                    label="星期四"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="sections"
+                    label="星期五"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="sections"
+                    label="星期六"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="sections"
+                    label="星期天"
+                    align="center">
             </el-table-column>
 
         </el-table>
-        <el-select v-model="one" placeholder="1-12" style="margin-right:10px ">
-            <el-option
-                    v-for="(item,index) in liu2"
-                    :key="index"
-                    :value="item">
-            </el-option>
-        </el-select>
-        <el-select v-model="two" placeholder="请选择" style="margin-right:10px ">
-            <el-option
-                    >
-            </el-option>
-            <el-option
-                    >
-            </el-option>
-
-        </el-select>
-        <el-button type="primary" >
-            申请
-        </el-button>
     </div>
 </template>
+
 <script>
-    import Res from './res'
     export default {
         data() {
             return {
-                liu:[1,2,3,4,5,6],
-                liu2:[1,2,3,4,5,6,7,8,9,10,11,12],
-                one:"",
-                two:"",
-                tableData1:[],
-                tableData2:[],
-                res:""
+                tableData: [
+                    {time: '早上', section: '1',},
+                    {time: '早上', section: '2',},
+                    {time: '早上', section: '3',},
+                    {time: '早上', section: '4',},
 
-            }
+                    {time: '中午', section: '5',},
+                    {time: '中午', section: '6',},
+
+                    {time: '下午', section: '7',},
+                    {time: '下午', section: '8',},
+                    {time: '下午', section: '9',},
+                    {time: '下午', section: '10',},
+
+                    {time: '晚上', section: '11',},
+                    {time: '晚上', section: '12',},
+                ],
+                curriculum:[{one:'英语',two:'数学',three:"数学",four:"语文"},
+                    {one:'数学',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'数学',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'数学',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'英语',two:'英语',three:"数学",four:"语文"},
+                    {one:'数学',two:'数学',three:"数学",four:"语文"},
+                ]
+            };
         },
         methods: {
-            onSubmit() {
-            }
-        },
-        props:['item'],
-        mounted:{
-            function(){
-                Res.$on('transmits', (data) => {
-                    console.log(data+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-                })
-            }
 
-        },
+            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+                if (columnIndex === 0) {
+                    if (rowIndex  === 0) {
+                        return {rowspan: 4, colspan: 1};
+                    }
+                    if (rowIndex  === 4) {
+                        return {rowspan: 2, colspan: 1};
+                    }
+                    if (rowIndex  === 6) {
+                        return {rowspan: 4, colspan: 1};
+                    }
+                    if (rowIndex  === 10) {
+                        return {rowspan: 4, colspan: 1};
+                    }
+                    else {
+                        return {rowspan: 0, colspan: 0};
+                    }
+                }
 
-    }
+                else if(columnIndex >1){
+                    return {rowspan: 2, colspan: 1};
+                }
+            },
+            sameCurriculum(one,two){
+                if(one===two) return one
+                else return one+"-"+two
+            }
+        }
+    };
 </script>
-<style scoped >
-    .span{
-        font-size: 18px;
-        font-weight: 600;
-    }
-    .main-box{
-        width: 80%;
-        margin: 0 0 0 10%;
+
+<style>
+    .classScheduleCard{
+        width: 95%;
+        margin-top: 20px;
+        margin-left: 2%;
+        margin-bottom: 30px;
     }
 </style>

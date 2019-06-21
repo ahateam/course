@@ -10,6 +10,12 @@ const  adminMenu =[
         child:[]
     },
     {
+        path:'/adminTerm',
+        title:'学期管理',
+        icon:'course_shouye',
+        child:[]
+    },
+    {
         path:'/adminPlan',
         title:'排课管理',
         icon:'course_908caidan_anpai',
@@ -79,24 +85,31 @@ const collegeMenu = [
         icon:'course_guanli1',
         child:[]
     },
+    // {
+    //     path:'/collegePlan',
+    //     title:'排课管理',
+    //     icon:'course_908caidan_anpai',
+    //     child:[]
+    // },
+    // {
+    //     path:'/collegeExamine',
+    //     title:'审核管理',
+    //     icon:'course_xiugai1',
+    //     child:[]
+    // },
+    // {
+    //     path:'/collegeRoom',
+    //     title:'教室管理',
+    //     icon:'course_xiugai1',
+    //     child:[]
+    // },
     {
-        path:'/collegePlan',
-        title:'排课管理',
-        icon:'course_908caidan_anpai',
+        path:'/collegeSemester',
+        title:'学期管理',
+        icon:'course_tongzhi',
         child:[]
     },
-    {
-        path:'/collegeExamine',
-        title:'审核管理',
-        icon:'course_xiugai1',
-        child:[]
-    },
-    {
-        path:'/collegeRoom',
-        title:'教室管理',
-        icon:'course_xiugai1',
-        child:[]
-    },
+
     {
         path:'/collegeNotice',
         title:'通知管理',
@@ -148,9 +161,60 @@ const  teacherMenu=[
 ]
 
 
+//实验室
+const laborMenu=[
+    {
+        path:'/laborHome',
+        title:'实验室首页',
+        icon:'course_shouye',
+        child:[]
+    },
+    {
+        path:'/laborRoom',
+        title:'教室管理',
+        icon:'course_xiugai1',
+        child:[]
+    },
+
+    {
+        path:'/laborPlan',
+        title:'排课管理',
+        icon:'course_908caidan_anpai',
+        child:[]
+    },
+
+    {
+        path:'/laborExamine',
+        title:'审核管理',
+        icon:'course_xiugai1',
+        child:[
+            {
+                path:'/laborClassroomApply',
+                title:'教室使用申请',
+            },
+            // {
+            //     path:'/laborClassroomRecord',
+            //     title:'教室使用记录',
+            // },
+            {
+                path:'/laborChangeClassApply',
+                title:'教师变课申请',
+            },
+            // {
+            //     path:'/laborChangeClassRecord',
+            //     title:'变课申请记录',
+            // },
+        ]
+    },
+
+
+]
+
+
 
 export default {
     adminMenu,
+    laborMenu,
     collegeMenu,
     teacherMenu
 }

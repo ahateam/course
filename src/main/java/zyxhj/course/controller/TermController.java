@@ -9,14 +9,14 @@ import zyxhj.utils.api.APIResponse;
 import zyxhj.utils.api.Controller;
 import zyxhj.utils.data.DataSource;
 
-public class TempController extends Controller {
+public class TermController extends Controller {
 
-	private static Logger log = LoggerFactory.getLogger(TempController.class);
+	private static Logger log = LoggerFactory.getLogger(TermController.class);
 
 	private DruidDataSource dds;
 	// private TempService tempService;
 
-	public TempController(String node) {
+	public TermController(String node) {
 		super(node);
 
 		try {

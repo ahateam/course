@@ -2,11 +2,10 @@
     <div class="applyRoom">
         <pageTitle title-text="申请实验室"></pageTitle>
         <div class="screen">
-            <el-date-picker
-                    v-model="timeApply"
-                    type="date"
-                    placeholder="选择日期">
-            </el-date-picker>—
+            <el-select v-model="weekNumber" placeholder="选择周数">
+                <el-option>
+                </el-option>
+            </el-select>—
 
             <el-select v-model="buildNumber" placeholder="实验室大楼">
                 <el-option
@@ -88,16 +87,26 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-dialog
+                title="选择上课时间"
+                :visible.sync="dialogVisible"
+                width="40%"
+                :before-close="handleClose">
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-    import Res from './res'
     import application from "./teacherApplication"
     export default{
         data(){
             return{
                 timeApply:"",  //申请时间
+                weekNumber:'', //第几周
                 buildNumber:"",//实验室大楼
                 roomNumber:"",//房间号
                 tableData:[
@@ -110,19 +119,20 @@
                         person:"王越"
                     },
                     {}],
-                res:""
+                res:"",
+                dialogVisible:false,
             }
         },
         methods: {
             deleteRow(index, rows) {
-                //rows.splice(index, 1);
             },
 
             //申请教室
             applyRoom(res){
-                let {$router} = this
-                $router.push("/teacherApplication")
-                Res.$emit('transmit', res)
+
+                 this.$router.push("/teacherApplication")
+
+                //this.dialogVisible = true
             }
         },
         components:{

@@ -1,7 +1,5 @@
 package zyxhj.course.domain;
 
-import java.util.Date;
-
 import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
@@ -59,6 +57,7 @@ public class CourseScheduleLab {
 	/**
 	 * 第几周
 	 */
+	@RDSAnnField(column = RDSAnnField.BYTE)
 	public Byte weekNum;
 
 	/**

@@ -1,48 +1,44 @@
 <!--******   学院工作量   ***********-->
 <template>
     <div>
-            <el-row class="row-box" style="text-align: center">
-                <el-select v-model="schoolYear" placeholder="学年" >
-                    <el-option
-                            v-for="item in year"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select v-model="schoolMonth" placeholder="学期" >
-                    <el-option
-                            v-for="item in month"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select v-model="schoolMonth" placeholder="专业" >
-                    <el-option
-                            v-for="item in month"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select v-model="schoolMonth" placeholder="年纪" >
-                    <el-option
-                            v-for="item in month"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+        <page-title title-text="xxx学院课程大纲"></page-title>
+            <el-row class="row-box" style="text-align: left">
+
+
+                    <el-select v-model="schoolMonth" placeholder="专业" style="margin-left: 5%" >
+                        <el-option
+                                v-for="item in month"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+
+
+                    <el-select v-model="schoolMonth" placeholder="年纪" style="margin-left: 30px" >
+                        <el-option
+                                v-for="item in month"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+
             </el-row>
-            <el-row class="row-box" style="text-align: center">
-                <span style="font-size: 30px">xxx学院实验课程大纲</span><br>
-            </el-row>
+
+        <!--新增课程大纲-->
+            <el-dialog
+                :visible.sync="dialogVisible"
+                width="40%"
+                :before-close="handleClose">
+                <new-curriculum></new-curriculum>
+        </el-dialog>
+
             <el-row class="row-box" >
-                <el-col :span="20" :offset="1">
-                    <el-button type="primary">新增课程</el-button>
+
+                    <el-button type="primary" style="margin-left: 5%" @click="dialogVisible = true">新增课程</el-button>
                     <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
-                </el-col>
+
             </el-row>
             <el-row class="row-box">
             <el-table
@@ -55,76 +51,47 @@
                         width="50">
                 </el-table-column>
                 <el-table-column
-                        prop="lecturerName"
+                        prop="courseName"
                         label="课程名称"
                 >
                 </el-table-column>
                 <el-table-column
-                        prop="workNum"
-                        label="课程编码"
-                >
+                        prop="courseCredit"
+                        label="课程学分">
                 </el-table-column>
                 <el-table-column
-                        prop="position"
-                        label="课程学分"
-                >
-                </el-table-column>
-
-                <el-table-column
-                        prop="subordinateDepartments"
+                        prop="courseTime"
                         label="学时">
                 </el-table-column>
                 <el-table-column
+                        prop="assessmentMode"
                         label="考核方式">
                 </el-table-column>
                 <el-table-column
+                        prop="courseNature"
                         label="课程性质">
                 </el-table-column>
                 <el-table-column
+                        prop="courseMajor"
+                        label="上课专业">
+                </el-table-column>
+                <el-table-column
+                        prop="courseAge"
                         label="上课年纪">
                 </el-table-column>
                 <el-table-column
                         fixed="right"
-                        label="操作"
-                        width="100">
+                        label="操作">
                     <template slot-scope="scope">
                         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                         <el-button type="text" size="small">编辑</el-button>
+                        <el-button type="text" size="small" @click="delCourseOutline(scope.row.courseCode)">删除</el-button>
                     </template>
                 </el-table-column>
 
             </el-table>
             </el-row>
-            <!--<el-popover-->
-                    <!--placement="top"-->
-                    <!--width="600"-->
-                    <!--trigger="click">-->
-                <!--<span style="font-size: 30px">新增实验课程</span>-->
-                <!--<el-form ref="form" :model="form" label-width="80px" class="form">-->
-                    <!--<el-form-item label="课程名称" >-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="课程学分">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="课程学时">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="面向专业">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="考核方式">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="课程性质">-->
-                        <!--<el-input v-model="form.name"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item size="large">-->
-                        <!--<el-button type="primary" @click="onSubmit">立即创建</el-button>-->
-                        <!--<el-button>取消</el-button>-->
-                    <!--</el-form-item>-->
-                <!--</el-form>-->
-            <!--</el-popover>-->
+
 
 
         <!--批量导入弹窗-->
@@ -170,12 +137,20 @@
                 <el-button type="primary"   @click="doUpload"  >确认上传数据表格</el-button>
             </span>
         </el-dialog>
+
+        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
+            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
+            <el-button type="primary" :disabled="page==1"   @click="changePage(page-1)">上一页</el-button>
+            <el-button type="primary" :disabled="pageOver ==true"  @click="changePage(page+1)">下一页</el-button>
+        </div>
+
     </div>
 
 
 </template>
 
 <script>
+    import newCurriculum from "./newCurriculum"
     import ossAuth from '@/assets/oss/ossAuth'
     let client = ossAuth.client
 
@@ -188,7 +163,7 @@
                 },
                 schoolYear:'',
                 schoolMonth:'',
-                tableData:[],
+                tableData:[{}],
                 year:[],
                 month:[],
 
@@ -200,6 +175,11 @@
                 num:0,          //上传进度
                 multipleSelection:[],
                 address:'',     //导入地址
+                dialogVisible:false, //新增课程弹出
+                page:1,
+                pageOver:false,
+                count:10,
+                offset:0,
 
             }
         },
@@ -296,6 +276,47 @@
             handleClose(done) {
                 done();
             },
+
+            //分页
+            changePage(page){
+                this.page = page
+                let cnt = {
+                    courseCollege:"大数据",
+                    count:this.count,
+                    offset:(this.page-1)*this.count
+                }
+                this.getCourseOutlineByTermId(cnt)
+            },
+
+            //获取课程大纲
+            getCourseOutlineByTermId(cnt){
+                this.$college.getCourseOutlineByTermId(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                    this.tableData = this.$util.tryParseJson(res.data.c)
+                    }else{
+                        this.tableData = []
+                    }
+                    //判断是否到达最后一页
+                    if(this.tableData.length <this.count){
+                        this.pageOver= true
+                    }else{
+                        this.pageOver = false
+                    }
+                })
+            },
+
+            //删除大纲
+            delCourseOutline(code){
+                let cnt={
+                    courseCode:code
+                }
+                this.$college.delCourseOutline(cnt,(res)=> {
+                    if (res.data.rc === this.$util.RC.SUCCESS) {
+                        this.$message("删除成功，等待管理员审核")
+                    } else {
+                    }
+                })
+            }
         },
         mounted(){
             //获取年月日
@@ -311,7 +332,17 @@
             }
             //拼接文件名
             this.address = 'teachProgram/college/'+year+month+day+'/'
-        }
+
+
+            //获取课程大纲
+            let cnt={
+                courseCollege:"大数据",
+                offset:this.offset,
+                count:this.count
+            }
+            this.getCourseOutlineByTermId(cnt)
+        },
+        components:{newCurriculum}
 
     }
 </script>

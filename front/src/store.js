@@ -5,13 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-      navDefaultActive : '0',
-    ownWorkTime:0
+    navDefaultActive : '0',
+    ownWorkTime:0,
+    detailsRow:{}
   },
-  mutations: {
-
-  },
-  actions: {
-
-  }
+  mutations: {},
+  actions: {}
 })

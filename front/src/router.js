@@ -7,31 +7,23 @@ import page from './views/page'
 import teacher from "./views/teacher/router.js"
 import college from "./views/college/router.js"
 import admin from "./views/admin/router.js"
-
-
-
+import labor from "./views/labor/router.js"
 Vue.use(Router)
-
 export default new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
-      {
-          path: '/',
-          name: 'login',
-          component: login,
-      },
+      { path: "/", redirect: "/login" },
+
       {
           path:'/home',
           name:'home',
           component:home,
           children:[
-              //教师
-              ...teacher,
-              //校级管理
               ...admin,
-              //院级管理
               ...college,
+              ...teacher,
+              ...labor,
           ]
       },
       {
