@@ -5,7 +5,6 @@ import zyxhj.core.controller.TestController;
 import zyxhj.course.controller.ScheduleController;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.ZeroVerticle;
-import zyxhj.utils.data.DataSourceUtils;
 
 public class CourseVerticle extends ZeroVerticle {
 
@@ -23,8 +22,6 @@ public class CourseVerticle extends ZeroVerticle {
 	}
 
 	protected void init() throws Exception {
-
-		DataSourceUtils.initDataSourceConfig();
 
 		initCtrl(ctrlMap, Singleton.ins(TestController.class, "test"));
 
