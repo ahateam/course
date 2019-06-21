@@ -73,17 +73,33 @@
                 </el-table-column>
                 <el-table-column
                         prop="courseMajor"
-                        label="上课专业">
+                        label="上课专业-年纪">
+                    <template slot-scope="scope">
+                            {{scope.row.courseMajor}} - {{scope.row.courseAge}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="courseAge"
-                        label="上课年纪">
+                        align="center"
+                        prop="courseExamStatus"
+                        label="审核状态">
+                    <template slot-scope="scope">
+                        <span v-show="scope.row.courseExamStatus==='agree'" style="color:#67c23a;">
+                            通过
+                        </span>
+                        <span v-show="scope.row.courseExamStatus==='disagree'" style="color:#f56c6c;">
+                            未通过
+                        </span>
+                        <span v-show="scope.row.courseExamStatus==='null'" style="color:#ff9800;">
+                            审核中
+                        </span>
+                    </template>
                 </el-table-column>
                 <el-table-column
+                        align="center"
                         fixed="right"
                         label="操作">
                     <template slot-scope="scope">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                        <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
                         <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
                         <el-button type="text" size="small" @click="delCourseOutline(scope.row.courseCode)">删除</el-button>
                     </template>
@@ -99,7 +115,6 @@
                 title="上传课程大纲表格"
                 :visible.sync="importModal"
                 width="30%"
-
                 center
                 @close="closeBtn">
             <span>
@@ -142,7 +157,7 @@
         <el-dialog
                 :visible.sync="editCourse"
                 width="50%">
-                <edit v-show="editCollegeCourse!==''" :editCollegeCourse="editCollegeCourse"></edit>
+                <edit ref="edit"  :editCollegeCourse="editCollegeCourse"></edit>
 
         </el-dialog>
 
@@ -176,14 +191,37 @@
                 schoolMonth:'',
                 tableData:[{
                     courseCode:10,//课程编码
-                    courseName: '数学',// 课程名称
+                    courseName: '高数1',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
                     courseMajor: "大数据",// 上课专业
                     courseAge: "大一上" ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
-                },{courseAge:12399999456}],
+                    courseExamStatus:"agree"//审核状态
+                },{
+                    courseCode:10,//课程编码
+                    courseName: '高数2',// 课程名称
+                    assessmentMode: '考试' ,//考核方式
+                    courseNature :"通时必修" ,//课程性质
+                    courseMajor: "大数据",// 上课专业
+                    courseAge: "大一下" ,//上课年纪
+                    courseCredit: 3,// 课程学分
+                    courseTime: 36 ,//课程学时
+                    courseExamStatus:"disagree"//审核状态
+
+                },{
+                    courseCode:10,//课程编码
+                    courseName: '线性代数',// 课程名称
+                    assessmentMode: '考试' ,//考核方式
+                    courseNature :"通时必修" ,//课程性质
+                    courseMajor: "大数据",// 上课专业
+                    courseAge: "大二上" ,//上课年纪
+                    courseCredit: 3,// 课程学分
+                    courseTime: 36 ,//课程学时
+                    courseExamStatus:"null"//审核状态
+
+                }],
                 year:[],
                 month:[],
 
@@ -201,7 +239,7 @@
                 count:10,
                 offset:0,
                 editCourse:false,//编辑大纲弹窗
-
+                clickEditNum:0   //调用子组件函数 清除表单验证
             }
         },
         methods:{
@@ -298,6 +336,7 @@
                 done();
             },
 
+
             //分页
             changePage(page){
                 this.page = page
@@ -342,6 +381,9 @@
 
             //编辑
             edit(row){
+
+                if(this.clickEditNum!==0){ this.$refs.edit.again()}
+                this.clickEditNum++
                 this.editCollegeCourse=row
                 this.editCourse=true
 

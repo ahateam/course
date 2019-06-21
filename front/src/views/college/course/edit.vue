@@ -1,5 +1,5 @@
 <template>
-        <div v-show="changeData">
+        <div  style="margin-left:30px">
             <page-title title-text="修改课程大纲"></page-title>
             <el-form ref="editCollegeCourse" :model="editCollegeCourse" label-width="85px" label-position="left" :rules="rules">
                 <el-row :gutter="21">
@@ -156,7 +156,6 @@
                     courseTime:this.editCollegeCourse.courseTime,
                     courseCollege:"大数据"
                 };
-                console.log(cnt)
                 this.$college.editCourseOutline(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")
@@ -164,13 +163,32 @@
                     else { this.$message("新增失败")}
 
                 })
+            },
+
+            //重置表单
+            again(){
+                this.disableForm={
+                        disCourseName:true,
+                        assessmentMode:true,
+                        courseMajor:true,
+                        courseCredit:true,
+                        courseTime:true
+                };
+                this.$refs["editCollegeCourse"].clearValidate();
+
             }
         },
-        mounted(){},
+        mounted(){
+
+        },
+
 
         //强制页面渲染
         watch:{
-            editCollegeCourse(){}
+            editCollegeCourse(){
+                this.changeData=false
+                this.changeData=true
+            }
         }
     }
 </script>

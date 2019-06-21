@@ -1,6 +1,5 @@
 <template>
     <div>
-        啊实打实大苏打
         <el-row class="row-box">
             <el-col :span="24">
                 <el-button type="primary" @click="dialogFormVisible =true"> 新增学期</el-button>
@@ -61,32 +60,57 @@
         </el-row>
 
         <!--新增弹窗-->
-        <el-dialog title="学增学期" :visible.sync="dialogFormVisible">
-            <el-form>
-                <el-form-item label="学期名称" label-width="150px">
-                    <el-input v-model="termName" autocomplete="off"></el-input>
+        <el-dialog title="新增学期" :visible.sync="dialogFormVisible">
+            <el-form style="width: 90%" ref="addTerm" :model="addTerm" :rules="rules" >
+                <el-form-item label="学期名称"  prop="termName" label-width="150px">
+                    <!--<el-input v-model="addTerm.termName" autocomplete="off"></el-input>-->
+                    <el-row  class="rowbox">
+                        <el-col :span="6" >
+                                <el-date-picker
+                                        v-model="startYear"
+                                        type="year"
+                                        value-format="yyyy"
+                                        placeholder="">
+                                </el-date-picker>
+                        </el-col>
+
+                        <el-col :span="6">
+                           -{{endYear}}
+                        </el-col>
+                        <el-col :span="8" :offset="1">
+                            第<el-select v-model="semester" placeholder="请选择" :disabled="disSemester">
+                            <el-option
+                                    value="一">
+                            </el-option>
+                            <el-option
+                                    value="二">
+                            </el-option>
+                        </el-select> 学期
+                        </el-col>
+                    </el-row>
+
                 </el-form-item>
-                <el-form-item label="学期周数" label-width="150px">
-                    <el-input v-model="weekCount" autocomplete="off"></el-input>
+                <el-form-item label="学期周数" label-width="150px" prop="weekCount">
+                    <el-input v-model="addTerm.weekCount" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="开始时间" label-width="150px">
+                <el-form-item label="开始时间" label-width="150px" prop="startDate">
                     <el-date-picker
-                            v-model="startDate"
+                            v-model="addTerm.startDate"
                             type="date"
                             placeholder="选择日期">
                     </el-date-picker>
 
                 </el-form-item>
-                <el-form-item label="结束时间" label-width="150px">
+                <el-form-item label="结束时间" label-width="150px" prop="endDate">
                     <el-date-picker
-                            v-model="endDate"
+                            v-model="addTerm.endDate"
                             type="date"
                             placeholder="选择日期">
                     </el-date-picker>
 
                 </el-form-item>
-                <el-form-item label="备注信息" label-width="150px">
-                    <el-input v-model="remark" autocomplete="off"></el-input>
+                <el-form-item label="备注信息" label-width="150px" prop="remark">
+                    <el-input v-model="addTerm.remark" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -108,12 +132,26 @@
                 offset:0,
                 tableData:[],
                 dialogFormVisible:false,
+                startYear:"",//选择学期开始年
+                endYear:"",  //选择学期结束年
+                semester:"",//选择学期
+                disSemester:true,
                 //新增学期所需变量
-                termName:'',
-                weekCount:'',
-                startDate:'',
-                endDate:'',
-                remark:'无',
+                addTerm:{
+                    termName:'',  //学期名称
+                    weekCount:'20', //周数
+                    startDate:'',   //开始时间
+                    endDate:'',      //结束时间
+                    remark:'无',     //备注
+            },
+                rules:{
+                    termName:[{ required: true, message: '请输入学期名称', },],
+                    weekCount:[{ required: true, message: '请输入周数', trigger: 'blur' }],
+                    startDate:[{ required: true, message: '请选择开始时间', trigger: 'blur' }],
+                    endDate:[{ required: true, message: '请选择结束时间', trigger: 'blur' }],
+                    remark:[{  max: 30, message: '长度小于30 个字符', trigger: 'blur' }],
+                }
+
 
 
             }
@@ -145,29 +183,30 @@
 
             //创建学期
             createTermBtn(){
-                if(this.termName == ''|| this.weekCount == '' || this.startDate == '' || this.endDate == '' ){
-                    this.$message.error('请先将信息输入完整');
-                }else {
-                    let cnt = {
-                        termName:this.termName,
-                        weekCount:parseInt(this.weekCount),
-                        startDate:new Date(this.startDate).getTime(),
-                        endDate:new Date(this.endDate).getTime(),
-                        remark :this.remark
+                this.$refs['addTerm'].validate((valid) => {
+                    if (valid) {
+                        let cnt = {
+                            termName:this.addTerm.termName,
+                            weekCount:parseInt(this.addTerm.weekCount),
+                            startDate:new Date(this.addTerm.startDate).getTime(),
+                            endDate:new Date(this.addTerm.endDate).getTime(),
+                            remark :this.addTerm.remark
+                        }
+                        this.$admin.createTerm(cnt,(res)=>{
+                            if(res.data.rc == this.$util.RC.SUCCESS){
+                                this.$message.success('创建成功')
+                                this.$router.push('/page')
+
+                            }else{
+                                this.$message.error('操作失败')
+                            }
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
                     }
-                    this.$admin.createTerm(cnt,(res)=>{
-                       if(res.data.rc == this.$util.RC.SUCCESS){
-                           this.$message.success('创建成功')
-                       }else{
-                           this.$message.error('操作失败')
-                       }
-                    })
-                    this.$router.push('/page')
-
-
-
-                }
-            },
+                });
+                },
             //分页请求
             changePage(page){
                 this.page = page
@@ -194,20 +233,40 @@
                         this.$router.push('/page')
                     })
                     .catch(_ => {});
-            }
+            },
+
+
+
         },
-        mounted() {
+        mounted(){
             let cnt = {
                 count:this.count,
                 offset:this.offset
             }
             this.getTerms(cnt)
 
+        },
+        watch:{
+            startYear(){
+                this.endYear=parseInt(this.startYear)+1
+                this.disSemester=false
+                console.log(this.endYear)
+            },
+            semester(){
+                this.addTerm.termName=this.startYear+"-"+this.endYear+" 第"+this.semester+"学期"
+                console.log(this.addTerm.termName)
+            }
         }
     }
 </script>
 
 <style scoped lang="scss">
+    .rowbox .el-date-editor{
+        width: 100%;
+    }
+    .rowbox .el-select{
+        width: 50%;
+    }
     .row-box{
         background: #fff;
         padding: 15px;
