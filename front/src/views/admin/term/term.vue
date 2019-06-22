@@ -67,6 +67,7 @@
                     <el-row  class="rowbox">
                         <el-col :span="6" >
                                 <el-date-picker
+                                        clear-icon
                                         v-model="startYear"
                                         type="year"
                                         value-format="yyyy"
@@ -91,7 +92,13 @@
 
                 </el-form-item>
                 <el-form-item label="学期周数" label-width="150px" prop="weekCount">
-                    <el-input v-model="addTerm.weekCount" autocomplete="off"></el-input>
+                    <el-select v-model="addTerm.weekCount" placeholder="请选择" >
+                        <el-option
+                                v-for="(item,index) in 25"
+                                :key="index"
+                                :value="item">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="开始时间" label-width="150px" prop="startDate">
                     <el-date-picker
@@ -193,7 +200,7 @@
                             remark :this.addTerm.remark
                         }
                         this.$admin.createTerm(cnt,(res)=>{
-                            if(res.data.rc == this.$util.RC.SUCCESS){
+                            if(res.data.rc === this.$util.RC.SUCCESS){
                                 this.$message.success('创建成功')
                                 this.$router.push('/page')
 
@@ -202,7 +209,7 @@
                             }
                         })
                     } else {
-                        console.log('error submit!!');
+                        this.$message("表单错误")
                         return false;
                     }
                 });
@@ -250,8 +257,9 @@
             startYear(){
                 this.endYear=parseInt(this.startYear)+1
                 this.disSemester=false
-                console.log(this.endYear)
             },
+
+            //拼接学期名称
             semester(){
                 this.addTerm.termName=this.startYear+"-"+this.endYear+" 第"+this.semester+"学期"
                 console.log(this.addTerm.termName)
