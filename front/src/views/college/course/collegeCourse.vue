@@ -101,7 +101,15 @@
                     <template slot-scope="scope">
                         <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
                         <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
-                        <el-button type="text" size="small" @click="delCourseOutline(scope.row.courseCode)">删除</el-button>
+                        <el-popover
+                                placement="bottom"
+                                width="200"
+                                trigger="click">
+                            <span style="text-align: center;font-size: 20px" >删除{{scope.row.courseName}}</span><br>
+                            <el-button @click="delCourseOutline(scope.row.courseCode)" type="warning" style="float: right;margin: 15px 0 ">确认删除</el-button>
+                            <el-button slot="reference" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
+                        </el-popover>
+
                     </template>
                 </el-table-column>
 

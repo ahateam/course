@@ -104,8 +104,8 @@ const collegeMenu = [
     //     child:[]
     // },
     {
-        path:'/collegeSemester',
-        title:'学期管理',
+        path:'/collegeClass',
+        title:'班级管理',
         icon:'course_tongzhi',
         child:[]
     },

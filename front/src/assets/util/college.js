@@ -39,4 +39,14 @@ api.delCourseOutline = function (cnt,callback) {
 api.editCourseOutline = function (cnt,callback) {
     util.call(baseUrl+'/sch/editCourseOutline', cnt, callback)
 }
+
+//获取院内教师
+api.getCollegeTeacher = function (cnt,callback) {
+    util.call(baseUrl+'/sch/getCollegeTeacher', cnt, callback)
+}
+//工号查询教师
+api.lookupCollegeTeacher = function (cnt,callback) {
+    util.call(baseUrl+'/sch/lookupCollegeTeacher', cnt, callback)
+}
+
 export default api

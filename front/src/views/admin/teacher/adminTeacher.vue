@@ -12,8 +12,17 @@
             </el-table-column>
             <el-table-column
                     prop="date"
-                    label="所属学院"
                     width="200">
+                <template slot="header" slot-scope="scope">
+                    <el-select v-model="collegeID" placeholder="选择学院" size="mini" @change="changePage(1)">
+                        <el-option
+                                v-for="item in tableCollege"
+                                :key="item.collegeName"
+                                :lable="item.collegeName"
+                                :value="item.collegeID">
+                        </el-option>
+                    </el-select>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="name"
@@ -22,6 +31,14 @@
             <el-table-column
                     prop="address"
                     label="工号">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="username"
+                            size="mini"
+                            clearable
+                            @change="changeUsername()"
+                            placeholder="工号"/>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="address"
@@ -70,10 +87,10 @@
 
         <el-row>
         <el-col :span="24" style="margin-top: 20px">
-            <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
+            <div class="page-btn " style=" margin-right: 5%;float: right; font-size: 16px;color: #666;">
                 <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-                <el-button type="primary" :disabled="page==1"   @click="changePage(page-1)">上一页</el-button>
-                <el-button type="primary" :disabled="pageOver ==true"  @click="changePage(page+1)">下一页</el-button>
+                <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
+                <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
             </div>
         </el-col>
         </el-row>
@@ -93,8 +110,11 @@
                 count:10,
                 offset:0,
                 tableData:[{}],
-                details:false,
-                edit:false
+                tableCollege:[],//选择学院
+                collegeID:"",  //选择选择器后得到
+                details:false,//详情弹框
+                edit:false,//编辑弹框
+                username:"",//工号搜索教师
             }
         },
         components:{
@@ -102,21 +122,42 @@
         },
 
         methods:{
-            getTeacherInformation(){
-                this.$admin.getTerms(cnt,(res)=>{
-                    if(res.data.rc == this.$util.RC.SUCCESS){
-                        this.tableData = this.$util.tryParseJson(res.data.c)
-                    }else{
-                        this.tableData = []
-                    }
-                    console.log(this.tableData)
-                    if(this.tableData.length <this.count){
-                        this.pageOver= true
-                    }else{
-                        this.pageOver = false
-                    }
 
-                })
+            //获取教师信息
+            getTeacher(cnt){
+                //默认获取所有学院
+                if(this.collegeID===""){
+                    this.$admin.getSchoolTeacher(cnt,(res)=>{
+                        if(res.data.rc === this.$util.RC.SUCCESS){
+                            this.tableData = this.$util.tryParseJson(res.data.c)
+                        }else{
+                            this.tableData = []
+                        }
+                        if(this.tableData.length <this.count){
+                            this.pageOver= true
+                        }else{
+                            this.pageOver = false
+                        }
+                    })
+                }
+
+                //获取选择的学院教师信息
+                else{
+                    this.$college.getCollegeTeacher(cnt,(res)=>{
+                        if(res.data.rc === this.$util.RC.SUCCESS){
+                            this.tableData = this.$util.tryParseJson(res.data.c)
+                        }else{
+                            this.tableData = []
+                        }
+                        if(this.tableData.length <this.count){
+                            this.pageOver= true
+                        }else{
+                            this.pageOver = false
+                        }
+                    })
+                }
+
+
             },
             changePage(page){
                 this.page = page
@@ -124,15 +165,55 @@
                     count:this.count,
                     offset:(this.page-1)*this.count
                 }
-                this.getTeacherInformation(cnt)
+                //如果选择学院后 获取选择学院的教师信息
+                if(this.collegeID!=="") cnt.collegeID=this.collegeID
+                this.getTeacher(cnt)
             },
+            changeUsername(){
+                //查询为空时
+                this.page=1
+                if(this.username===""){
+                    let cnt = {
+                        count:this.count,
+                        offset:(this.page-1)*this.count
+                    }
+                    this.getTeacher(cnt)
+                }
+                else{
+                    let cnt ={
+                        username:this.username
+                    }
+
+                    //查询输入工号的教师
+                    this.$college.lookupCollegeTeacher(cnt,(res)=>{
+                        if(res.data.rc === this.$util.RC.SUCCESS){
+                            this.tableData = this.$util.tryParseJson(res.data.c)
+                        }else{
+                            this.tableData = []
+                        }
+                    })
+                }
+            }
         },
         mounted(){
             let cnt = {
                 count:this.count,
                 offset:(this.page-1)*this.count
             }
-            this.getTeacherInformation(cnt)
+            this.getTeacher(cnt)
+
+            let cns ={
+                count:20,
+                offset:0
+            }
+            //获取选择学院
+            this.$admin.getDepartments(cns,(res)=>{
+                if(res.data.rc === this.$util.RC.SUCCESS){
+                    this.tableCollege = this.$util.tryParseJson(res.data.c)
+                }else{
+                    this.tableCollege = []
+                }
+            })
         }
 
     }

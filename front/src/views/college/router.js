@@ -10,7 +10,7 @@ const  collegeClassroomExamine = ()=>import('./examine/classroomExamine')
 //const  collegeRoom = ()=>import('./room/collegeRoom')
 const collegeFree = ()=>import('./free/collegeFree')
 
-const collegeSemester = ()=>import('./semester/collegeSemester')
+const collegeClass = ()=>import('./class/collegeClass')
 
 
 
@@ -66,9 +66,9 @@ let routes=[
         component:collegeFree
     },
     {
-        path:'/collegeSemester',
+        path:'/collegeClass',
         name:'学期管理',
-        component:collegeSemester
+        component:collegeClass
     }
 ]
 
