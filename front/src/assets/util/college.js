@@ -19,6 +19,10 @@ api.deleteSchedule = function (cnt,callback) {
     util.call(baseUrl+'/sch/deleteSchedule', cnt, callback)
 }
 
+/**
+ *开设课程
+ */
+
 //获取课程大纲
 api.getCourseOutlineByTermId = function (cnt,callback) {
     util.call(baseUrl+'/sch/getCourseOutlineByTermId', cnt, callback)

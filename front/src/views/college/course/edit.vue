@@ -81,10 +81,18 @@
                         <el-button type="text" v-show="disableForm.courseTime===true"   @click="disableForm.courseTime=false">修改</el-button>
                     </el-col>
                 </el-row>
-                <el-form-item>
-                    <el-button type="primary" @click="submitForm('editCollegeCourse')">立即创建</el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
+                <el-row>
+                    <el-col :offset="14">
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('editCollegeCourse')"
+                                       :disabled="disableForm.disCourseName===true&&disableForm.assessmentMode===true&&
+                            disableForm.courseMajor===true&&
+                            disableForm.courseCredit===true&&disableForm.courseTime===true">
+                                确认</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
                 <span style="color: red">请谨慎修改</span>
             </el-form>
         </div>

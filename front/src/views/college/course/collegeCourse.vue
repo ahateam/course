@@ -2,29 +2,6 @@
 <template>
     <div>
         <page-title title-text="xxx学院课程大纲"></page-title>
-            <el-row class="row-box" style="text-align: left">
-
-
-                    <el-select v-model="schoolMonth" placeholder="专业" style="margin-left: 5%" >
-                        <el-option
-                                v-for="item in month"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-
-
-                    <el-select v-model="schoolMonth" placeholder="年纪" style="margin-left: 30px" >
-                        <el-option
-                                v-for="item in month"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-
-            </el-row>
 
         <!--新增课程大纲-->
             <el-dialog
@@ -57,25 +34,46 @@
                 </el-table-column>
                 <el-table-column
                         prop="courseCredit"
-                        label="课程学分">
+                        label="课程学分"
+                        width="90">
                 </el-table-column>
                 <el-table-column
                         prop="courseTime"
-                        label="学时">
+                        label="学时"
+                        width="90">
                 </el-table-column>
                 <el-table-column
                         prop="assessmentMode"
                         label="考核方式">
                 </el-table-column>
-                <el-table-column
-                        prop="courseNature"
-                        label="课程性质">
-                </el-table-column>
+                <!--<el-table-column-->
+                        <!--prop="courseNature"-->
+                        <!--label="课程性质">-->
+                    <!--<template slot="header" slot-scope="scope">-->
+                        <!--<el-select v-model="courseAge" placeholder="课程性质" size="mini" @change="changePage(1)">-->
+                            <!--<el-option-->
+                                    <!--v-for="item in tableLevel"-->
+                                    <!--:key="item.collegeName"-->
+                                    <!--:value="item">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column
                         prop="courseMajor"
-                        label="上课专业-年纪">
+                        label="上课年纪">
+                    <template slot="header" slot-scope="scope">
+                        <el-select v-model="courseAge" placeholder="年纪" size="mini" @change="changePage(1)">
+                            <el-option
+                                    v-for="item in tableLevel"
+                                    :key="item.collegeName"
+                                    :value="item">
+                            </el-option>
+                        </el-select>
+                    </template>
                     <template slot-scope="scope">
-                            {{scope.row.courseMajor}} - {{scope.row.courseAge}}
+                            <!--{{scope.row.courseMajor}} - -->
+                        {{scope.row.courseAge}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -101,22 +99,33 @@
                     <template slot-scope="scope">
                         <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
                         <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
-                        <el-popover
-                                placement="bottom"
-                                width="200"
-                                trigger="click">
-                            <span style="text-align: center;font-size: 20px" >删除{{scope.row.courseName}}</span><br>
-                            <el-button @click="delCourseOutline(scope.row.courseCode)" type="warning" style="float: right;margin: 15px 0 ">确认删除</el-button>
-                            <el-button slot="reference" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
-                        </el-popover>
 
+                            <!--<el-button @click="delCourseOutline(scope.row.courseCode)" type="warning" style="float: right;margin: 15px 0 ">确认删除</el-button>-->
+                            <el-button @click="delCourse(scope.row)" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
                     </template>
                 </el-table-column>
 
             </el-table>
             </el-row>
 
+        <el-dialog
+                :visible.sync="delCour"
+                :title="del.courseName"
+                width="30%">
+            <div style="height: 140px">
+                <el-input
+                        type="textarea"
+                        placeholder="删除备注 30字以内"
+                        v-model="delRemark"
+                        maxlength="30"
+                        resize="none"
+                        :autosize="{minRows:3,maxRows:5}"
+                        show-word-limit>
+                </el-input>
+                <el-button @click="delCourseOutline(del)" type="danger" style="float: right;margin: 30px 0 0 0">确认删除</el-button>
+            </div>
 
+        </el-dialog>
 
         <!--批量导入弹窗-->
         <el-dialog
@@ -164,7 +173,7 @@
          <!--*******   编辑大纲弹窗   ****-->
         <el-dialog
                 :visible.sync="editCourse"
-                width="50%">
+                width="40%">
                 <edit ref="edit"  :editCollegeCourse="editCollegeCourse"></edit>
 
         </el-dialog>
@@ -195,8 +204,13 @@
                 form:{
                     name:""
                 },
+                tableLevel:["大一上","大一下","大二上","大二下","大三上","大三下","大四上","大四下",],
                 schoolYear:'',
                 schoolMonth:'',
+                courseAge:"",
+                delCour:false,//删除大纲
+                del:"",//获取行
+                delRemark:"",//删除备注
                 tableData:[{
                     courseCode:10,//课程编码
                     courseName: '高数1',// 课程名称
@@ -349,7 +363,7 @@
             changePage(page){
                 this.page = page
                 let cnt = {
-                    courseCollege:"大数据",
+                    courseID:"大数据",
                     count:this.count,
                     offset:(this.page-1)*this.count
                 }
@@ -373,10 +387,18 @@
                 })
             },
 
+
+            //点击删除
+            delCourse(row){
+                this.del=row
+                this.delCour=true
+            },
+
             //删除大纲
-            delCourseOutline(code){
+            delCourseOutline(row){
                 let cnt={
-                    courseCode:code
+                    courseCode:row.code,
+                    delRemark:this.delRemark
                 }
                 this.$college.delCourseOutline(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {

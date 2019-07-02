@@ -34,14 +34,14 @@
             </el-row>
 
             <el-row>
-                <el-col :span="12">
-                    <el-form-item label="上课专业" style="float: left" prop="courseMajor" >
-                        <el-select v-model="form.courseMajor" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
+                <!--<el-col :span="12">-->
+                    <!--<el-form-item label="上课专业" style="float: left" prop="courseMajor" >-->
+                        <!--<el-select v-model="form.courseMajor" placeholder="请选择活动区域">-->
+                            <!--<el-option label="区域一" value="shanghai"></el-option>-->
+                            <!--<el-option label="区域二" value="beijing"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
                 <el-col :span="12">
                     <el-form-item label="上课年纪" style="float: left"  prop="courseAge">
                         <el-select v-model="form.courseAge" placeholder="请选择活动区域">
@@ -78,13 +78,13 @@
         data() {
             return {
                 form: {
-                    courseCode:10,//课程编码
-                    courseName: 15,// 课程名称
-                    assessmentMode: 10 ,//考核方式
+                    courseCode:"",//课程编码
+                    courseName: "",// 课程名称
+                    assessmentMode: "" ,//考核方式
                     courseNature :10 ,//课程性质
-                    courseMajor: 10,// 上课专业
-                    courseAge: 3 ,//上课年纪
-                    courseCredit: 3,// 课程学分
+                    courseMajor: "",// 上课专业
+                    courseAge:"" ,//上课年纪
+                    courseCredit: 2,// 课程学分
                     courseTime: 36 ,//课程学时
                 },
                 rules:{
@@ -108,7 +108,7 @@
                         //alert('submit!');
                         this.createCourseOutline()
                     } else {
-                        console.log('error submit!!');
+                        console.log('请填写完整');
                         return false;
                     }
                 });

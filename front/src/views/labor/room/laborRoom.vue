@@ -97,10 +97,10 @@
             handleClose(){},
             changePage(page){
                 this.page = page
-                // let cnt = {
-                //     count: this.count, // Integer
-                //     offset: (this.page-1)*this.count, // Integer
-                // }
+                let cnt = {
+                    count: this.count, // Integer
+                    offset: (this.page-1)*this.count, // Integer
+                }
 
 
             },
