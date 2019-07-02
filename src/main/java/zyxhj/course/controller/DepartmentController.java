@@ -75,18 +75,18 @@ public class DepartmentController extends Controller{
 	}
 	
 	@POSTAPI(//
-			path = "getDepartment",
-			des = "分页查询学院",
-			ret = "返回学院信息"
-	)
-	public APIResponse getDerpartment(
-			@P(t = "每页显示记录数") Integer count, //
-			@P(t = "从第几条记录开始") Integer offset //
+			path = "getDepartment", 
+			des = "根据学院的ID来获取学院",
+			ret = "所修改后的学院的信息")
+	public APIResponse getDepartment(
+			Long collegeId//学院名称
 			) throws Exception{
 		try(DruidPooledConnection conn = dds.getConnection()){
-			return APIResponse.getNewSuccessResp(departmentService.getDepartment(conn, count, offset));
+			departmentService.getDepartment(conn, collegeId);
+			return APIResponse.getNewSuccessResp();
 		}
 	}
+	
 	
 
 }

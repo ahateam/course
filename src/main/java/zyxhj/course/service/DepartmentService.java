@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
 import zyxhj.course.domain.Department;
-import zyxhj.course.repository.DepartmentRepository ;
+import zyxhj.course.repository.DepartmentRepository;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.ServerException;
