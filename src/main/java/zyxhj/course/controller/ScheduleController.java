@@ -24,7 +24,6 @@ public class ScheduleController extends Controller {
 		try {
 			dds = DataSource.getDruidDataSource("rdsDefault.prop");
 			importScheduleService = Singleton.ins(TempScheduleService.class);
-			// tempService = Singleton.ins(TempService.class);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -62,7 +61,7 @@ public class ScheduleController extends Controller {
 
 	@POSTAPI(//
 			path = "deleteSchedule", //
-			des = "查询课表" //
+			des = "删除课表" //
 	)
 	public APIResponse deleteSchedule(//
 			@P(t = "课表id") Long schId//
