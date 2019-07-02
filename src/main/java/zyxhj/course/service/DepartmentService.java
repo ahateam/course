@@ -11,6 +11,7 @@ import zyxhj.course.domain.Department;
 import zyxhj.course.repository.DepartmentRepository ;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
+import zyxhj.utils.api.ServerException;
 
 public class DepartmentService {
 	private static Logger log = LoggerFactory.getLogger(DepartmentService.class);
@@ -55,7 +56,7 @@ public class DepartmentService {
 		Department department = new Department();
 		department.collegeId =collegeId;
 		
-		departmentRepository.deleteByKey(conn, "id", collegeId);
+		departmentRepository.deleteByKey(conn, "college_id", collegeId);
 	} 
 	
 	
@@ -67,11 +68,12 @@ public class DepartmentService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int editDepartment (DruidPooledConnection conn, Long collegeId, String collegeName)throws Exception {
+	public Department editDepartment (DruidPooledConnection conn, Long collegeId, String collegeName)throws Exception {
 		Department department = new Department();
 		department.collegeName =collegeName;
 		
-		return departmentRepository.updateByKey(conn, "id", collegeId, department, true);
+		 departmentRepository.updateByKey(conn, "college_id", collegeId, department, true);
+		 return department;
 	}
 	
 	
@@ -89,5 +91,23 @@ public class DepartmentService {
 	}
 	
 	
+
+	public int gDepartment(int count , int offset )throws Exception {
+		int a = count + offset;
+		return a;
+	}
+	
+	
+	/**
+	 * 
+	 * @param conn
+	 * @param count
+	 * @param offset
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Department> getDepartment(DruidPooledConnection conn,Integer count,Integer offset)throws ServerException{
+		return departmentRepository.getList(conn, count, offset);
+	}
 
 }

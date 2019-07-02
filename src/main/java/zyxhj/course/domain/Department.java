@@ -13,11 +13,13 @@ import zyxhj.utils.data.rds.RDSAnnID;
 @RDSAnnEntity(alias = "tb_department")
 public class Department {
 
-	
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long collegeId;
 
-	@RDSAnnField(column = RDSAnnField.TEXT_NAME)
-	public String name;
+	@RDSAnnField(column = "VARCHAR(255)")
+	public String collegeName;
+	
+	
+	
 }
