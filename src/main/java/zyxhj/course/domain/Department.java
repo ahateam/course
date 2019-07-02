@@ -6,7 +6,6 @@ import zyxhj.utils.data.rds.RDSAnnID;
 
 
 /**
- * @author 16436
  * 院系实体类，主要用于教务处管理各院系和实验室。
  *
  */
