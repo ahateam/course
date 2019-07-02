@@ -6,9 +6,10 @@ import zyxhj.utils.data.rds.RDSAnnEntity;
 import zyxhj.utils.data.rds.RDSAnnField;
 import zyxhj.utils.data.rds.RDSAnnID;
 
+
 /**
- * 学期安排
- *
+ * @author 16436
+ * 学期安排，创建学期，初始化排课过程可考虑将大纲界面与该界面合并也，减少多余界面，增加体验
  */
 @RDSAnnEntity(alias = "tb_term")
 public class Term {
