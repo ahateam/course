@@ -6,6 +6,4 @@ import zyxhj.utils.data.rds.RDSAnnID;
 
 @RDSAnnEntity(alias = "tb_user")
 public class Users {
-	@RDSAnnID
-	@RDSAnnField(column = RDSAnnField)
 }
