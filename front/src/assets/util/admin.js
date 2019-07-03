@@ -102,5 +102,10 @@ api.getSchoolLabor = function (cnt,callback) {
     util.call(baseUrl+'/schoolLabor/getSchoolLabor', cnt, callback)
 }
 
+//新增实验室大楼
+api.createLaborBuild = function (cnt,callback) {
+    util.call(baseUrl+'/schoolLabor/createLaborBuild', cnt, callback)
+}
+
 
 export default api

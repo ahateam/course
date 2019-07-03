@@ -88,13 +88,13 @@
         </el-dialog>
 
         <el-row>
-        <el-col :span="24" style="margin-top: 20px">
-            <div class="page-btn " style=" margin-right: 5%;float: right; font-size: 16px;color: #666;">
-                <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-                <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-                <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-            </div>
-        </el-col>
+            <el-col :span="24" style="margin-top: 20px">
+                <div class="page-btn " style=" margin-right: 5%;float: right; font-size: 16px;color: #666;">
+                    <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
+                    <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
+                    <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
+                </div>
+            </el-col>
         </el-row>
     </div>
 </template>

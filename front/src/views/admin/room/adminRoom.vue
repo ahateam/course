@@ -1,20 +1,73 @@
 <template>
     <div>
         <page-title title-text="实验室管理" />
+
+        <div style="margin-left: 5%">
+            <el-row>
+                <el-col :span="3">
+                    <el-button @click="createBuild=true" type="text" size="small">新增实验楼</el-button>
+                </el-col>
+
+                <!--<el-col :span="3">-->
+                    <!--<el-button type="text" size="small">新增实验楼</el-button>-->
+                <!--</el-col>-->
+            </el-row>
+        </div>
         <el-table
                 :data="tableData"
-                border
                 style="width: 90%;margin-left: 5%;margin-top: 10px">
+            <el-table-column
+                    label="详情"
+                    type="expand"
+                    width="50">
+                <template slot-scope="scope">
+                    <el-row>
+                            <el-form class="elform" label-width="110px" label-position="left">
+                                <el-row>
+                                    <el-col :span="6">
+                                        <el-form-item label="实验中心名称:">
+                                            {{scope.row.lecturerName}}
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="6">
+                                        <el-form-item label="建成时间:">
+                                            {{new Date(parseInt(scope.row.labTime)).toLocaleDateString()}}
+
+                                        </el-form-item>
+                                    </el-col>
+
+                                    <el-col :span="6">
+                                        <el-form-item label="面积:">
+                                             {{scope.row.area}}   m<sup>2</sup>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row>
+                                    <el-col :span="6">
+                                        <el-form-item label="负责人电话:">
+                                            {{scope.row.labLiablePhone}}
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <el-form-item label="负责人工号:">
+                                            {{scope.row.labLiableUsername}}
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </el-form>
+                    </el-row>
+                </template>
+
+            </el-table-column>
             <el-table-column
                     label="序号"
                     type="index"
                     width="50">
             </el-table-column>
-            <el-table-column
-                    prop="lecturerName"
-                    label="实验室(中心名称)"
-            >
-            </el-table-column>
+
             <el-table-column
                     prop="labName"
                     label="实验室名称"
@@ -27,8 +80,10 @@
             </el-table-column>
 
             <el-table-column
-                    prop="labPlace"
                     label="地点">
+                <template slot-scope="scope">
+                    {{scope.row.labBuildName}}-{{scope.row.labRoomNum}}
+                </template>
             </el-table-column>
             <el-table-column
                     prop="collegeName"
@@ -48,6 +103,7 @@
                     <!--label="面向专业">-->
             <!--</el-table-column>-->
             <el-table-column
+                    prop="labLiable"
                     label="负责人">
             </el-table-column>
             <el-table-column
@@ -55,8 +111,9 @@
                     label="操作"
                     width="100">
                 <template slot-scope="scope">
-                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+
                     <el-button type="text" size="small">编辑</el-button>
+                    <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -69,21 +126,42 @@
                 </div>
             </el-col>
         </el-row>
+
+
+       <!--***** 新增实验楼  ***-->
+        <el-dialog
+                :visible.sync="createBuild"
+                width="40%">
+            <div style="">
+                <page-title title-text="新增实验楼"></page-title>
+                <createBuild></createBuild>
+            </div>
+
+        </el-dialog>
     </div>
 </template>
 
 <script>
+    import createBuild from "./createBuild"
     export default {
         name: "adminRoom",
         data(){
             return{
-                tableData:[{}],//存储教室信息
+                tableData:[{labBuildName:"第三实验楼",labRoomNum:301,labLiable:'王诚',labSeat:34,labTime:1561996800000,
+                    labLiablePhone:18786085146,labLiableUsername:2017250190,area:168.73,
+                    lecturerName:"大数据实验中心",labName:"CAD 实验室"},
+                    {labBuildName:"第三实验楼",labRoomNum:301,labLiable:'王诚',labSeat:34,labTime:1561996800000,
+                        labLiablePhone:18786085146,labLiableUsername:2017250190,area:168.73,
+                        lecturerName:"大数据实验中心",labName:"CAD 实验室"}],//存储教室信息
                 tableCollege:[],//获取的学院
                 collegeId:"",//选择的学院
                 page:1,
                 pageOver:false,
                 count:10,
                 offset:0,
+                createBuild:false,//新增实验楼
+
+
             }
         },
         methods:{
@@ -141,6 +219,8 @@
                   offset:20,
                   count:0
               }
+
+              //获取实验室
               this.$admin.getDepartments(cnt,(res)=>{
                   if(res.data.rc === this.$util.RC.SUCCESS){
                       this.tableCollege = this.$util.tryParseJson(res.data.c)
@@ -148,19 +228,26 @@
                       this.tableCollege = []
                   }
               })
-          }
+          },
+
+            //表格只展开一行
+
+
         },
-    mounted(){
-        let cnt = {
-            count:this.count,
-            offset:(this.page-1)*this.count
-        }
-        this.getSchoolLabor(cnt)
-        this.getCollege()
-    }
+        mounted(){
+            let cnt = {
+                count:this.count,
+                offset:(this.page-1)*this.count
+            }
+            this.getSchoolLabor(cnt)
+            this.getCollege()
+        },
+        components: {createBuild}
     }
 </script>
 
 <style scoped>
-
+    .elform /deep/ .el-form-item__label{
+        color:#9e9e9e
+    }
 </style>

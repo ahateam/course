@@ -1,5 +1,6 @@
 <template>
     <div>
+        <page-title title-text="xxx学院新增实验室"></page-title>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"   >
             <el-table
                 :data="tableData"
