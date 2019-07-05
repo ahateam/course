@@ -108,4 +108,10 @@ api.createLaborBuild = function (cnt,callback) {
 }
 
 
+//修改实验室
+api.editSchoolLabor = function (cnt,callback) {
+    util.call(baseUrl+'/schoolLabor/editSchoolLabor', cnt, callback)
+}
+
+
 export default api

@@ -112,7 +112,7 @@
                     width="100">
                 <template slot-scope="scope">
 
-                    <el-button type="text" size="small">编辑</el-button>
+                    <el-button @click="editData(scope.row)" type="text" size="small">编辑</el-button>
                     <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
                 </template>
             </el-table-column>
@@ -126,6 +126,17 @@
                 </div>
             </el-col>
         </el-row>
+
+        <!--*****   修改实验室信息  *****-->
+        <el-dialog
+                :visible.sync="editBuild"
+                width="60%">
+            <div style="">
+                <page-title title-text="修改信息"></page-title>
+                <edit></edit>
+            </div>
+
+        </el-dialog>
 
 
        <!--***** 新增实验楼  ***-->
@@ -142,6 +153,7 @@
 </template>
 
 <script>
+    import edit from "./edit"
     import createBuild from "./createBuild"
     export default {
         name: "adminRoom",
@@ -160,6 +172,8 @@
                 count:10,
                 offset:0,
                 createBuild:false,//新增实验楼
+                editBuild:false,//修改实验室
+                editTable:"",//传给修改页面的值
 
 
             }
@@ -230,7 +244,12 @@
               })
           },
 
-            //表格只展开一行
+            //点击编辑按钮
+            editData(row){
+                this.editTable=row
+                this.editBuild=true
+
+            }
 
 
         },
@@ -242,7 +261,7 @@
             this.getSchoolLabor(cnt)
             this.getCollege()
         },
-        components: {createBuild}
+        components: {createBuild,edit}
     }
 </script>
 
