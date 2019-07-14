@@ -64,7 +64,7 @@
             </el-table>
 
             <el-table
-                    
+
                     :data="tableData"
                     border
                     style="width: 90%;margin-left: 5%;margin-top: 10px">

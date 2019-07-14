@@ -68,6 +68,12 @@ const collegeMenu = [
         child:[]
     },
     {
+        path:'/collegeOpen',
+        title:'开设课程',
+        icon:'course__zhuanzhengongzuoliang',
+        child:[]
+    },
+    {
         path:'/collegeCourse',
         title:'课程大纲',
         icon:'course__zhuanzhengongzuoliang',

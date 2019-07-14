@@ -4,20 +4,20 @@
         <page-title title-text="xxx学院课程大纲"></page-title>
 
         <!--新增课程大纲-->
-            <el-dialog
+        <el-dialog
                 :visible.sync="dialogVisible"
                 width="40%"
                 :before-close="handleClose">
-                <new-curriculum></new-curriculum>
+            <new-curriculum></new-curriculum>
         </el-dialog>
 
-            <el-row class="row-box" >
+        <el-row class="row-box" >
 
-                    <el-button type="primary" style="margin-left: 5%" @click="dialogVisible = true">新增课程</el-button>
-                    <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
+            <el-button type="primary" style="margin-left: 5%" @click="dialogVisible = true">新增课程</el-button>
+            <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
 
-            </el-row>
-            <el-row class="row-box">
+        </el-row>
+        <el-row class="row-box">
             <el-table
                     :data="tableData"
                     border
@@ -28,60 +28,16 @@
                         width="50">
                 </el-table-column>
                 <el-table-column
-                        prop="collegeName"
-                        label="开课学院"
-                >
-                </el-table-column>
-
-                <el-table-column
                         prop="courseName"
                         label="课程名称"
                 >
                 </el-table-column>
                 <el-table-column
-                        prop="courseCredit"
-                        label="课程学分"
-                        width="90">
+                        prop="courseCode"
+                        label="课程编码"
+                >
                 </el-table-column>
-                <el-table-column
-                        prop="courseTime"
-                        label="学时"
-                        width="90">
-                </el-table-column>
-                <el-table-column
-                        prop="assessmentMode"
-                        label="考核方式">
-                </el-table-column>
-                <!--<el-table-column-->
-                        <!--prop="courseNature"-->
-                        <!--label="课程性质">-->
-                    <!--<template slot="header" slot-scope="scope">-->
-                        <!--<el-select v-model="courseAge" placeholder="课程性质" size="mini" @change="changePage(1)">-->
-                            <!--<el-option-->
-                                    <!--v-for="item in tableLevel"-->
-                                    <!--:key="item.collegeName"-->
-                                    <!--:value="item">-->
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <el-table-column
-                        prop="courseMajor"
-                        label="上课年纪">
-                    <template slot="header" slot-scope="scope">
-                        <el-select v-model="courseAge" placeholder="年纪" size="mini" @change="changePage(1)">
-                            <el-option
-                                    v-for="item in tableLevel"
-                                    :key="item.collegeName"
-                                    :value="item">
-                            </el-option>
-                        </el-select>
-                    </template>
-                    <template slot-scope="scope">
-                            <!--{{scope.row.courseMajor}} - -->
-                        {{scope.row.courseAge}}
-                    </template>
-                </el-table-column>
+
                 <el-table-column
                         align="center"
                         prop="courseExamStatus"
@@ -106,13 +62,13 @@
                         <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
                         <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
 
-                            <!--<el-button @click="delCourseOutline(scope.row.courseCode)" type="warning" style="float: right;margin: 15px 0 ">确认删除</el-button>-->
-                            <el-button @click="delCourse(scope.row)" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
+                        <!--<el-button @click="delCourseOutline(scope.row.courseCode)" type="warning" style="float: right;margin: 15px 0 ">确认删除</el-button>-->
+                        <el-button @click="delCourse(scope.row)" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
                     </template>
                 </el-table-column>
 
             </el-table>
-            </el-row>
+        </el-row>
 
         <el-dialog
                 :visible.sync="delCour"
@@ -176,11 +132,11 @@
             </span>
         </el-dialog>
 
-         <!--*******   编辑大纲弹窗   ****-->
+        <!--*******   编辑大纲弹窗   ****-->
         <el-dialog
                 :visible.sync="editCourse"
                 width="40%">
-                <edit ref="edit"  :editCollegeCourse="editCollegeCourse"></edit>
+            <edit ref="edit"  :editCollegeCourse="editCollegeCourse"></edit>
 
         </el-dialog>
 
@@ -218,7 +174,6 @@
                 del:"",//获取行
                 delRemark:"",//删除备注
                 tableData:[{
-                    collegeName:"大数据",
                     courseCode:10,//课程编码
                     courseName: '高数1',// 课程名称
                     assessmentMode: '考试' ,//考核方式
@@ -229,7 +184,6 @@
                     courseTime: 36 ,//课程学时
                     courseExamStatus:"agree"//审核状态
                 },{
-                    collegeName:"大数据",
                     courseCode:10,//课程编码
                     courseName: '高数2',// 课程名称
                     assessmentMode: '考试' ,//考核方式
@@ -241,7 +195,6 @@
                     courseExamStatus:"disagree"//审核状态
 
                 },{
-                    collegeName:"大数据",
                     courseCode:10,//课程编码
                     courseName: '线性代数',// 课程名称
                     assessmentMode: '考试' ,//考核方式
@@ -270,7 +223,7 @@
                 count:10,
                 offset:0,
                 editCourse:false,//编辑大纲弹窗
-                clickEditNum:0,   //调用子组件函数 清除表单验证
+                clickEditNum:0   //调用子组件函数 清除表单验证
             }
         },
         methods:{
@@ -368,10 +321,11 @@
             },
 
 
+            //分页
             changePage(page){
                 this.page = page
                 let cnt = {
-                    collegeId:"大数据",
+                    collegeID:"大数据",
                     count:this.count,
                     offset:(this.page-1)*this.count
                 }
@@ -394,8 +348,6 @@
                     }
                 })
             },
-
-
 
 
             //点击删除
@@ -445,16 +397,13 @@
             this.address = 'teachProgram/college/'+year+month+day+'/'
 
 
-            //获取课程大纲
+            //获取开设课程
             let cnt={
-                courseCollege:"大数据",
+                collegeId:"大数据",
                 offset:this.offset,
                 count:this.count
             }
             this.getCourseOutlineByTermId(cnt)
-
-            //获取选择学院
-
         },
         components:{newCurriculum,edit}
 

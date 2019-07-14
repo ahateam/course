@@ -44,6 +44,7 @@ api.editCourseOutline = function (cnt,callback) {
     util.call(baseUrl+'/sch/editCourseOutline', cnt, callback)
 }
 
+
 //获取院内教师
 api.getCollegeTeacher = function (cnt,callback) {
     util.call(baseUrl+'/sch/getCollegeTeacher', cnt, callback)
@@ -51,6 +52,30 @@ api.getCollegeTeacher = function (cnt,callback) {
 //工号查询教师
 api.lookupCollegeTeacher = function (cnt,callback) {
     util.call(baseUrl+'/sch/lookupCollegeTeacher', cnt, callback)
+}
+
+/**
+* collegeOpen 开设课程
+ */
+
+//获取开设课程
+api.getCollegeOpen = function (cnt,callback) {
+    util.call(baseUrl+'/sch/getCollegeOpen', cnt, callback)
+}
+
+//修改开设课程
+api.editCollegeOpen = function (cnt,callback) {
+    util.call(baseUrl+'/sch/editCollegeOpen', cnt, callback)
+}
+
+//新增开设课程
+api.createCollegeOpen  = function (cnt,callback) {
+    util.call(baseUrl+'/sch/createCollegeOpen', cnt, callback)
+}
+
+//删除开设课程
+api.delCollegeOpen = function (cnt,callback) {
+    util.call(baseUrl+'/sch/delCollegeOpen', cnt, callback)
 }
 
 export default api
