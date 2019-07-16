@@ -13,74 +13,74 @@
                             <el-input  placeholder="请输入内容" v-model="editCollegeCourse.courseCode" :disabled="disableForm.disCourseName"></el-input>
                         </el-form-item>
                     </el-col>
-                    <!--<el-col :span="4" style="line-height: 40px;color: #f56c6c">-->
-                        <!--<el-button type="text" v-show="disableForm.disCourseName===true"   @click="disableForm.disCourseName=false">修改</el-button>-->
+                    <el-col :span="4" style="line-height: 40px;color: #f56c6c">
+                        <el-button type="text" v-show="disableForm.disCourseName===true"   @click="disableForm.disCourseName=false">修改</el-button>
+                    </el-col>
+                </el-row>
+
+                <!--<el-row :gutter="21">-->
+                    <!--<el-col :span="9" >-->
+                        <!--<el-form-item label="考核方式:" prop="assessmentMode" >-->
+                            <!--<el-select v-model="editCollegeCourse.assessmentMode" placeholder="请选择活动区域" :disabled="disableForm.assessmentMode">-->
+                                <!--<el-option label="考察" value="考察"></el-option>-->
+                                <!--<el-option label="考试" value="考试"></el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
                     <!--</el-col>-->
-                </el-row>
+                    <!--<el-col :span="9">-->
+                        <!--<el-form-item label="课程性质:" prop="courseNature">-->
+                            <!--<el-select v-model="editCollegeCourse.courseNature" placeholder="请选择活动区域" :disabled="disableForm.assessmentMode">-->
+                                <!--<el-option label="考察" value="考察"></el-option>-->
+                                <!--<el-option label="考试" value="考试"></el-option>-->
+                            <!--</el-select>                        </el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="4" style="line-height: 40px;color: #f56c6c">-->
+                        <!--<el-button type="text" v-show="disableForm.assessmentMode===true"   @click="disableForm.assessmentMode=false">修改</el-button>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
 
-                <el-row :gutter="21">
-                    <el-col :span="9" >
-                        <el-form-item label="考核方式:" prop="assessmentMode" >
-                            <el-select v-model="editCollegeCourse.assessmentMode" placeholder="请选择活动区域" :disabled="disableForm.assessmentMode">
-                                <el-option label="考察" value="考察"></el-option>
-                                <el-option label="考试" value="考试"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="9">
-                        <el-form-item label="课程性质:" prop="courseNature">
-                            <el-select v-model="editCollegeCourse.courseNature" placeholder="请选择活动区域" :disabled="disableForm.assessmentMode">
-                                <el-option label="考察" value="考察"></el-option>
-                                <el-option label="考试" value="考试"></el-option>
-                            </el-select>                        </el-form-item>
-                    </el-col>
-                    <el-col :span="4" style="line-height: 40px;color: #f56c6c">
-                        <el-button type="text" v-show="disableForm.assessmentMode===true"   @click="disableForm.assessmentMode=false">修改</el-button>
-                    </el-col>
-                </el-row>
+                <!--<el-row :gutter="21">-->
+                    <!--<el-col :span="9">-->
+                        <!--<el-form-item label="上课专业:" prop="courseMajor" >-->
+                            <!--<el-select v-model="editCollegeCourse.courseMajor" placeholder="请选择活动区域" :disabled="disableForm.courseMajor">-->
+                                <!--<el-option label="考察" value="考察"></el-option>-->
+                                <!--<el-option label="考试" value="考试"></el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="9">-->
+                        <!--<el-form-item label="上课年纪:" prop="courseAge">-->
+                            <!--<el-select v-model="editCollegeCourse.courseAge" placeholder="请选择活动区域" :disabled="disableForm.courseMajor">-->
+                                <!--<el-option label="考察" value="考察"></el-option>-->
+                                <!--<el-option label="考试" value="考试"></el-option>-->
+                            <!--</el-select>                        </el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="4" style="line-height: 40px;color: #f56c6c">-->
+                        <!--<el-button type="text" v-show="disableForm.courseMajor===true"   @click="disableForm.courseMajor=false">修改</el-button>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
 
-                <el-row :gutter="21">
-                    <el-col :span="9">
-                        <el-form-item label="上课专业:" prop="courseMajor" >
-                            <el-select v-model="editCollegeCourse.courseMajor" placeholder="请选择活动区域" :disabled="disableForm.courseMajor">
-                                <el-option label="考察" value="考察"></el-option>
-                                <el-option label="考试" value="考试"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="9">
-                        <el-form-item label="上课年纪:" prop="courseAge">
-                            <el-select v-model="editCollegeCourse.courseAge" placeholder="请选择活动区域" :disabled="disableForm.courseMajor">
-                                <el-option label="考察" value="考察"></el-option>
-                                <el-option label="考试" value="考试"></el-option>
-                            </el-select>                        </el-form-item>
-                    </el-col>
-                    <el-col :span="4" style="line-height: 40px;color: #f56c6c">
-                        <el-button type="text" v-show="disableForm.courseMajor===true"   @click="disableForm.courseMajor=false">修改</el-button>
-                    </el-col>
-                </el-row>
+                <!--<el-row :gutter="21">-->
+                    <!--<el-col :span="18">-->
+                        <!--<el-form-item label="课程学分" prop="courseCredit">-->
+                            <!--<el-rate v-model="editCollegeCourse.courseCredit" style="line-height: 50px" :disabled="disableForm.courseCredit" ></el-rate>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="4" style="line-height: 40px;color: #f56c6c">-->
+                        <!--<el-button type="text" v-show="disableForm.courseCredit===true"   @click="disableForm.courseCredit=false">修改</el-button>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
 
-                <el-row :gutter="21">
-                    <el-col :span="18">
-                        <el-form-item label="课程学分" prop="courseCredit">
-                            <el-rate v-model="editCollegeCourse.courseCredit" style="line-height: 50px" :disabled="disableForm.courseCredit" ></el-rate>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="4" style="line-height: 40px;color: #f56c6c">
-                        <el-button type="text" v-show="disableForm.courseCredit===true"   @click="disableForm.courseCredit=false">修改</el-button>
-                    </el-col>
-                </el-row>
-
-                <el-row :gutter="21">
-                    <el-col :span="18">
-                        <el-form-item label="课程学时" prop="courseTime">
-                            <el-slider v-model="editCollegeCourse.courseTime" show-input :min="18" :max="72" :step="9" :disabled="disableForm.courseTime" ></el-slider>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="4" style="line-height: 40px;color: #f56c6c">
-                        <el-button type="text" v-show="disableForm.courseTime===true"   @click="disableForm.courseTime=false">修改</el-button>
-                    </el-col>
-                </el-row>
+                <!--<el-row :gutter="21">-->
+                    <!--<el-col :span="18">-->
+                        <!--<el-form-item label="课程学时" prop="courseTime">-->
+                            <!--<el-slider v-model="editCollegeCourse.courseTime" show-input :min="18" :max="72" :step="9" :disabled="disableForm.courseTime" ></el-slider>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="4" style="line-height: 40px;color: #f56c6c">-->
+                        <!--<el-button type="text" v-show="disableForm.courseTime===true"   @click="disableForm.courseTime=false">修改</el-button>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
                 <el-row>
                     <el-col :offset="14">
                         <el-form-item>
@@ -152,7 +152,7 @@
             },
 
             //修改开设课程
-            editCourseOutline(){
+            editOpen(){
                 let cnt={
                     courseCode:this.editCollegeCourse.courseCode,
                     courseName:this.editCollegeCourse.courseName,
@@ -162,9 +162,9 @@
                     // courseAge:this.editCollegeCourse.courseAge,
                     // courseCredit:this.editCollegeCourse.courseCredit,
                     // courseTime:this.editCollegeCourse.courseTime,
-                    courseCollege:"大数据"
+                    collegeID:"123456"
                 };
-                this.$college.editCollegeOpen(cnt,(res)=> {
+                this.$college.editCourseOutline(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")
                     }

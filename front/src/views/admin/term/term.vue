@@ -137,7 +137,7 @@
                 pageOver:false,
                 count:10,
                 offset:0,
-                tableData:[],
+                tableData:[{}],
                 dialogFormVisible:false,
                 startYear:"",//选择学期开始年
                 endYear:"",  //选择学期结束年

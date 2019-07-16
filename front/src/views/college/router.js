@@ -12,6 +12,9 @@ const collegeFree = ()=>import('./free/collegeFree')
 
 const collegeClass = ()=>import('./class/collegeClass')
 
+const collegeOpen = ()=>import('./open/collegeOpen')
+
+
 
 
 let routes=[
@@ -55,11 +58,11 @@ let routes=[
         name:'通知管理',
         component:collegeNotice
      },
-    // {
-    //     path:'/collegeRoom',
-    //     name:'collegeRoom',
-    //     component:collegeRoom
-    // },
+    {
+        path:'/collegeOpen',
+        name:'开设课程',
+        component:collegeOpen
+    },
     {
         path:'/collegeFree',
         name:'档期管理',

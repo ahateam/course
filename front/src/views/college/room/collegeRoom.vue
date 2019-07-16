@@ -31,9 +31,7 @@
                     prop="subordinateDepartments"
                     label="地点">
             </el-table-column>
-            <el-table-column
-                    label="管理部门">
-            </el-table-column>
+
             <el-table-column
                     label="面向专业">
             </el-table-column>
