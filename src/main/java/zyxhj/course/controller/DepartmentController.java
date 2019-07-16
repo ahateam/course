@@ -27,6 +27,7 @@ public class DepartmentController extends Controller{
 		try {
 			dds = DataSource.getDruidDataSource("rdsDefault.prop");
 			departmentService = Singleton.ins( DepartmentService.class);
+			//  DepartmentService = Singleton.ins( DepartmentService.class);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -74,30 +75,18 @@ public class DepartmentController extends Controller{
 	}
 	
 	@POSTAPI(//
-			path = "gDepartment", 
+			path = "getDepartment", 
 			des = "根据学院的ID来获取学院",
 			ret = "所修改后的学院的信息")
-	public APIResponse gDepartment(
+	public APIResponse getDepartment(
 			Long collegeId//学院名称
 			) throws Exception{
 		try(DruidPooledConnection conn = dds.getConnection()){
-			departmentService.gDepartment(conn, collegeId);
+			departmentService.getDepartment(conn, collegeId);
 			return APIResponse.getNewSuccessResp();
 		}
 	}
 	
-	@POSTAPI(//
-			path = "getDepartment", 
-			des = "获取学院分页信息",
-			ret = "学院的信息")
-	public APIResponse getDepartment(
-			@P(t = "每页显示记录数") Integer count, //
-			@P(t = "从第几条记录开始") Integer offset //
-			) throws Exception{
-		try(DruidPooledConnection conn = dds.getConnection()){
-			departmentService.getDepartment(conn, count, offset);
-			return APIResponse.getNewSuccessResp();
-		}
-	}
+	
 
 }

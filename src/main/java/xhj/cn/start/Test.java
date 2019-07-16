@@ -2,7 +2,7 @@ package xhj.cn.start;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
-import zyxhj.course.domain.collegeOpen;
+import zyxhj.course.domain.Department;
 import zyxhj.utils.data.DataSource;
 import zyxhj.utils.data.rds.RDSUtils;
 
@@ -21,7 +21,7 @@ public class Test {
 
 //		   RDSUtils.dropTableByEntity(dsRds, Department.class); // 删表
 
-		     RDSUtils.createTableByEntity(dsRds, collegeOpen.class); // 建表
+		     RDSUtils.createTableByEntity(dsRds, Department.class); // 建表
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
