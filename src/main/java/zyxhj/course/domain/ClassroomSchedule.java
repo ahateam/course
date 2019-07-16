@@ -1,11 +1,13 @@
 package zyxhj.course.domain;
 
-
+import zyxhj.utils.data.rds.RDSAnnEntity;
 
 /**
  * @author 16436
  * 教室档期
  */
-public class ClassroomSchedule {
 
+@RDSAnnEntity(alias = "tb_course_schedule_lab")
+public class ClassroomSchedule {
+	
 }

@@ -1,5 +1,7 @@
 package zyxhj.course.service;
 
+import static org.hamcrest.CoreMatchers.allOf;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -85,17 +87,11 @@ public class DepartmentService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Department getDepartment(DruidPooledConnection conn, Long collegeId )throws Exception {
+	public Department gDepartment(DruidPooledConnection conn, Long collegeId )throws Exception {
 		
 		return departmentRepository.getByKey(conn,"college_id",collegeId,"college_name");
 	}
 	
-	
-
-	public int gDepartment(int count , int offset )throws Exception {
-		int a = count + offset;
-		return a;
-	}
 	
 	
 	/**
@@ -107,7 +103,10 @@ public class DepartmentService {
 	 * @throws Exception
 	 */
 	public List<Department> getDepartment(DruidPooledConnection conn,Integer count,Integer offset)throws ServerException{
-		return departmentRepository.getList(conn, count, offset);
+		System.out.println("AAAAAAAAAAA");  
+		return departmentRepository.getList(conn, count, offset); 
+		  
+		  
 	}
 
 }
