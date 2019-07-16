@@ -14,22 +14,22 @@
                     prop="date"
                     width="200">
                 <template slot="header" slot-scope="scope">
-                    <el-select v-model="collegeID" placeholder="选择学院" size="mini" @change="changePage(1)">
+                    <el-select v-model="collegeId" placeholder="选择学院" size="mini" @change="changePage(1)">
                         <el-option
                                 v-for="item in tableCollege"
                                 :key="item.collegeName"
                                 :lable="item.collegeName"
-                                :value="item.collegeID">
+                                :value="item.collegeId">
                         </el-option>
                     </el-select>
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="teacherName"
                     label="姓名">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="username"
                     label="工号">
                 <template slot="header" slot-scope="scope">
                     <el-input
@@ -41,16 +41,17 @@
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="teacherPosition"
                     label="职称">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="teacherPhone"
                     label="联系方式">
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="权限">
+                    prop="adminId"
+                    label="权限"
+                    :formatter="changeAdminId">
             </el-table-column>
             <el-table-column
                     fixed="right"
@@ -58,7 +59,8 @@
                     width="100">
                 <template slot-scope="scope">
                     <el-button @click="details=true" type="text" size="small">详情</el-button>
-                    <el-button @click="edit=true" type="text" size="small">编辑</el-button>
+                    <el-button @click="edits(scope.row)" type="text" size="small"
+                                :disabled="scope.row.adminId==='1'">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -78,7 +80,7 @@
                 title="修改教师信息"
                 :visible.sync="edit"
                 width="50%">
-            <edit></edit>
+            <edit :form="editref"></edit>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="edit = false">取 消</el-button>
                 <el-button type="primary" @click="edit = false">确 定</el-button>
@@ -86,13 +88,13 @@
         </el-dialog>
 
         <el-row>
-        <el-col :span="24" style="margin-top: 20px">
-            <div class="page-btn " style=" margin-right: 5%;float: right; font-size: 16px;color: #666;">
-                <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-                <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-                <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-            </div>
-        </el-col>
+            <el-col :span="24" style="margin-top: 20px">
+                <div class="page-btn " style=" margin-right: 5%;float: right; font-size: 16px;color: #666;">
+                    <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
+                    <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
+                    <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
+                </div>
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -109,12 +111,13 @@
                 pageOver:false,
                 count:10,
                 offset:0,
-                tableData:[{}],
+                tableData:[{teacherName:"www",teacherPhone:187852154654,adminID:'1'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}],
                 tableCollege:[],//选择学院
-                collegeID:"",  //选择选择器后得到
+                collegeId:"",  //选择选择器后得到
                 details:false,//详情弹框
                 edit:false,//编辑弹框
                 username:"",//工号搜索教师
+                editref:"",//传值给edit界面
             }
         },
         components:{
@@ -126,7 +129,7 @@
             //获取教师信息
             getTeacher(cnt){
                 //默认获取所有学院
-                if(this.collegeID===""){
+                if(this.collegeId===""){
                     this.$admin.getSchoolTeacher(cnt,(res)=>{
                         if(res.data.rc === this.$util.RC.SUCCESS){
                             this.tableData = this.$util.tryParseJson(res.data.c)
@@ -166,7 +169,7 @@
                     offset:(this.page-1)*this.count
                 }
                 //如果选择学院后 获取选择学院的教师信息
-                if(this.collegeID!=="") cnt.collegeID=this.collegeID
+                if(this.collegeId!=="") cnt.collegeId=this.collegeId
                 this.getTeacher(cnt)
             },
             changeUsername(){
@@ -193,6 +196,19 @@
                         }
                     })
                 }
+            },
+
+            //传值给edit界面
+            edits(row){
+                this.edit=true
+                this.editref=row
+            },
+            //权限id变为权限名称
+            changeAdminId(row,col,val){
+                if(val==='0') return "教师"
+                if(val==='1') return "教务处管理员"
+                if(val==='2') return "学院管理员"
+                if(val==='3') return "实验室管理员"
             }
         },
         mounted(){

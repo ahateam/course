@@ -26,7 +26,7 @@
                                     {{scope.row.collegeName}}
                                 </el-form-item>
                                 <el-form-item label="学院ID:">
-                                    {{scope.row.collegeID}}
+                                    {{scope.row.collegeId}}
                                 </el-form-item>
                                 <el-form-item label="专业:">
                                     <span v-for="(item,index) in scope.row.majorName" :key="index">
@@ -67,8 +67,8 @@
                     width="100">
             </el-table-column>
             <el-table-column
-                    prop="collegeID"
-                    label="学院ID">
+                    prop="collegeId"
+                    label="学院Id">
             </el-table-column>
             <el-table-column
                     prop="collegeName"
@@ -96,18 +96,30 @@
                     label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="edits(scope.row)" >编辑</el-button>
-                    <el-popover
-                            placement="bottom"
-                            width="200"
-                            trigger="click">
-                            <span style="text-align: center;font-size: 20px" >删除{{scope.row.collegeName}}</span><br>
-                            <el-button @click="delDepartment(scope.row)" type="warning" style="float: right;margin-bottom: 15px ">确认删除</el-button>
-                        <el-button style="margin-left: 10px" slot="reference" type="text" size="small" >删除</el-button>
-                    </el-popover>
-
+                    <el-button @click="delCourse(scope.row)" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+
+        <!--删除学院-->
+        <el-dialog
+                :visible.sync="delCollege"
+                :title="del.collegeName"
+                width="30%">
+            <div style="height: 140px">
+                <el-input
+                        type="textarea"
+                        placeholder="删除备注 30字以内"
+                        v-model="delRemark"
+                        maxlength="30"
+                        resize="none"
+                        :autosize="{minRows:3,maxRows:5}"
+                        show-word-limit>
+                </el-input>
+                <el-button @click="delDepartment(del)" type="danger" style="float: right;margin: 30px 0 0 0">确认删除</el-button>
+            </div>
+
+        </el-dialog>
 
         <!--****  编辑学院  ***-->
         <el-dialog
@@ -115,15 +127,13 @@
                 width="30%"
                 label="修改信息"
                 class="change">
-            <el-form label-width="90px" ref="editCollege" :model="editCollege" :rules="rules">
+            <el-form label-width="90px"  label-position="left" ref="editCollege" :model="editCollege" :rules="rules">
                 <el-row style="margin-bottom: 10px">
-                    <el-form-item label="学院编码:" prop="collegeID">
+                    <el-form-item label="学院ID:" prop="collegeId">
                         <el-col :span="16">
-                            <el-input :disabled="editCollege.changeID" v-model="editCollege.collegeID" property="请输入学院编码"></el-input>
+                            <span disabled  >{{editCollege.collegeId}}</span>
                         </el-col>
-                        <el-col :offset="1" :span="4" style="line-height: 40px">
-                            <el-button type="text"  @click="editCollege.changeID=false">修改</el-button>
-                        </el-col>
+
                     </el-form-item>
                 </el-row>
                 <el-form-item label="学院名称:" prop="collegeName" >
@@ -136,7 +146,7 @@
                 </el-form-item>
                 <el-row style="margin-top: 30px">
                     <el-form-item>
-                        <el-button :disabled="editCollege.changeName===true&&editCollege.changeID===true" type="primary" @click="editDepartment(editCollege.collegeID,editCollege.collegeName)">立即创建</el-button>
+                        <el-button :disabled="editCollege.changeName===true" type="primary" @click="editDepartment(editCollege.collegeId,editCollege.collegeName)">立即创建</el-button>
                         <el-button @click="edit=false">取消</el-button>
                     </el-form-item>
                 </el-row>
@@ -150,13 +160,13 @@
                 width="30%">
             <page-title title-text="新增学院"></page-title>
             <el-form label-width="90px" ref="createCollege" :model="createCollege" :rules="rules">
-                <el-row style="margin-bottom: 10px">
-                        <el-form-item label="学院编码:" prop="collegeID">
-                            <el-col :span="16">
-                                <el-input v-model="createCollege.collegeID" property="请输入学院编码"></el-input>
-                            </el-col>
-                        </el-form-item>
-                </el-row>
+                <!--<el-row style="margin-bottom: 10px">-->
+                        <!--<el-form-item label="学院编码:" prop="collegeId">-->
+                            <!--<el-col :span="16">-->
+                                <!--<el-input v-model="createCollege.collegeId" property="请输入学院编码"></el-input>-->
+                            <!--</el-col>-->
+                        <!--</el-form-item>-->
+                <!--</el-row>-->
                     <el-form-item label="学院名称:" prop="collegeName" >
                         <el-col :span="16">
                             <el-input v-model="createCollege.collegeName" property="请输入学院名称"></el-input>
@@ -188,15 +198,19 @@
             return {
                 rules:{
                     collegeName:[{ required: true, message: '请输入学院名称', trigger: 'blur' }],
-                    collegeID:[{ required: true, message: '请输入学院ID', trigger: 'blur' }]
+                    collegeId:[{ required: true, message: '请输入学院ID', trigger: 'blur' }]
 
                 },
                 //新增学院
                 createCollege:{
                     collegeName:"",
-                    collegeID:""
+                    collegeId:""
 
                 },
+
+                delCollege:false,//删除学院
+                del:"",//获取行
+                delRemark:"",//删除备注
 
                 editCollegeCourse:[],
                 form:{
@@ -255,8 +269,8 @@
                 edit:false,
                 editCollege:{
                     collegeName:"",
-                    collegeID:"",
-                    changeID:true,
+                    collegeId:"",
+                    changeId:true,
                     changeName:true
                 }
             }
@@ -268,12 +282,15 @@
                     count:this.count,
                     offset:(this.page-1)*this.count
                 }
-                //this.getCourseOutlineByTermId(cnt)
+                this.getDepartments(cnt)
             },
+
+            //获取学院
             getDepartments(cnt){
                 this.$admin.getDepartments(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$util.tryParseJson(res.data.c))
                     }else{
                         this.tableData = []
                     }
@@ -294,7 +311,7 @@
             //展开行时获取 教师 实验室 班级等详细情况
             clickGet(row,expandedRows){
                 let cnt={
-                    collegeID:row.collegeID
+                    collegeID:row.collegeId
                 }
 
                 //获取班级
@@ -341,7 +358,7 @@
                     if (valid) {
                         let cnt={
                             collegeName:this.createCollege.collegeName,
-                            collegeID:this.createCollege.collegeID
+                           // collegeId:this.createCollege.collegeId
                         }
                         //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                         //添加学院
@@ -365,11 +382,11 @@
 
             //点击编辑按钮
             edits(row){
-                this.editCollege.changeID=true
+                this.editCollege.changeId=true
                 this.editCollege.changeName=true
                 this.edit=true
                 this.editCollege.collegeName=row.collegeName
-                this.editCollege.collegeID=row.collegeID
+                this.editCollege.collegeId=row.collegeId
 
             },
             //编辑学院
@@ -378,7 +395,7 @@
                         if (valid) {
                             let cnt={
                                 collegeName:NAME,
-                                collegeID:ID
+                                collegeId:ID
                             }
                             //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                             this.$admin.editDepartment(cnt,(res)=>{
@@ -397,10 +414,16 @@
             },
 
         //删除学院
+            delCourse(row){
+                this.del=row
+                this.delCollege=true
+            },
+
             delDepartment(row){
                 let cnt={
-                    collegeName:row.collegeName,
-                    collegeID:row.collegeID
+                   // collegeName:row.collegeName,
+                    collegeId:row.collegeId,
+                  //  delRemark: row.delRemark
                 }
                 //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                 this.$admin.delDepartment(cnt,(res)=>{
