@@ -80,12 +80,24 @@ public class CourseOutline {
 	@RDSAnnID
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long Id;
+	
+	/**
+	 * 课程大纲名称。
+	 */
+	@RDSAnnField(column = RDSAnnField.TEXT_TITLE)
+	public String name;
 
 	/**
 	 * 所属院系id，所属实验室或所属院校。
 	 */
 	@RDSAnnField(column = RDSAnnField.ID)
-	public Long departmentId;
+	public Long collegeId;
+	
+	/**
+	 * 所属学院名称
+	 */
+	@RDSAnnField(column = "VARCHAR(255)")
+	public String collegeName;
 
 	/**
 	 * 学期id
@@ -93,11 +105,7 @@ public class CourseOutline {
 	@RDSAnnField(column = RDSAnnField.ID)
 	public Long termId;
 
-	/**
-	 * 课程大纲名称。
-	 */
-	@RDSAnnField(column = RDSAnnField.TEXT_TITLE)
-	public String name;
+	
 
 	/**
 	 * 学时，用于计算工作量
