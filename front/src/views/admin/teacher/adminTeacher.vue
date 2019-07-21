@@ -51,16 +51,19 @@
             <el-table-column
                     prop="adminId"
                     label="权限"
+                    width="120"
                     :formatter="changeAdminId">
             </el-table-column>
             <el-table-column
                     fixed="right"
                     label="操作"
-                    width="100">
+                    width="140">
                 <template slot-scope="scope">
                     <el-button @click="details=true" type="text" size="small">详情</el-button>
                     <el-button @click="edits(scope.row)" type="text" size="small"
                                 :disabled="scope.row.adminId==='1'">编辑</el-button>
+                    <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminId==='1'">
+                        删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -80,11 +83,16 @@
                 title="修改教师信息"
                 :visible.sync="edit"
                 width="50%">
-            <edit :form="editref"></edit>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="edit = false">取 消</el-button>
-                <el-button type="primary" @click="edit = false">确 定</el-button>
-            </span>
+            <edit @transferRandom="closeEdit" ref="editTeacher" :form="editref"></edit>
+
+        </el-dialog>
+
+        <el-dialog
+                title="删除教师"
+                :visible.sync="delTeacher"
+                width="40%">
+            <del-information @transferRandom="delForm"/>
+
         </el-dialog>
 
         <el-row>
@@ -100,7 +108,6 @@
 </template>
 
 <script>
-    import teacherDetails from "./details"
     import edit from "./edit"
 
     export default {
@@ -111,21 +118,32 @@
                 pageOver:false,
                 count:10,
                 offset:0,
-                tableData:[{teacherName:"www",teacherPhone:187852154654,adminID:'1'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}],
+                tableData:[{teacherName:"www",teacherPhone:187852154654,adminId:'1'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
+                ,{teacherName:"www",teacherPhone:187852154654,adminId:'3'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
+                ],
                 tableCollege:[],//选择学院
                 collegeId:"",  //选择选择器后得到
                 details:false,//详情弹框
                 edit:false,//编辑弹框
                 username:"",//工号搜索教师
                 editref:"",//传值给edit界面
+                delTeacher:false,//删除教师
+                delUsername:"",//删除教师的工号
             }
         },
         components:{
-            teacherDetails,edit
+            edit
         },
 
         methods:{
 
+            //关闭编辑页面
+            closeEdit(){
+                this.edit=false
+            },
+            editPage(){
+                this.$refs.editTeacher.editSchoolTeacher()
+            },
             //获取教师信息
             getTeacher(cnt){
                 //默认获取所有学院
@@ -146,6 +164,7 @@
 
                 //获取选择的学院教师信息
                 else{
+                    cnt.collegeId=this.collegeId
                     this.$college.getCollegeTeacher(cnt,(res)=>{
                         if(res.data.rc === this.$util.RC.SUCCESS){
                             this.tableData = this.$util.tryParseJson(res.data.c)
@@ -159,9 +178,8 @@
                         }
                     })
                 }
-
-
             },
+            //下一页
             changePage(page){
                 this.page = page
                 let cnt = {
@@ -198,10 +216,41 @@
                 }
             },
 
+
+            //点击删除按钮
+            del(row){
+                this.delTeacher=true
+                this.delUsername=row.username
+            },
+
+            //删除教师
+            delForm(delForm){
+                console.log(delForm.del)
+                let cnt={
+                    username:this.delUsername,
+                    delRemark:delForm.del
+                }
+                this.$college.delCollegeTeacher(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.$message({
+                            type:"success",
+                            message:"删除成功"
+                        })
+                        this.delUsername=""
+                    }else{
+                        this.$message({
+                            type:"warning",
+                            message:"删除失败"
+                        })
+                    }
+                })
+            },
+
             //传值给edit界面
             edits(row){
                 this.edit=true
                 this.editref=row
+                this.$refs.editTeacher.again()
             },
             //权限id变为权限名称
             changeAdminId(row,col,val){

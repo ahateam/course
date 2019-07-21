@@ -6,15 +6,13 @@
         <!--新增课程大纲-->
         <el-dialog
                 :visible.sync="dialogVisible"
-                width="40%"
-                :before-close="handleClose">
+                width="40%">
             <new-curriculum></new-curriculum>
         </el-dialog>
 
         <el-row class="row-box" >
 
             <el-button type="primary" style="margin-left: 5%" @click="dialogVisible = true">新增课程</el-button>
-            <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
 
         </el-row>
         <el-row class="row-box">
@@ -89,49 +87,6 @@
 
         </el-dialog>
 
-        <!--批量导入弹窗-->
-        <el-dialog
-                title="上传课程大纲表格"
-                :visible.sync="importModal"
-                width="30%"
-                center
-                @close="closeBtn">
-            <span>
-                        <div class="file-msg">
-                            目前只支持后缀为 '.xlsx'的Excl文件.
-                        </div>
-                        <div class="file-box">
-                            <span class="icon-box"><i class="el-icon-upload" style="font-size: 50px"></i></span> <span class="icon-text">上传文件</span>
-                             <input type="file" class="input-file-box" @change="fileBtn($event)">
-                        </div>
-
-                        <div class="fine-name" v-if="fileName != ''">
-                            文件名：{{fileName}}
-                        </div>
-
-                        <div class="line" v-if="num >0 && num<100">
-                            <div class="line-title">上传进度:</div>
-                            <div class="line-box">
-                                <el-progress :percentage="num" type="success"></el-progress>
-                            </div>
-                        </div>
-
-                        <div class="line" v-if="num == 100">
-                            <div class="line-title">上传进度:</div>
-                            <div class="line-text">
-                                上传成功！
-                            </div>
-                        </div>
-
-
-
-            </span>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="importModal = false">取 消</el-button>
-                <el-button type="primary"   @click="doUpload"  >确认上传数据表格</el-button>
-            </span>
-        </el-dialog>
-
         <!--*******   编辑大纲弹窗   ****-->
         <el-dialog
                 :visible.sync="editCourse"
@@ -141,11 +96,7 @@
         </el-dialog>
 
 
-        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
-            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-            <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-            <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-        </div>
+        <next-page ref="nextPage"  @transferRandom="changePage" />
 
     </div>
 
@@ -155,8 +106,7 @@
 <script>
     import edit from "./edit"
     import newCurriculum from "./newCurriculum"
-    import ossAuth from '@/assets/oss/ossAuth'
-    let client = ossAuth.client
+
 
     export default {
         name:'collegeCourse',
@@ -206,17 +156,6 @@
                     courseExamStatus:"null"//审核状态
 
                 }],
-                year:[],
-                month:[],
-
-                //上传文件相关
-                importModal:false,
-                fileName:'',    //文件上传
-                fileData:[],
-                url:'',         //文件的线上地址
-                num:0,          //上传进度
-                multipleSelection:[],
-                address:'',     //导入地址
                 dialogVisible:false, //新增课程弹出
                 page:1,
                 pageOver:false,
@@ -227,114 +166,23 @@
             }
         },
         methods:{
-            onSubmit(){
-
-            },
-
-            //对接接口
-            importAssets(cnt){
-                console.log(cnt)
-            },
-
-            //上传文件相关
-            closeBtn() {
-                this.fileName = ''
-                this.fileData = []
-                this.url = ''
-            },
-            //讲已经导入到oss的文件传递给服务端进行数据库导入
-            importFile( ){
-                if(this.url != '' || this.url != undefined){
-                    let cnt = {
-                        url:this.url
-                    }
-                    this.importAssets(cnt)
-                }
-
-            },
-
-            //进度条
-            getProgress(p) {
-                this.num = p
-            },
-            //开始导入到oss
-            doUpload() {
-
-                let files = []
-                files[0] = this.fileData[0]
-                this.getProgress(0)
-                let file =files
-                this.size = file[0].size
-                let timer = new Date().getTime()
-                let tmpName =timer+ encodeURIComponent(file[0].name)
-                tmpName =this.address+ tmpName
-                this.multipartUpload(tmpName, file[0])
-            },
-            //分片上传
-            multipartUpload(upName, upFile) {
-                //Vue中封装的分片上传方法（详见官方文档）
-                let _this = this
-                const progress = async function (p) {
-                    //项目中需获取进度条，故调用进度回调函数（详见官方文档）
-                    // _this.$emit('getProgress', Math.round(p * 100))
-                    _this.getProgress(Math.round(p * 100))
-                }
-                try {
-                    let result = client.multipartUpload(upName, upFile, {
-                        progress,
-                        meta: {
-                            year: 2017,
-                            people: 'test'
-                        }
-                    }).then(res => {
-
-                        let address = res.res.requestUrls[0]
-                        let _index =address.indexOf('?')
-                        if(_index == -1){
-                            _this.url = address
-                        }else{
-                            _this.url = address.substring(0,_index)
-                        }
-                        console.log(_this.url)
-                        _this.importFile()
-                        // this.$router.push('/page')
-                    }).catch(err => {
-                        console.log(result)
-                        console.log(err)
-                    });
-
-                } catch (e) {
-                    // 捕获超时异常
-                    if (e.code === 'ConnectionTimeoutError') {
-                        console.log("Woops,超时啦!");
-                    }
-                    console.log(e)
-                }
-            },
-            // 获取文件名显示
-            fileBtn(ev) {
-                this.fileData = ev.target.files
-                this.fileName = this.fileData[0].name
-            },
-            handleClose(done) {
-                done();
-            },
 
 
             //分页
-            changePage(page){
-                this.page = page
-                let cnt = {
-                    collegeID:"大数据",
-                    count:this.count,
-                    offset:(this.page-1)*this.count
-                }
-                this.getCourseOutlineByTermId(cnt)
+            changePage(nextCnt){
+                // this.page = page
+                // let cnt = {
+                //     collegeID:79839873973,
+                //     count:this.count,
+                //     offset:(this.page-1)*this.count
+                // }
+                nextCnt.collegeId="555"
+                this.getCollegeOpen(nextCnt)
             },
 
             //获取开设课程
-            getCourseOutlineByTermId(cnt){
-                this.$college.getCourseOutlineByTermId(cnt,(res)=>{
+            getCollegeOpen(cnt){
+                this.$college.getCollegeOpen(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
                     }else{
@@ -342,7 +190,7 @@
                     }
                     //判断是否到达最后一页
                     if(this.tableData.length <this.count){
-                        this.pageOver= true
+                        this.$refs.nextPage.chagnePageOver()
                     }else{
                         this.pageOver = false
                     }
@@ -360,9 +208,8 @@
             delCourseOutline(row){
                 let cnt={
                     courseCode:row.code,
-                    delRemark:this.delRemark
                 }
-                this.$college.delCourseOutline(cnt,(res)=> {
+                this.$college.delCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("删除成功，等待管理员审核")
                     } else {
@@ -382,28 +229,14 @@
             }
         },
         mounted(){
-            //获取年月日
-            let date = new Date()
-            let year =''+date.getFullYear()
-            let month =''+(parseInt(date.getMonth()+1))
-            if(month.length<2){
-                month = '0'+month
-            }
-            let day = ''+date.getDate()
-            if(day.length<2){
-                day ='0'+ day
-            }
-            //拼接文件名
-            this.address = 'teachProgram/college/'+year+month+day+'/'
-
-
+            this.$refs.nextPage.changePage(1)
             //获取开设课程
             let cnt={
                 collegeId:"大数据",
                 offset:this.offset,
                 count:this.count
             }
-            this.getCourseOutlineByTermId(cnt)
+            this.getCollegeOpen(cnt)
         },
         components:{newCurriculum,edit}
 

@@ -1,9 +1,14 @@
 import title from "./pageTitle"
+import delInformation from"./delInformation"
+import nextPage from "./nextPage"
 
-const pageTitle={
+const publicTitle={
     install:function(Vue){
-        Vue.component('pageTitle',title)
+            Vue.component('pageTitle',title),
+            Vue.component('delInformation',delInformation),
+            Vue.component('nextPage',nextPage)
+
     }
 }
 
-export default pageTitle;
+export default publicTitle;

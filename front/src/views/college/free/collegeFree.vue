@@ -1,5 +1,5 @@
 <template>
-    <div><page-title title-text="xxx学院工作量统计"></page-title>
+    <div><page-title title-text="xxx学院档期管理"></page-title>
         <div>
             <el-row class="row-box" >
                 <el-col :span="24">

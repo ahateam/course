@@ -6,7 +6,9 @@
 
 <script>
     export default {
-        name: "adminHome"
+        name: "adminHome",
+        mounted() {
+                   }
     }
 </script>
 

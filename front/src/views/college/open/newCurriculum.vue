@@ -7,9 +7,9 @@
             <el-form-item label="课程名称" prop="courseName">
                 <el-input v-model="form.courseName"></el-input>
             </el-form-item>
-            <el-form-item label="课程编码" prop="courseCode">
-                <el-input v-model="form.courseCode"></el-input>
-            </el-form-item>
+            <!--<el-form-item label="课程编码" prop="courseCode">-->
+                <!--<el-input v-model="form.courseCode"></el-input>-->
+            <!--</el-form-item>-->
 
             <!--<el-row>-->
             <!--<el-col :span="12">-->
@@ -107,20 +107,16 @@
                 });
             },
 
-            //新增大纲
+            //新增课程
             createCourseOutline(){
                 let cnt={
-                    courseCode:this.form.courseCode,
+                    courseCode:parseInt(this.form.courseCode),
                     courseName:this.form.courseName,
-                    assessmentMode:this.form.assessmentMode,
-                    courseNature:this.form.courseNature,
-                    courseMajor:this.form.courseMajor,
-                    courseAge:this.form.courseAge,
-                    courseCredit:this.form.courseCredit,
-                    courseTime:this.form.courseTime,
-                    courseCollege:"大数据"
+                    collegeId:"123",
+                    collegeName:"大数据",
+                    collegeOpenExamStatus:"null"
                 };
-                this.$college.createCourseOutline(cnt,(res)=> {
+                this.$college.createCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")
                     }

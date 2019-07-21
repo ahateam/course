@@ -113,7 +113,7 @@
                 <template slot-scope="scope">
 
                     <el-button @click="editData(scope.row)" type="text" size="small">编辑</el-button>
-                    <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+                    <!--<el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -200,7 +200,7 @@
                 }
 
                 else{
-                    
+
                     //查询某个学院的实验室
                     this.$labor.getCollegeLabor(cnt,(res)=>{
                         if(res.data.rc === this.$util.RC.SUCCESS){

@@ -1,34 +1,34 @@
 <template>
     <div style="margin-left: 5%;width: 85%" class="changeForm">
-        <el-form ref="form" :model="form" label-width="72px" label-position="left" :rules="rules">
+        <el-form ref="form" :model="editForm" label-width="72px" label-position="left" :rules="rules">
             <el-row>
                 <el-col :span="10">
                     <el-form-item label="姓名:">
-                        {{form.teacherName}}
+                        {{editForm.teacherName}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="工号:">
-                        {{form.name}}
+                        {{editForm.name}}
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="10">
                     <el-form-item label="职称:">
-                        {{form.teacherPosition}}
+                        {{editForm.teacherPosition}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="入职时间:">
-                        {{form.name}}
+                        {{editForm.name}}
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="20">
                     <el-form-item label="权限:">
-                        <el-radio-group v-model="form.adminID" :disabled="disabled.adminId">
+                        <el-radio-group v-model="editForm.adminId" :disabled="disabled.adminId">
                             <el-radio  v-for="(item,index) in adminLabel" :label="item.adminId" :key="index">{{item.name}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
@@ -59,16 +59,18 @@
             <el-row>
                 <el-col :span="20">
                     <el-form-item label="电话:" prop="phoneNumber"  >
-                        <el-input  placeholder="请输入内容" v-model="form.phoneNumber" :disabled="disabled.phone"></el-input>
+                        <el-input  placeholder="请输入内容" v-model="editForm.phoneNumber" :disabled="disabled.phone"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4" style="line-height: 40px;color: #f56c6c">
                     <el-button type="text"  @click="disabled.phone=false">修改</el-button>
                 </el-col>
             </el-row>
-
-
             <span style="color: red">请谨慎修改</span>
+            <el-form-item>
+                <el-button style="float: right" type="primary" @click="onSubmit">修改</el-button>
+                <el-button style="float: right;margin-right: 20px" @click="close()">取消</el-button>
+            </el-form-item>
         </el-form>
     </div>
 </template>
@@ -80,6 +82,7 @@
         props:['form'],
         data(){
             return{
+                editForm:{},
                 collegeId:"",
                 tableCollege:"",
                 adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},],
@@ -90,6 +93,56 @@
         computed:{
             getCollege(){
                 return this.disabled.college
+            },
+
+        },
+        methods:{
+            onSubmit(){
+                    this.$refs['form'].validate((valid) => {
+                        if (valid) {
+                           this.editSchoolTeacher()
+                        } else {
+                            this.$messages.message("warning","请填写完整")
+                            return false;
+                        }
+                    });
+                },
+            //关闭admin界面edit弹框
+            close(){
+                this.$emit('transferRandom')
+            },
+            editSchoolTeacher(){
+                let cnt={
+                    collegeId:"1234564",
+                    collegeName:"f三十分",
+                    teacherName: this.editForm.teacherName,
+                    username:this.editForm.username,
+                    teacherPosition:this.editForm.teacherPosition,
+                    teacherPhone:this.editForm.teacherPhone,
+                    adminId:this.editForm.adminId,
+
+                }
+                this.$admin.editSchoolTeacher(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.$message({
+                            type:'success',
+                            message:"修改成功"
+                        })
+                    }else{
+                        this.$message({
+                            type:'warning',
+                            message:"修改失败"
+                        })
+                    }
+                })
+                this.close()
+
+            },
+            again(){
+                this.editForm=this.form
+                this.disabled.adminId=true
+                this.disabled.college=true
+                this.disabled.phone=true
             }
         },
         watch:{
@@ -110,7 +163,13 @@
                }
 
             }
+        },
+        mounted() {
+            //disabled:{adminId:true,college:true,phone:true},
+
+
         }
+
     }
 </script>
 

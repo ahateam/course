@@ -13,15 +13,16 @@ import login from './assets/util/login'
 import college from '@/assets/util/college'
 import labor from '@/assets/util/labor'
 
-
+import messages from"./message"
+Vue.prototype.$messages= messages
 
  import axios from "axios"
  Vue.prototype.$ajax= axios
 
-import pageTitle from './views/components/'
 
-
-Vue.use(pageTitle)
+//公共组件
+import publicTitle from './views/components/'
+Vue.use(publicTitle)
 
 
 Vue.use(ElementUI)

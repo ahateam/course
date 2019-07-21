@@ -87,10 +87,10 @@ api.editSchoolTeacher = function (cnt,callback) {
 //     util.call(baseUrl+'/course/delTeacher', cnt, callback)
 // }
 //
-// //删除教师
-// api.delSchoolTeacher = function (cnt,callback) {
-//     util.call(baseUrl+'/course/delTeacher', cnt, callback)
-// }
+//删除教师
+api.delSchoolTeacher = function (cnt,callback) {
+    util.call(baseUrl+'/course/delTeacher', cnt, callback)
+}
 
 
 /**

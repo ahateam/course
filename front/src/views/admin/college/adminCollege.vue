@@ -92,7 +92,6 @@
             <!--</el-table-column>-->
             <el-table-column
                     align="center"
-                    fixed="right"
                     label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="edits(scope.row)" >编辑</el-button>
@@ -290,7 +289,7 @@
                 this.$admin.getDepartments(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res.data.c))
+                        console.log(this.$util.tryParseJson(res))
                     }else{
                         this.tableData = []
                     }
@@ -364,11 +363,11 @@
                         //添加学院
                         this.$admin.createDepartment(cnt,(res)=>{
                             if(res.data.rc === this.$util.RC.SUCCESS){
-                                loading.close()
+                                //loading.close()
                                 this.$message({type:'success',message:"添加成功"})
 
                             }else{
-                                loading.close()
+                                //loading.close()
                                 this.$message({type:'warning',message:"添加失败"})
                             }
                         })

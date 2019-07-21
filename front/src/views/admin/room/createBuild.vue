@@ -38,7 +38,7 @@
                     floorRoomNum:0,//每层房间数
                 },
                 rules:{
-                    labBuildName:[{ min: 3, max: 15, message: '名称长度为1-15位', trigger: 'blur' },
+                    labBuildName:[{ min: 3, max: 15, message: '名称长度为3-15位', trigger: 'blur' },
                                     { required: true, message: '请输入大楼名称', trigger: 'blur' },],
                     floorNum:[{ required: true, message: '请输入楼层数', trigger: 'blur' },],
                     floorRoomNum:[{ required: true, message: '请输入楼层房间数', trigger: 'blur' },],
