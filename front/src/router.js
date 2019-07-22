@@ -37,7 +37,7 @@ let routes=[
 
 
 const router = new Router({
-
+//如果改为hash，界面需刷新两次路由守卫才会起效
   mode: 'history',
   base: process.env.BASE_URL,
    routes,
@@ -47,7 +47,7 @@ const errFunction=function(){
 
     //菜单自动变为指向首页
     sessionStorage.setItem('navDefaultActive',''+"0")
-    Message({type:"warning",message:"权限不符号"});
+    Message({type:"warning",message:"权限不符合，无法跳转"});
 }
 
 router.beforeEach((to, from, next) => {

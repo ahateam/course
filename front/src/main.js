@@ -10,8 +10,10 @@ import constData from './data/constData'
 import uitl from 'ahaapi'
 import admin from './assets/util/admin'
 import login from './assets/util/login'
-import college from '@/assets/util/college'
-import labor from '@/assets/util/labor'
+import college from './assets/util/college'
+import labor from './assets/util/labor'
+
+import "./assets/css/table_width_margin.css";
 
 import messages from"./message"
 Vue.prototype.$messages= messages

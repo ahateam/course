@@ -10,13 +10,13 @@
                 placeholder="选择学期">
 
         </el-cascader>
-        <div style="margin: 0 5%" class="changeDia">
+        <div  class="changeDia">
             <el-table
                     :row-style="tableRowClassName"
                     ref="filterTable"
                     border
                     :data="tableData"
-                    width="80%">
+                    class="tableWidthMargin">
                 <el-table-column
                         type="index"
                         label="序号">
@@ -78,7 +78,7 @@
                 <el-table-column
                         align="center"
                         label="操作"
-                        width="120">
+                       >
                     <template slot-scope="scope" >
 
                         <el-button

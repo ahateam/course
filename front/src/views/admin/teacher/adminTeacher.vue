@@ -1,10 +1,11 @@
 <template>
     <div class="changeDia">
         <page-title title-text="教师信息"></page-title>
+        <el-button class="buttonMarginLeft" type="primary">新增教师</el-button>
         <el-table
                 border
                 :data="tableData"
-                style="width: 90%;margin: 10px 5%">
+                class="tableWidthMargin">
             <el-table-column
                     label="序号"
                     type="index"
@@ -95,15 +96,8 @@
 
         </el-dialog>
 
-        <el-row>
-            <el-col :span="24" style="margin-top: 20px">
-                <div class="page-btn " style=" margin-right: 5%;float: right; font-size: 16px;color: #666;">
-                    <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-                    <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-                    <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-                </div>
-            </el-col>
-        </el-row>
+        <next-page ref="nextPage"  @transferRandom="changePage" />
+
     </div>
 </template>
 
@@ -180,15 +174,11 @@
                 }
             },
             //下一页
-            changePage(page){
-                this.page = page
-                let cnt = {
-                    count:this.count,
-                    offset:(this.page-1)*this.count
-                }
+            changePage(nextCnt){
+
                 //如果选择学院后 获取选择学院的教师信息
-                if(this.collegeId!=="") cnt.collegeId=this.collegeId
-                this.getTeacher(cnt)
+                if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
+                this.getTeacher(nextCnt)
             },
             changeUsername(){
                 //查询为空时
@@ -225,7 +215,6 @@
 
             //删除教师
             delForm(delForm){
-                console.log(delForm.del)
                 let cnt={
                     username:this.delUsername,
                     delRemark:delForm.del

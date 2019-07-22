@@ -3,7 +3,7 @@
         <div>
             <el-row class="row-box" >
                 <el-col :span="24">
-                        <el-button type="primary" class="nav-btn"  @click="importModal =true">批量导入档期</el-button>
+                        <el-button type="primary" class="nav-btn buttonMarginLeft"  @click="importModal =true">批量导入档期</el-button>
                 </el-col>
             </el-row>
             <el-row class="row-box1">
@@ -13,8 +13,7 @@
                             <el-table
                                     :data="tableData"
                                     border
-                                    style="width: 100%"
-                            >
+                                    class="tableWidthMargin">
                                 <el-table-column
                                         prop="grade"
                                         label="年级">
@@ -45,8 +44,7 @@
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        label="操作"
-                                        width="250">
+                                        label="操作">
                                     <template slot-scope="scope">
 
                                         <!--<el-button @click="editVoteBtn(scope.row)" type="text" size="small">编辑</el-button>-->
@@ -58,13 +56,7 @@
                             </el-table>
                         </template>
                     </el-col>
-                    <el-col :span="24" style="margin-top: 20px">
-                        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
-                            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-                            <el-button type="primary" :disabled="page==1"   @click="changePage(page-1)">上一页</el-button>
-                            <el-button type="primary" :disabled="pageOver ==true"  @click="changePage(page+1)">下一页</el-button>
-                        </div>
-                    </el-col>
+
                 </el-row>
             </el-row>
 
@@ -123,6 +115,7 @@
 
 
         </div>
+        <next-page ref="nextPage" @transferRandom="changePage" />
    </div>
 </template>
 
@@ -194,13 +187,9 @@
                 })
             },
             //分页
-            changePage(page){
-                this.page = page
-                let cnt = {
-                    count: this.count, // Integer
-                    offset: (this.page-1)*this.count, // Integer
-                }
-                this.getSchedule(cnt)
+            changePage(nextCnt){
+                console.log(nextCnt)
+                this.getSchedule(nextCnt)
 
             },
 
@@ -342,7 +331,6 @@
 <style scoped lang="scss">
     .row-box{
         background: #fff;
-        padding: 15px;
         font-size: 1.6rem;
         color: #666;
     }
@@ -351,7 +339,6 @@
     }
 
     .row-box1 {
-        padding: 15px;
         background: #fff;
     }
     .el-tag{
@@ -378,11 +365,8 @@
     }
     .nav-btn{
         float: left;
-        margin-left: 15px;
     }
     .row-box1{
-
-        padding: 15px;
         background: #fff;
 
     }

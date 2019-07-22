@@ -13,7 +13,7 @@
 
             <el-row class="row-box" >
 
-                    <el-button type="primary" style="margin-left: 5%" @click="dialogVisible = true">新增课程</el-button>
+                    <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增课程</el-button>
                     <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
 
             </el-row>
@@ -21,7 +21,7 @@
             <el-table
                     :data="tableData"
                     border
-                    style="width: 90%;margin-left: 5%;margin-top: 10px">
+                    class="tableWidthMargin">
                 <el-table-column
                         label="序号"
                         type="index"
@@ -185,11 +185,8 @@
         </el-dialog>
 
 
-        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
-            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-            <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-            <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-        </div>
+        <next-page ref="nextPage"  @transferRandom="changePage" />
+
 
     </div>
 
@@ -368,14 +365,9 @@
             },
 
 
-            changePage(page){
-                this.page = page
-                let cnt = {
-                    collegeId:"大数据",
-                    count:this.count,
-                    offset:(this.page-1)*this.count
-                }
-                this.getCourseOutlineByTermId(cnt)
+            changePage(nextCnt){
+                nextCnt.collegeId="sssss"
+                this.getCourseOutlineByTermId(nextCnt)
             },
 
             //获取开设课程
@@ -470,7 +462,6 @@
     }
     .row-box1{
         margin-top: 20px;
-        padding: 15px;
         background: #fff;
 
     }

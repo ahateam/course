@@ -1,12 +1,12 @@
 <template>
     <div>
         <page-title title-text="xxx学院实验管理"></page-title>
-        <el-button type="text" style="margin: 0 5%" @click="dialogVisible = true">新增实验室</el-button>
+        <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增实验室</el-button>
 
         <el-table
                 :data="tableData"
                 border
-                style="width: 90%;margin-left: 5%;margin-top: 10px">
+                class="tableWidthMargin">
             <el-table-column
                     label="序号"
                     type="index"
@@ -55,9 +55,10 @@
                     <el-button @click="editInterface(scope.row)" type="text" size="small">编辑</el-button>
                 </template>
             </el-table-column>
+
         </el-table>
 
-
+        <next-page ref="nextPage"  @transferRandom="changePage" />
         <!--编辑弹框-->
         <el-dialog
                 :visible.sync="editVisible"
@@ -84,11 +85,8 @@
             </span>
         </el-dialog>
 
-        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;margin:20px 50px 0 0">
-            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-            <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-            <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-        </div>
+
+
     </div>
 </template>
 
@@ -116,13 +114,9 @@
         methods:{
             handleClick(row){},
             handleClose(){},
-            changePage(page){
-                this.page = page
-                let cnt = {
-                    count: this.count, // Integer
-                    offset: (this.page-1)*this.count, // Integer
-                }
-                this.getCollegeLabor(cnt)
+            changePage(nextCnt){
+
+                this.getCollegeLabor(nextCnt)
             },
 
             //获取实验室

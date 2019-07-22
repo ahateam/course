@@ -4,19 +4,20 @@
         <pageTitle title-text="教室审核"></pageTitle>
         <router-link to="laborClassroomRecord">
             <el-button
-                style="margin: 0 5%"
-                type="text"
+                    class="buttonMarginLeft"
+                type="primary"
                 size="small">教室申请记录
             </el-button>
-        </router-link>            <span style="color: red;">只可执行当前日期后的申请</span>
+        </router-link>
+        <span style="color: red;margin-left: 30px">只可执行当前日期后的申请</span>
 
-        <div style="margin: 0 5%" class="changeDia">
+        <div class="changeDia">
             <el-table
                     :row-style="tableRowClassName"
                     ref="filterTable"
                     border
                     :data="tableData"
-                    width="80%">
+                    class="tableWidthMargin">
                 <el-table-column
                         type="index"
                         label="序号">
@@ -78,7 +79,7 @@
                 <el-table-column
                         align="center"
                         label="操作"
-                        width="120">
+                        >
                     <template slot-scope="scope" >
 
                         <el-button
@@ -127,13 +128,10 @@
             </el-table>
         </div>
 
-        <div class="page-btn " style=" float: right; font-size: 16px;color: #666;margin:20px 50px 50px 0">
-            <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-            <el-button type="primary" :disabled="page===1"   @click="changePage(page-1)">上一页</el-button>
-            <el-button type="primary" :disabled="pageOver ===true"  @click="changePage(page+1)">下一页</el-button>
-        </div>
 
-          <!--******** 详情  *******-->
+
+
+        <!--******** 详情  *******-->
         <el-dialog
                 title="详情"
                 :visible.sync="dialogVisible"
@@ -144,7 +142,7 @@
                 <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
             </span>
         </el-dialog>
-
+        <next-page ref="nextPage"  @transferRandom="changePage" />
     </div>
 </template>
 
@@ -168,12 +166,8 @@
             }
         },
         methods:{
-            changePage(page){
-                this.page = page
-                // let cnt = {
-                //     count: this.count, // Integer
-                //     offset: (this.page-1)*this.count, // Integer
-                // }
+            changePage(nextCnt){
+
             },
 
             //是否同意赛选

@@ -1,10 +1,9 @@
 <template>
     <div>
-        <el-row class="row-box">
-            <el-col :span="24">
-                <el-button type="primary" @click="dialogFormVisible =true"> 新增学期</el-button>
-            </el-col>
-        </el-row>
+        <page-title title-text="学期管理"></page-title>
+
+        <el-button class="buttonMarginLeft" type="primary" @click="dialogFormVisible =true"> 新增学期</el-button>
+
         <el-row class="row-box1">
             <el-row class="row-box1">
                 <el-col :span="24">
@@ -12,7 +11,7 @@
                         <el-table
                                 :data="tableData"
                                 border
-                                style="width: 100%"
+                                class="tableWidthMargin"
                         >
                             <el-table-column
                                     prop="name"
@@ -37,7 +36,7 @@
                             </el-table-column>
                             <el-table-column
                                     label="操作"
-                                    width="250">
+                                   >
                                 <template slot-scope="scope">
 
                                     <!--<el-button @click="editVoteBtn(scope.row)" type="text" size="small">编辑</el-button>-->
@@ -49,16 +48,9 @@
                         </el-table>
                     </template>
                 </el-col>
-                <el-col :span="24" style="margin-top: 20px">
-                    <div class="page-btn " style=" float: right; font-size: 16px;color: #666;">
-                        <span class="page-text">当前页码：第 <span style="color: #f60;">{{page}}</span> 页</span>
-                        <el-button type="primary" :disabled="page==1"   @click="changePage(page-1)">上一页</el-button>
-                        <el-button type="primary" :disabled="pageOver ==true"  @click="changePage(page+1)">下一页</el-button>
-                    </div>
-                </el-col>
             </el-row>
         </el-row>
-
+        <next-page ref="nextPage"  @transferRandom="changePage" />
         <!--新增弹窗-->
         <el-dialog title="新增学期" :visible.sync="dialogFormVisible">
             <el-form style="width: 90%" ref="addTerm" :model="addTerm" :rules="rules" >
@@ -215,13 +207,9 @@
                 });
                 },
             //分页请求
-            changePage(page){
-                this.page = page
-                let cnt = {
-                    count:this.count,
-                    offset:(this.page-1)*this.count
-                }
-                this.getTerms(cnt)
+            changePage(nextCnt){
+
+                this.getTerms(nextCnt)
             },
             //删除一个学期
             delModal(row){
@@ -286,7 +274,6 @@
     }
 
     .row-box1 {
-        padding: 15px;
         background: #fff;
     }
     .el-tag{
@@ -317,7 +304,6 @@
     }
     .row-box1{
 
-        padding: 15px;
         background: #fff;
 
     }

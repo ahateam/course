@@ -12,14 +12,15 @@
 
         <el-row class="row-box" >
 
-            <el-button type="primary" style="margin-left: 5%" @click="dialogVisible = true">新增课程</el-button>
+            <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增课程</el-button>
 
         </el-row>
         <el-row class="row-box">
             <el-table
                     :data="tableData"
                     border
-                    style="width: 90%;margin-left: 5%;margin-top: 10px">
+                    class="tableWidthMargin"
+                    >
                 <el-table-column
                         label="序号"
                         type="index"
