@@ -127,14 +127,14 @@
                 label="修改信息"
                 class="change">
             <el-form label-width="90px"  label-position="left" ref="editCollege" :model="editCollege" :rules="rules">
-                <el-row style="margin-bottom: 10px">
-                    <el-form-item label="学院ID:" prop="collegeId">
-                        <el-col :span="16">
-                            <span disabled  >{{editCollege.collegeId}}</span>
-                        </el-col>
+                <!--<el-row style="margin-bottom: 10px">-->
+                    <!--<el-form-item label="学院ID:" prop="collegeId">-->
+                        <!--<el-col :span="16">-->
+                            <!--<span disabled  >{{editCollege.collegeId}}</span>-->
+                        <!--</el-col>-->
 
-                    </el-form-item>
-                </el-row>
+                    <!--</el-form-item>-->
+                <!--</el-row>-->
                 <el-form-item label="学院名称:" prop="collegeName" >
                     <el-col :span="16">
                         <el-input :disabled="editCollege.changeName" v-model="editCollege.collegeName" property="请输入学院名称"></el-input>

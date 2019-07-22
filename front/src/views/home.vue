@@ -6,7 +6,7 @@
                     <i class="iconfont icon-logo"></i>
                 </div>
                 <el-menu
-                        :default-active="this.$store.state.navDefaultActive"
+                        :default-active="navDefaultActive"
                         class="el-menu-vertical-demo"
                         background-color="#545c64"
                         text-color="#fff"
@@ -14,7 +14,7 @@
                         style="overflow: hidden;width: 160px;background: #545c64;"
                 >
                     <span v-for="(item,key) in menuList"  :key="key">
-                        <el-menu-item v-if="item.child.length ==0"    :index="''+key" @click="navActive(item,key)" >
+                        <el-menu-item v-if="item.child.length ===0"    :index="''+key" @click="navActive(item,key)" >
                             <i class="iconfont icon-box" :class="item.icon"></i>
                             <span slot="title">{{item.title}}</span>
                         </el-menu-item>
@@ -63,7 +63,8 @@
                 tableData: [],
                 orgName: '',
                 isRouterActive: true,
-                menuList:[]
+                menuList:[],
+                navDefaultActive:""
 
 
             }
@@ -73,11 +74,15 @@
             //事件层
             //一级菜单选中事件
             navActive(item,key) {
+                sessionStorage.setItem('navDefaultActive',''+key)
+                this.navDefaultActive=sessionStorage.getItem('navDefaultActive')
                 this.$store.state.navDefaultActive = ''+key
                 this.$router.push(item.path)
             },
             //二级菜单选中事件
             navActive1(key,item1,key1) {
+                sessionStorage.setItem('navDefaultActive',''+key+'-'+key1)
+                this.navDefaultActive=sessionStorage.getItem('navDefaultActive')
                 this.$store.state.navDefaultActive = key+'-'+key1
                 this.$router.push(item1.path)
             },
@@ -88,33 +93,34 @@
                 localStorage.setItem('grade', '')
                 localStorage.setItem('user_name', '')
                 localStorage.setItem('user_id', '')
+                sessionStorage.setItem('navDefaultActive',"0")
                 this.$router.push('/login')
             }
         },
         mounted() {
             const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
-            if(localStorage.getItem('user_id') == '' || localStorage.getItem('user_id') == null){
+            if(localStorage.getItem('user_id') === '' || localStorage.getItem('user_id') == null){
                this.$message.error('登录信息失效，重新登录')
                 this.outLogin()
             }
-            if(localStorage.getItem('grade') == this.$constData.grade.teacher){
+            if(localStorage.getItem('grade') === this.$constData.grade.teacher){
                 this.menuList = menu.teacherMenu
-                this.$router.push('/teacherHome')
-            }else if(localStorage.getItem('grade') == this.$constData.grade.admin){
+            }else if(localStorage.getItem('grade') === this.$constData.grade.admin){
                 this.menuList = menu.adminMenu
-
-                this.$router.push('/adminHome')
-            }else if(localStorage.getItem('grade') == this.$constData.grade.college){
+            }else if(localStorage.getItem('grade') === this.$constData.grade.college){
                 this.menuList = menu.collegeMenu
-                this.$router.push('/collegeHome')
-            }else if(localStorage.getItem('grade') == this.$constData.grade.laboratory){
+            }else if(localStorage.getItem('grade') === this.$constData.grade.laboratory){
                 this.menuList = menu.laborMenu
-                this.$router.push('/laborHome')
             }
             //console.log(localStorage.getItem('grade'))
 
-
-            this.$store.state.navDefaultActive = '0'
+            //解决页面刷新后重定向首页问题
+            let navDefaultActive=sessionStorage.getItem('navDefaultActive')
+            if(!navDefaultActive||navDefaultActive===""){
+                sessionStorage.setItem('navDefaultActive',''+"0")
+            }
+            this.navDefaultActive=navDefaultActive
+            //this.$store.state.navDefaultActive = '0'
             this.showActive = true
 
             loading.close()

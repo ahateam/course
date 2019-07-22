@@ -70,7 +70,7 @@
                 passwordType: 'password',
                 loading: false,
                 rules:{username:[{ min: 7, max: 10, message: '账号长度在 7 到 10 ', trigger: 'blur' }]},
-                adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},]
+                adminLabel:[{name:"教师",adminId:'3'},{name:"学院",adminId:'1'},{name:"实验室",adminId:'2'},{name:"教务处",adminId:'0'},]
             }
         },
         methods: {
@@ -104,36 +104,35 @@
 
             //登录
             loginBtn(key){
-                if(this.user.username == '' || this.user.password == ''){
+                if(this.user.username === '' || this.user.password === ''){
                     this.$message.error('请将账号密码输入完整')
                 }else{
-                   if(key ==this.$constData.grade.teacher){
+                   if(key === this.$constData.grade.teacher){
                        //教师登录
                        localStorage.setItem('grade',this.$constData.grade.teacher)
                        localStorage.setItem('user_name','教师姓名')
-                       localStorage.setItem('user_id',key)
-                       console.log(localStorage.getItem('user_id'))
-                        this.$router.push('/home')
-                   }else if(key == this.$constData.grade.laboratory){
-                       //管理员登录
+                       localStorage.setItem('user_id','3')
+                        this.$router.push('/teacherHome')
+                   }else if(key === this.$constData.grade.laboratory){
+                       //实验室管理员登录
                        localStorage.setItem('grade',this.$constData.grade.laboratory)
                        localStorage.setItem('user_name','实验室姓名')
-                       localStorage.setItem('user_id','3')
-                       this.$router.push('/home')
+                       localStorage.setItem('user_id','2')
+                       this.$router.push('/laborHome')
                    }
-                   else if(key == this.$constData.grade.admin){
-                       //管理员登录
+                   else if(key === this.$constData.grade.admin){
+                       //学校管理员登录
                        localStorage.setItem('grade',this.$constData.grade.admin)
                        localStorage.setItem('user_name','管理员姓名')
-                       localStorage.setItem('user_id','2')
-                       this.$router.push('/home')
-                   }else if(key == this.$constData.grade.college){
-                       //二级学院登录
+                       localStorage.setItem('user_id','0')
+                       this.$router.push('/adminHome')
+                   }else if(key === this.$constData.grade.college){
+                       //学院登录
 
                        localStorage.setItem('grade',this.$constData.grade.college)
                        localStorage.setItem('user_name','二级学院管理员姓名')
-                       localStorage.setItem('user_id','2333')
-                       this.$router.push('/home')
+                       localStorage.setItem('user_id','1')
+                       this.$router.push('/collegeHome')
                    }
                 }
             }
