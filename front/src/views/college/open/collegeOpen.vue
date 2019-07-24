@@ -1,7 +1,7 @@
 <!--******   学院工作量   ***********-->
 <template>
     <div>
-        <page-title title-text="xxx学院课程大纲"></page-title>
+        <page-title title-text="xxx学院开设课程"></page-title>
 
         <!--新增课程大纲-->
         <el-dialog
@@ -18,7 +18,7 @@
         <el-row class="row-box">
             <el-table
                     :data="tableData"
-                    border
+
                     class="tableWidthMargin"
                     >
                 <el-table-column

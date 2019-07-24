@@ -1,25 +1,28 @@
 <template>
-    <div>
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"   >
+    <div class="change" v-show="displayTable">
+        <el-form :model="ruleForm[0]" status-icon :rules="rules" ref="ruleForm" v-show="displayTable"  >
             <el-table
-                    :data="tableData"
+                    :data="ruleForm"
                     border
-                    style="width: 90%;margin-left: 5%;margin-top: 10px">
+                    class="tableWidthMargin">
 
                 <el-table-column
                         prop="lecturerName"
                         label="实验室(中心名称)">
                 </el-table-column>
                 <el-table-column
-                        prop="workNum"
+                        prop="labName"
                         label="实验室名称">
+                    <template slot-scope="scope">
+                        <el-input size="small" :placeholder="scope.row.labName"></el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="position"
+                        prop="labSeat"
                         label="座位数(最大容纳人数)">
                     <template slot-scope="scope">
                     <span v-if="!scope.row.ifShow">
-                        <el-select v-model="ruleForm.peopleNum" placeholder="请选择" size="mini" v-if="show">
+                        <el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="mini" v-if="show">
                             <el-option
                                     v-for="item in peopleNum"
                                     :key="item.value"
@@ -31,32 +34,25 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="subordinateDepartments"
+                        prop="labArea"
                         label="面积">
-                    <el-input size="mini"></el-input>
+                   {{this.ruleForm[0].labArea}} m<sup>2</sup>
                 </el-table-column>
 
                 <el-table-column
-                        prop="subordinateDepartments"
                         label="地点"
                         header-align="center">
 
                     <el-table-column
-                            prop="position"
-                            label="实验室大楼"
-                    >
-                        无法改变
+                            prop="labBuildName"
+                            label="实验室大楼" >
+
                     </el-table-column>
 
                     <el-table-column
-                            prop="position"
+                            prop="labRoomNum"
                             label="房间号"
                     >
-                        <template slot-scope="scope">
-                    <span v-if="!scope.row.ifShow">
-                       无法改变
-                    </span>
-                        </template>
                     </el-table-column>
                 </el-table-column>
 
@@ -64,29 +60,33 @@
             </el-table>
 
             <el-table
-
-                    :data="tableData"
+                    class="tableWidthMargin"
+                    :data="ruleForm"
                     border
-                    style="width: 90%;margin-left: 5%;margin-top: 10px">
+                  >
                 <el-table-column
-                        prop="subordinateDepartments"
+                        prop="labTime"
                         label="建成时间">
                     <template slot-scope="scope">
-                    <span v-if="!scope.row.ifShow">
-                    <el-date-picker
-                            value-format="timestamp"
-                            size="mini"
-                            v-model="ruleForm.time"
-                            type="date"
-                            format="yyyy-MM-dd"
-                            placeholder="选择日期">
-                    </el-date-picker>
-                    </span>
+                        {{new Date(parseInt(scope.row.labTime)).toLocaleDateString()}}
                     </template>
+
                 </el-table-column>
                 <el-table-column
+                        prop="collegeName"
                         label="管理部门">
-                    自动变为本学院
+                    <template  slot-scope="scope">
+                        <span v-if="!scope.row.ifShow">
+                            <el-select v-model="scope.row.collegeId" :placeholder="scope.row.collegeName" size="mini" @change="lookopLab()">
+                                <el-option
+                                        v-for="item in tableCollege"
+                                        :key="item.collegeName"
+                                        :lable="item.collegeName"
+                                        :value="item.collegeId">
+                                </el-option>
+                            </el-select>
+                        </span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="面向专业">
@@ -98,60 +98,59 @@
                         header-align="center">
 
                     <el-table-column
-                            label="姓名">
-                        <template slot-scope="scope">
-                            <el-form-item  prop="pass" >
-                                <el-input  v-model="ruleForm.pass"  size="mini"></el-input>
-                            </el-form-item>
-                        </template>
+                            label="姓名" prop="teacherName">
+
                     </el-table-column>
 
                     <el-table-column
-                            label="工号">
-                        <template slot-scope="scope">
-                            <el-form-item  prop="pass" >
-                                <el-input  v-model="ruleForm.pass" size="mini"></el-input>
-                            </el-form-item>
-                        </template>
+                            label="工号" prop="username">
+
                     </el-table-column>
 
                     <el-table-column
-                            label="手机号">
-                        <template slot-scope="scope">
-                            <el-form-item  prop="pass" >
-                                <el-input  v-model="ruleForm.pass"  size="mini"></el-input>
-                            </el-form-item>
-                        </template>
+                            label="手机号" prop="teacherPhone">
+
                     </el-table-column>
                 </el-table-column>
 
             </el-table>
         </el-form>
-        <el-button type="primary">修改</el-button>
+        <el-row>
+            <el-col :span="4" :offset="7">
+                <el-button  type="primary">修改</el-button>
+            </el-col>
+            <el-col :span="10">
+                <el-button type="primary">取消</el-button>
+            </el-col>
+        </el-row>
+
     </div>
 </template>
 
 <script>
     export default {
         name: "newRoom",
+        props:['ruleForm'],
         data(){
             return{
                 show:true,
                 tableData:[{}],
-                ruleForm:{
-                    pass:"",
-                    time:"",//建成时间
-                    peopleNum:"",
-                    roomNum:"",
-                    floorNum:"",
-                    floorRoomNum:""
-                },
-                peopleNum:[15,25,50],
+                // ruleForm:{
+                //     pass:"",
+                //     time:"",//建成时间
+                //     peopleNum:"",
+                //     roomNum:"",
+                //     floorNum:"",
+                //     floorRoomNum:""
+                // },
+                peopleNum:['10','15','20','25','30','35','40','45','50'],
                 rules: {
                     pass: [
                         {  required: true, message: '请输入活动名称', trigger: 'blur' }
                     ],
-                }
+                },
+                displayTable:true,//强制刷新界面
+                tableCollege:""
             }
 
         },
@@ -164,6 +163,16 @@
                     this.ruleForm.roomNum="0"+item
                 }
             }
+        },
+        mounted(){
+        },
+        watch:{
+            ruleForm(){
+                //强制渲染表格
+                this.displayTable=false
+                this.displayTable=true
+            }
+
         }
     }
 </script>
@@ -180,5 +189,9 @@
 
     .el-input--prefix .el-input__inner /deep/ {
         padding-left: 30px 0;
+    }
+
+    .change /deep/ .el-input__inner{
+        padding: 0 0 0 7px;
     }
 </style>

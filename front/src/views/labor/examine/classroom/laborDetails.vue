@@ -98,7 +98,6 @@
         data(){
             return{
                 tableData:"sssss",
-                disTable:false,
                 changeRow:true
             }
         },

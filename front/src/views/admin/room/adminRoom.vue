@@ -1,18 +1,7 @@
 <template>
     <div>
         <page-title title-text="实验室管理" />
-
-        <div style="margin-left: 5%">
-            <el-row>
-                <el-col :span="3">
-                    <el-button @click="createBuild=true" type="primary" size="small">新增实验楼</el-button>
-                </el-col>
-
-                <!--<el-col :span="3">-->
-                    <!--<el-button type="text" size="small">新增实验楼</el-button>-->
-                <!--</el-col>-->
-            </el-row>
-        </div>
+        <el-button class="buttonMarginLeft" @click="createBuild=true" type="primary" size="small">新增实验楼</el-button>
         <el-table
                 :data="tableData"
                 class="tableWidthMargin">
@@ -40,7 +29,7 @@
 
                                     <el-col :span="6">
                                         <el-form-item label="面积:">
-                                             {{scope.row.area}}   m<sup>2</sup>
+                                             {{scope.row.labArea}}   m<sup>2</sup>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -48,12 +37,12 @@
                                 <el-row>
                                     <el-col :span="6">
                                         <el-form-item label="负责人电话:">
-                                            {{scope.row.labLiablePhone}}
+                                            {{scope.row.teacherPhone}}
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6">
                                         <el-form-item label="负责人工号:">
-                                            {{scope.row.labLiableUsername}}
+                                            {{scope.row.username}}
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -86,10 +75,11 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    align="center"
                     prop="collegeName"
                     label="管理部门">
                 <template slot="header" slot-scope="scope">
-                    <el-select v-model="collegeId" placeholder="学院" size="mini" @change="changePage(1)">
+                    <el-select v-model="collegeId" placeholder="管理学院" size="mini" @change="lookopLab()">
                         <el-option
                                 v-for="item in tableCollege"
                                 :key="item.collegeName"
@@ -98,12 +88,15 @@
                         </el-option>
                     </el-select>
                 </template>
+                <template slot-scope="scope">
+                    {{scope.row.collegeName}}
+                </template>
             </el-table-column>
             <!--<el-table-column-->
                     <!--label="面向专业">-->
             <!--</el-table-column>-->
             <el-table-column
-                    prop="labLiable"
+                    prop="teacherName"
                     label="负责人">
             </el-table-column>
             <el-table-column
@@ -126,7 +119,7 @@
                 width="60%">
             <div style="">
                 <page-title title-text="修改信息"></page-title>
-                <edit></edit>
+                <edit :rule-form="editTable"></edit>
             </div>
 
         </el-dialog>
@@ -152,12 +145,14 @@
         name: "adminRoom",
         data(){
             return{
-                tableData:[{labBuildName:"第三实验楼",labRoomNum:301,labLiable:'王诚',labSeat:34,labTime:1561996800000,
-                    labLiablePhone:18786085146,labLiableUsername:2017250190,area:168.73,
-                    lecturerName:"大数据实验中心",labName:"CAD 实验室"},
-                    {labBuildName:"第三实验楼",labRoomNum:301,labLiable:'王诚',labSeat:34,labTime:1561996800000,
-                        labLiablePhone:18786085146,labLiableUsername:2017250190,area:168.73,
-                        lecturerName:"大数据实验中心",labName:"CAD 实验室"}],//存储教室信息
+                tableData:[{labBuildName:"第三实验楼",labRoomNum:301,teacherName:'王诚',labSeat:'34',labTime:1561996800000,
+                    teacherPhone:18786085146,username:2017250190,labArea:168.73,
+                    lecturerName:"大数据实验中心",labName:"CAD 实验室",collegeName:"大数据"},
+
+                    {labBuildName:"第三实验楼",labRoomNum:301,teacherName:'玩完',labSeat:'25',labTime:1561996800000,
+                        teacherPhone:18786085146,username:2017250190,labArea:123.73,
+                        lecturerName:"大数据实验中心",labName:"信息 实验室",collegeName:"理学院"}],//存储教室信息
+
                 tableCollege:[],//获取的学院
                 collegeId:"",//选择的学院
                 page:1,
@@ -165,14 +160,16 @@
                 count:10,
                 offset:0,
                 createBuild:false,//新增实验楼
-                editBuild:false,//修改实验室
-                editTable:"",//传给修改页面的值
+                editBuild:false,//修改实验室 弹框
+                editTable:[],//传给修改页面的值
 
 
             }
         },
         methods:{
 
+
+            //获取全校实验室情况
             getSchoolLabor(cnt){
                 //如果未选择学院
                 if(this.collegeId===""){
@@ -211,32 +208,27 @@
                     })
                 }
             },
+
+            lookopLab(){
+                let nextCnt={
+                    count:this.count,
+                    offset:(this.page-1)*this.count
+                }
+                this.changePage(nextCnt)
+
+            },
             changePage(nextCnt){
 
                 //如果选择学院后 获取选择学院的教师信息
                 if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
                 this.getSchoolLabor(nextCnt)
             },
-          getCollege() {
-              let cnt={
-                  offset:20,
-                  count:0
-              }
-
-              //获取实验室
-              this.$admin.getDepartments(cnt,(res)=>{
-                  if(res.data.rc === this.$util.RC.SUCCESS){
-                      this.tableCollege = this.$util.tryParseJson(res.data.c)
-                  }else{
-                      this.tableCollege = []
-                  }
-              })
-          },
 
             //点击编辑按钮
             editData(row){
-                this.editTable=row
-                this.editBuild=true
+                this.editTable.splice(0,1)
+                this.editTable[0]=row
+                this.editBuild=true //修改实验室弹框
 
             }
 
@@ -248,7 +240,6 @@
                 offset:(this.page-1)*this.count
             }
             this.getSchoolLabor(cnt)
-            this.getCollege()
         },
         components: {createBuild,edit}
     }

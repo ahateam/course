@@ -5,7 +5,6 @@
             <el-col>
                 <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增学院</el-button>
                 <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">专业转院</el-button>
-
             </el-col>
         </el-row>
         <el-table
@@ -17,8 +16,7 @@
             <el-table-column
                     label="详情"
                     type="expand"
-                    width="100"
-                    >
+                    width="100">
                 <template slot-scope="scope">
                     <el-row>
                         <el-col :span="8">
