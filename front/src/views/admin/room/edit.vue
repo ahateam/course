@@ -9,12 +9,15 @@
                 <el-table-column
                         prop="lecturerName"
                         label="实验室(中心名称)">
+                    <template slot-scope="scope">
+                        <el-input size="small" v-model="ruleForm[0].lecturerName" :placeholder="scope.row.lecturerName"></el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="labName"
                         label="实验室名称">
                     <template slot-scope="scope">
-                        <el-input size="small" :placeholder="scope.row.labName"></el-input>
+                        <el-input size="small" v-model="ruleForm[0].labName" :placeholder="scope.row.labName"></el-input>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -77,11 +80,11 @@
                         label="管理部门">
                     <template  slot-scope="scope">
                         <span v-if="!scope.row.ifShow">
-                            <el-select v-model="scope.row.collegeId" :placeholder="scope.row.collegeName" size="mini" @change="lookopLab()">
+                            <el-select v-model="scope.row.collegeId" :placeholder="scope.row.collegeName" size="mini" >
                                 <el-option
                                         v-for="item in tableCollege"
                                         :key="item.collegeName"
-                                        :lable="item.collegeName"
+                                        :label="item.collegeName"
                                         :value="item.collegeId">
                                 </el-option>
                             </el-select>
@@ -90,7 +93,7 @@
                 </el-table-column>
                 <el-table-column
                         label="面向专业">
-                    <el-input size="mini"></el-input>
+                    <!--<el-input size="mini"></el-input>-->
                 </el-table-column>
 
                 <el-table-column
@@ -116,11 +119,11 @@
             </el-table>
         </el-form>
         <el-row>
-            <el-col :span="4" :offset="7">
+            <el-col :span="2" :offset="19">
                 <el-button  type="primary">修改</el-button>
             </el-col>
-            <el-col :span="10">
-                <el-button type="primary">取消</el-button>
+            <el-col :span="2">
+                <el-button >取消</el-button>
             </el-col>
         </el-row>
 

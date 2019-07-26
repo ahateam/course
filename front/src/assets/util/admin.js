@@ -107,6 +107,9 @@ api.createLaborBuild = function (cnt,callback) {
     util.call(baseUrl+'/schoolLabor/createLaborBuild', cnt, callback)
 }
 
+api.getLaborBuild = function (cnt,callback) {
+    util.call(baseUrl+'/schoolLabor/getLaborBuild', cnt, callback)
+}
 
 //修改实验室
 api.editSchoolLabor = function (cnt,callback) {

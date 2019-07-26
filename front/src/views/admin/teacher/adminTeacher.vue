@@ -15,7 +15,7 @@
                     prop="date"
                     width="200">
                 <template slot="header" slot-scope="scope">
-                    <el-select v-model="collegeId" placeholder="选择学院" size="mini" @change="changePage(1)">
+                    <el-select v-model="collegeId" placeholder="选择学院" size="mini" @change="choiceCollege()">
                         <el-option
                                 v-for="item in tableCollege"
                                 :key="item.collegeName"
@@ -174,10 +174,20 @@
                 }
             },
             //下一页
+            choiceCollege(){
+                let nextCnt={
+                    collegeId:this.collegeId,
+                    offset:this.offset,
+                    count:this.count,
+                }
+                this.changePage(nextCnt)
+
+            },
+
             changePage(nextCnt){
 
                 //如果选择学院后 获取选择学院的教师信息
-                if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
+                //if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
                 this.getTeacher(nextCnt)
             },
             changeUsername(){
