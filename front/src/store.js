@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     navDefaultActive : '0',
     ownWorkTime:0,
-    detailsRow:{}
+    detailsRow:{},
+    count:10
   },
   mutations: {},
   actions: {}

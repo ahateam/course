@@ -190,11 +190,7 @@
                         this.tableData = []
                     }
                     //判断是否到达最后一页
-                    if(this.tableData.length <this.count){
-                        this.$refs.nextPage.chagnePageOver()
-                    }else{
-                        this.pageOver = false
-                    }
+                    this.$refs.nextPage.judge(this.tableData.length)
                 })
             },
 

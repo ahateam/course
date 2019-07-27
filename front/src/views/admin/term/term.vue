@@ -159,17 +159,13 @@
             //请求列表
             getTerms(cnt){
                 this.$admin.getTerms(cnt,(res)=>{
-                    if(res.data.rc == this.$util.RC.SUCCESS){
+                    if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
                     }else{
                         this.tableData = []
                     }
                     console.log(this.tableData)
-                    if(this.tableData.length <this.count){
-                        this.pageOver= true
-                    }else{
-                        this.pageOver = false
-                    }
+                    this.$refs.nextPage.judge(this.tableData.length)
 
                 })
             },

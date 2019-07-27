@@ -1,7 +1,7 @@
 /*左侧导航栏菜单生成的内容*/
 
 
-//二级学校管理员权限菜单
+//学校管理员权限菜单
 const  adminMenu =[
     {
         path:'/adminHome',
@@ -59,7 +59,7 @@ const  adminMenu =[
     },
 
 ]
-//一级学院权限菜单
+//学院权限菜单
 const collegeMenu = [
     {
         path:'/collegeHome',
@@ -103,12 +103,12 @@ const collegeMenu = [
     //     icon:'course_xiugai1',
     //     child:[]
     // },
-    // {
-    //     path:'/collegeRoom',
-    //     title:'教室管理',
-    //     icon:'course_xiugai1',
-    //     child:[]
-    // },
+     {
+        path:'/collegeRoom',
+        title:'教室管理',
+        icon:'course_xiugai1',
+        child:[]
+    },
     {
         path:'/collegeClass',
         title:'班级管理',

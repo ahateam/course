@@ -15,11 +15,11 @@
                     prop="date"
                     width="200">
                 <template slot="header" slot-scope="scope">
-                    <el-select v-model="collegeId" placeholder="选择学院" size="mini" @change="choiceCollege()">
+                    <el-select v-model="collegeId" placeholder="选择学院" size="mini" @change="lookupTeacher()">
                         <el-option
                                 v-for="item in tableCollege"
                                 :key="item.collegeName"
-                                :lable="item.collegeName"
+                                :label="item.collegeName"
                                 :value="item.collegeId">
                         </el-option>
                     </el-select>
@@ -28,6 +28,14 @@
             <el-table-column
                     prop="teacherName"
                     label="姓名">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="teacherName"
+                            size="mini"
+                            clearable
+                            @change="lookupTeacher()"
+                            placeholder="姓名"/>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="username"
@@ -37,7 +45,7 @@
                             v-model="username"
                             size="mini"
                             clearable
-                            @change="changeUsername()"
+                            @change="lookupTeacher()"
                             placeholder="工号"/>
                 </template>
             </el-table-column>
@@ -120,9 +128,15 @@
                 details:false,//详情弹框
                 edit:false,//编辑弹框
                 username:"",//工号搜索教师
+                teacherName:"",//输入框的
                 editref:"",//传值给edit界面
                 delTeacher:false,//删除教师
                 delUsername:"",//删除教师的工号
+                lookup:{
+                    username:"any(select username from table_name)",
+                    teacherName:"",
+                    collegeId:"any(select collegeId from table_name)"
+                },
             }
         },
         components:{
@@ -140,80 +154,68 @@
             },
             //获取教师信息
             getTeacher(cnt){
-                //默认获取所有学院
-                if(this.collegeId===""){
                     this.$admin.getSchoolTeacher(cnt,(res)=>{
                         if(res.data.rc === this.$util.RC.SUCCESS){
                             this.tableData = this.$util.tryParseJson(res.data.c)
                         }else{
                             this.tableData = []
                         }
-                        if(this.tableData.length <this.count){
-                            this.pageOver= true
-                        }else{
-                            this.pageOver = false
-                        }
+                            this.$refs.nextPage.judge(this.tableData.length)
                     })
-                }
-
-                //获取选择的学院教师信息
-                else{
-                    cnt.collegeId=this.collegeId
-                    this.$college.getCollegeTeacher(cnt,(res)=>{
-                        if(res.data.rc === this.$util.RC.SUCCESS){
-                            this.tableData = this.$util.tryParseJson(res.data.c)
-                        }else{
-                            this.tableData = []
-                        }
-                        if(this.tableData.length <this.count){
-                            this.pageOver= true
-                        }else{
-                            this.pageOver = false
-                        }
-                    })
-                }
             },
-            //下一页
-            choiceCollege(){
-                let nextCnt={
-                    collegeId:this.collegeId,
-                    offset:this.offset,
-                    count:this.count,
-                }
-                this.changePage(nextCnt)
-
-            },
+            //选择学院后
+            // choiceCollege(){
+            //     let nextCnt={
+            //         collegeId:this.collegeId,
+            //         offset:this.offset,
+            //         count:this.count,
+            //     }
+            //     this.changePage(nextCnt)
+            //     this.$refs.nextPage.defaultPage()
+            // },
 
             changePage(nextCnt){
-
+                //let cnt =nextCnt.cnt
                 //如果选择学院后 获取选择学院的教师信息
                 //if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
-                this.getTeacher(nextCnt)
+                if(this.username===""&&this.collegeId===""&&this.collegeId==="") {
+                    this.getTeacher(nextCnt)
+                }
+                else{
+                    this.lookupCollegeTeacher(nextCnt)
+                }
             },
-            changeUsername(){
-                //查询为空时
-                this.page=1
-                if(this.username===""){
-                    let cnt = {
-                        count:this.count,
-                        offset:(this.page-1)*this.count
-                    }
+            lookupTeacher(){
+
+                this.$refs.nextPage.defaultPage()
+                let cnt ={
+                    count:this.$store.state.count,
+                    offset:0,
+                }//查询为空时
+                if(this.username===""&&this.collegeId===""&&this.collegeId===""){
                     this.getTeacher(cnt)
                 }
                 else{
-                    let cnt ={
-                        username:this.username
-                    }
-
+                    this.lookupCollegeTeacher(cnt)
                     //查询输入工号的教师
-                    this.$college.lookupCollegeTeacher(cnt,(res)=>{
-                        if(res.data.rc === this.$util.RC.SUCCESS){
-                            this.tableData = this.$util.tryParseJson(res.data.c)
-                        }else{
-                            this.tableData = []
-                        }
-                    })
                 }
+            },
+            lookupCollegeTeacher(cnt){
+                cnt.teacherName=this.teacherName
+                if(this.username===""){cnt.username=this.lookup.username}
+                else{cnt.username=this.username}
+                if(this.collegeId===""){cnt.collegeId=this.lookup.collegeId}
+                else{cnt.collegeId=this.collegeId}
+
+
+                this.$college.lookupCollegeTeacher(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.tableData = this.$util.tryParseJson(res.data.c)
+                    }else{
+                        this.tableData = []
+                    }
+                    this.$refs.nextPage.judge(this.tableData.length)
+                })
             },
 
 

@@ -9,7 +9,7 @@ const  collegeWork = ()=>import('./work/collegeWork')
 const  collegeNotice = ()=>import('./notice/collegeNotice')
 //const  collegeExamine = ()=>import('./examine/collegeExamine')
 const  collegeClassroomExamine = ()=>import('./examine/classroomExamine')
-//const  collegeRoom = ()=>import('./room/collegeRoom')
+const  collegeRoom = ()=>import('./room/collegeRoom')
 const collegeFree = ()=>import('./free/collegeFree')
 
 const collegeClass = ()=>import('./class/collegeClass')
@@ -51,11 +51,11 @@ let routes=[
                 name:'collegeWork',
                 component:collegeWork
             },
-            // {
-            //     path:'/collegePlan',
-            //     name:'collegePlan',
-            //     component:collegePlan
-            // },
+            {
+                path:'/collegeRoom',
+                name:'collegeRoom',
+                component:collegeRoom
+            },
             {
                 path:'/collegeNotice',
                 name:'通知管理',

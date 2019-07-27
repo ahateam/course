@@ -116,5 +116,8 @@ api.editSchoolLabor = function (cnt,callback) {
     util.call(baseUrl+'/schoolLabor/editSchoolLabor', cnt, callback)
 }
 
-
+//条件查询实验室
+api.lookupLabor = function (cnt,callback) {
+    util.call(baseUrl+'/schoolLabor/lookupLabor', cnt, callback)
+}
 export default api

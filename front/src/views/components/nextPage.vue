@@ -20,14 +20,37 @@
         methods:{
             changePage(page){
                 this.page=page
+                let cnts={
+                    pageOver:false,
+                     cnt:{
+                        count:this.count,
+                        offset:(this.page-1)*this.count
+                    }
+                }
                 let cnt = {
                     count:this.count,
                     offset:(this.page-1)*this.count
                 }
                 this.$emit('transferRandom',cnt)
             },
-            chagnePageOver(){
-                this.pageOver=true
+
+            //下一页上一页是否禁用
+            chagnePageOver(state){
+                this.pageOver=state
+            },
+
+            //修改数据后变为第一页
+            defaultPage(){
+                this.page=1
+            },
+
+            //父组件点击变化页面后
+            judge(length){
+                if(length <this.$store.state.count){
+                    this.chagnePageOver(true)
+                }else{
+                    this.chagnePageOver(false)
+                }
             }
         }
     }

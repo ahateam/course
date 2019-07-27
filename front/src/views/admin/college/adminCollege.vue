@@ -284,11 +284,7 @@
                         this.tableData = []
                     }
                     //判断是否到达最后一页
-                    if(this.tableData.length <this.count){
-                        this.pageOver= true
-                    }else{
-                        this.pageOver = false
-                    }
+                    this.$refs.nextPage.judge(this.tableData.length)
                 })
             },
 

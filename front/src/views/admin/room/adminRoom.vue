@@ -223,11 +223,7 @@
                             this.tableData = []
                         }
                         //判断是否到达最后一页
-                        if(this.tableData.length <this.count){
-                            this.pageOver= true
-                        }else{
-                            this.pageOver = false
-                        }
+                        this.$refs.nextPage.judge(this.tableData.length)
                     })
                // }
 
@@ -254,29 +250,46 @@
 
 
             lookupLab(){
-                 let collegeId =   this.look.collegeId
-                 let labName =     this.look.labId
-                 let labBuildId= this.look.labBuildId
-
-                if(collegeId==="") collegeId=this.lookup.collegeId
-                if(labName==="") labName=this.lookup.labId
-                if(labBuildId==="") labBuildId=this.lookup.labBuildId
-
+                this.$refs.nextPage.defaultPage()
                 let nextCnt={
-                    labName:labName,
-                    labBuildId:labBuildId,
-                    collegeId:collegeId,
-                    count:this.count,
-                    offset:(this.page-1)*this.count
+                    count:this.$store.state.count,
+                    offset:0
                 }
                 console.log(nextCnt)
-                this.changePage(nextCnt)
-
+                if(this.look.collegeId===""&&this.look.labId===""&&this.look.labBuildId===""){
+                    this.getSchoolLabor(nextCnt)
+                }
+                else{
+                    this.lookupLabor(nextCnt)
+                }
             },
-            changePage(nextCnt){
-                this.getSchoolLabor(nextCnt)
-            },
+            lookupLabor(cnt){
+                let collegeId =   this.look.collegeId
+                let labName =     this.look.labName
+                let labBuildId= this.look.labBuildId
 
+                if(collegeId==="") cnt.collegeId=this.lookup.collegeId
+                if(labName==="") cnt.labName=this.lookup.labName
+                if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
+
+                this.$admin.lookupLabor(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$util.tryParseJson(res.data.c))
+                    }else{
+                        this.tableData = []
+                    }
+                    //判断是否到达最后一页
+                    this.$refs.nextPage.judge(this.tableData.length)
+                })
+            },
+            changePage(nextCnt) {
+                if (this.look.collegeId === "" && this.look.labId === "" && this.look.labBuildId === "") {
+                    this.getSchoolLabor(nextCnt)
+                } else {
+                    this.lookupLabor(nextCnt)
+                }
+            },
             //点击编辑按钮
             editData(row){
                 this.editTable.splice(0,1)
@@ -291,8 +304,9 @@
                         this.tableLabBuild = this.$util.tryParseJson(res.data.c)
                         console.log(this.$util.tryParseJson(res.data.c))
                     }else{
-                        this.tableData = []
+                        this.tableLabBuild = []
                     }
+                  //  this.$refs.nextPage.judge(this.tableData.length)
 
                 })
             }
