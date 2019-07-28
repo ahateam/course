@@ -117,4 +117,18 @@ let api = {};
             util.call(baseUrl+'/collegeOpen/delCollegeOpen', cnt, callback)
         }
 
+
+/**
+*  collegeLabor 实验室管理
+*/
+        //获取实验室
+        api.getCollegeLabor = function (cnt,callback) {
+            util.call(baseUrl+'/collegeLabor/getCollegeLabor', cnt, callback)
+        }
+
+        //修改实验室
+        api.editCollegeLabor = function (cnt,callback) {
+            util.call(baseUrl+'/collegeLabor/editSchoolLabor', cnt, callback)
+        }
+
 export default api

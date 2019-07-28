@@ -9,6 +9,7 @@
 <script>
     export default {
         name: "nextPage",
+        props:['setupCount'],
         data(){
             return{
                 page:1,
@@ -51,6 +52,11 @@
                 }else{
                     this.chagnePageOver(false)
                 }
+            }
+        },
+        mounted(){
+            if(this.setupCount===""||!this.setupCount){
+                this.count=this.setupCount
             }
         }
     }

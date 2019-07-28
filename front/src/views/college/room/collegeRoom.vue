@@ -1,7 +1,6 @@
 <template>
     <div>
         <page-title title-text="实验室管理" />
-        <el-button class="buttonMarginLeft" @click="createBuild=true" type="primary" size="small">新增实验楼</el-button>
         <el-table
                 :data="tableData"
                 class="tableWidthMargin">
@@ -134,16 +133,6 @@
         </el-dialog>
 
 
-        <!--***** 新增实验楼  ***-->
-        <el-dialog
-                :visible.sync="createBuild"
-                width="40%">
-            <div style="">
-                <page-title title-text="新增实验楼"></page-title>
-                <createBuild></createBuild>
-            </div>
-
-        </el-dialog>
     </div>
 </template>
 
@@ -168,7 +157,6 @@
                 pageOver:false,
                 count:10,
                 offset:0,
-                createBuild:false,//新增实验楼
                 editBuild:false,//修改实验室 弹框
                 editTable:[],//传给修改页面的值
                 lookup:{
@@ -182,18 +170,17 @@
                     collegeId:""
 
                 },//是否改变查询条件
-
-
+                chioceTeacher:false
             }
         },
         methods:{
 
 
             //获取全校实验室情况
-            getSchoolLabor(cnt){
+            getCollegeLabor(cnt){
                 //如果未选择学院
                 //if(this.collegeId===""){
-                this.$admin.getSchoolLabor(cnt,(res)=>{
+                this.$college.getCollegeLabor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
                         console.log(this.$util.tryParseJson(res.data.c))
@@ -231,22 +218,21 @@
                 this.$refs.nextPage.defaultPage()
                 let nextCnt={
                     count:this.$store.state.count,
-                    offset:0
+                    offset:0,
+                    collegeId:"本院ID"
                 }
                 console.log(nextCnt)
-                if(this.look.collegeId===""&&this.look.labId===""&&this.look.labBuildId===""){
-                    this.getSchoolLabor(nextCnt)
+                if(this.look.labId===""&&this.look.labBuildId===""){
+                    this.getCollegeLabor(nextCnt)
                 }
                 else{
                     this.lookupLabor(nextCnt)
                 }
             },
             lookupLabor(cnt){
-                let collegeId =   this.look.collegeId
                 let labName =     this.look.labName
                 let labBuildId= this.look.labBuildId
 
-                if(collegeId==="") cnt.collegeId=this.lookup.collegeId
                 if(labName==="") cnt.labName=this.lookup.labName
                 if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
 
@@ -262,8 +248,9 @@
                 })
             },
             changePage(nextCnt) {
-                if (this.look.collegeId === "" && this.look.labId === "" && this.look.labBuildId === "") {
-                    this.getSchoolLabor(nextCnt)
+                nextCnt.collegeId="本院ID"
+                if ( this.look.labId === "" && this.look.labBuildId === "") {
+                    this.getCollegeLabor(nextCnt)
                 } else {
                     this.lookupLabor(nextCnt)
                 }
@@ -293,7 +280,7 @@
                 count:this.count,
                 offset:(this.page-1)*this.count
             }
-            this.getSchoolLabor(cnt)
+            this.getCollegeLabor(cnt)
             this.getLaborBuild()
         },
         components: {edit}

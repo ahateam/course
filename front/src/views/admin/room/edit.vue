@@ -10,14 +10,20 @@
                         prop="lecturerName"
                         label="实验室(中心名称)">
                     <template slot-scope="scope">
-                        <el-input size="small" v-model="ruleForm[0].lecturerName" :placeholder="scope.row.lecturerName"></el-input>
+                        <el-form-item prop="lecturerName"  :rules="rules.lecturerName">
+                            <el-input size="small" v-model="ruleForm[0].lecturerName" >
+                            </el-input>
+                        </el-form-item>
                     </template>
                 </el-table-column>
                 <el-table-column
                         prop="labName"
                         label="实验室名称">
                     <template slot-scope="scope">
-                        <el-input size="small" v-model="ruleForm[0].labName" :placeholder="scope.row.labName"></el-input>
+                        <el-form-item prop="labName"  :rules="rules.labName">
+                            <el-input size="small" v-model="ruleForm[0].labName" :placeholder="scope.row.labName"></el-input>
+                        </el-form-item>
+
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -25,13 +31,16 @@
                         label="座位数(最大容纳人数)">
                     <template slot-scope="scope">
                     <span v-if="!scope.row.ifShow">
-                        <el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="mini" v-if="show">
-                            <el-option
-                                    v-for="item in peopleNum"
-                                    :key="item.value"
-                                    :value="item">
-                            </el-option>
-                        </el-select>
+                        <el-form-item prop="labSeat"  :rules="rules.labSeat">
+                            <el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="mini" v-if="show">
+                                <el-option
+                                        v-for="item in peopleNum"
+                                        :key="item.value"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
                     </span>
                     </template>
                 </el-table-column>
@@ -39,8 +48,16 @@
                 <el-table-column
                         prop="labArea"
                         label="面积">
-                   {{this.ruleForm[0].labArea}} m<sup>2</sup>
+                    <template slot="header" slot-scope="scope">
+                        面积/m<sup>2</sup>
+                    </template>
+                    <el-form-item prop="labArea"  :rules="rules.labArea">
+                        <el-input size="small" v-model="ruleForm[0].labArea" >
+                        </el-input>
+                    </el-form-item>
+
                 </el-table-column>
+
 
                 <el-table-column
                         label="地点"
@@ -119,10 +136,10 @@
             </el-table>
         </el-form>
         <el-row>
-            <el-col :span="2" :offset="19">
-                <el-button  type="primary">修改</el-button>
+            <el-col :span="2" :offset="18">
+                <el-button  type="primary" @click="submitForm()">修改</el-button>
             </el-col>
-            <el-col :span="2">
+            <el-col :span="2" :offset="1">
                 <el-button >取消</el-button>
             </el-col>
         </el-row>
@@ -148,8 +165,22 @@
                 // },
                 peopleNum:['10','15','20','25','30','35','40','45','50'],
                 rules: {
-                    pass: [
-                        {  required: true, message: '请输入活动名称', trigger: 'blur' }
+                    labName: [
+                        {  required: true, message: '实验室名称',},
+                        {  max: 15, message: '长度在15 个字符内', trigger: 'blur' }
+
+                    ],
+                    labArea:[
+                        {  required: true, message: '实验室面积',},
+
+                    ],
+                    lecturerName:[
+                        {  required: true, message: '实验中心名称',},
+
+                    ],
+                    labSeat:[
+                        {  required: true, message: '座位数',},
+
                     ],
                 },
                 displayTable:true,//强制刷新界面
@@ -159,13 +190,55 @@
         },
         methods:{
 
+            submitForm() {
+                this.$refs["ruleForm"].validate((valid) => {
+                    if (valid) {
+                        this.editSchoolLabor()
+                    } else {
+                        this.$message({
+                            type:"warning",
+                            message:"请输入完整"
+                        })
+                        return false;
+                    }
+                });
+            },
+            editSchoolLabor(){
+
+                let cnt={
+                    labName:this.ruleForm[0].labName,
+                    labId: this.ruleForm[0].labId,
+                    labSeat: this.ruleForm[0].labSeat,
+                    labArea:this.ruleForm[0].labArea,
+                    lecturerName:this.ruleForm[0].lecturerName,
+                }
+                console.log(this.ruleForm)
+                console.log(cnt)
+
+                this.$admin.editSchoolLabor(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.$message({
+                            type:"success",
+                            message:"编辑成功"
+                        })
+                    }else{
+                        this.$message({
+                            type:"warning",
+                            message:"编辑失败"
+                        })
+                    }
+
+                })
+            },
+
+
 
             //如07   则需把7变为07
-            roomNums(item){
-                if(item<10){
-                    this.ruleForm.roomNum="0"+item
-                }
-            }
+            // roomNums(item){
+            //     if(item<10){
+            //         this.ruleForm.roomNum="0"+item
+            //     }
+            // }
         },
         mounted(){
         },
