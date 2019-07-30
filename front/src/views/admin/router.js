@@ -3,6 +3,8 @@
 const adminHome  = ()=>import('./home/adminHome')
 const adminPlan  = ()=>import('./plan/adminPlan')
 const adminCollege  = ()=>import('./college/adminCollege')
+const adminMajor  = ()=>import('./major/adminMajor')
+
 const adminTeacher  = ()=>import('./teacher/adminTeacher')
 const adminRoom  = ()=>import('./room/adminRoom')
 const adminExamine  = ()=>import('./examine/adminExamine')
@@ -29,6 +31,11 @@ let routes=[
                 path: '/adminCollege',
                 name: 'adminCollege',
                 component: adminCollege
+            },
+            {
+                path: '/adminMajor',
+                name: 'adminMajor',
+                component: adminMajor
             },
             {
                 path: '/adminTeacher',

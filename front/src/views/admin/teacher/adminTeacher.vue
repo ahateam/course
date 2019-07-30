@@ -3,7 +3,6 @@
         <page-title title-text="教师信息"></page-title>
         <el-button class="buttonMarginLeft" type="primary">新增教师</el-button>
         <el-table
-                border
                 :data="tableData"
                 class="tableWidthMargin">
             <el-table-column

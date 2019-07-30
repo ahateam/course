@@ -22,6 +22,18 @@
                         show-input>
                 </el-slider>
             </el-form-item>
+
+            <el-form-item label="建成日期:" prop="labTime">
+                <el-date-picker
+                        v-model="form.labTime"
+                        type="date"
+                        placeholder="选择日期"
+                        format="yyyy 年 MM 月 dd 日"
+                        value-format="timestamp">
+                </el-date-picker>
+            </el-form-item>
+
+
         </el-form>
         <el-button type="primary"  @click="submitForm('form')" style="margin-left: 80%">确认</el-button>
     </div>
@@ -33,6 +45,7 @@
         data(){
             return{
                 form:{
+                    labTime:20231213212,//建成日期
                     labBuildName:"",//大楼名称
                     floorNum:0,//楼层数
                     floorRoomNum:0,//每层房间数
@@ -42,6 +55,7 @@
                                     { required: true, message: '请输入大楼名称', trigger: 'blur' },],
                     floorNum:[{ required: true, message: '请输入楼层数', trigger: 'blur' },],
                     floorRoomNum:[{ required: true, message: '请输入楼层房间数', trigger: 'blur' },],
+                    labTime:[{ required: true, message: '选择建成日期', trigger: 'blur' },],
                 }
             }
         },
@@ -62,7 +76,8 @@
                 let cnt={
                     labBuildName:this.form.labBuildName,
                     floorNum:parseInt(this.form.floorNum),
-                    floorRoomNum:parseInt(this.form.floorRoomNum)
+                    floorRoomNum:parseInt(this.form.floorRoomNum),
+                    labTime:this.form.labTime,
                 }
                 this.$admin.createLaborBuild(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){

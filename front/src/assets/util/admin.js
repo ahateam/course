@@ -120,4 +120,29 @@ api.editSchoolLabor = function (cnt,callback) {
 api.lookupLabor = function (cnt,callback) {
     util.call(baseUrl+'/schoolLabor/lookupLabor', cnt, callback)
 }
+
+/**
+ * 专业管理 major
+ * */
+api.lookupMajor = function (cnt,callback) {
+    util.call(baseUrl+'/major/lookupMajor', cnt, callback)
+}
+
+api.getMajor = function (cnt,callback) {
+    util.call(baseUrl+'/major/getMajor', cnt, callback)
+}
+
+api.editMajor = function (cnt,callback) {
+    util.call(baseUrl+'/major/editMajor', cnt, callback)
+}
+
+api.createMajor = function (cnt,callback) {
+    util.call(baseUrl+'/major/createMajor', cnt, callback)
+}
+
+api.delMajor = function (cnt,callback) {
+    util.call(baseUrl+'/major/delMajor', cnt, callback)
+}
+
+
 export default api

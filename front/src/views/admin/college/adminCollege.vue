@@ -4,7 +4,7 @@
         <el-row>
             <el-col>
                 <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增学院</el-button>
-                <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">专业转院</el-button>
+                <!--<el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">专业转院</el-button>-->
             </el-col>
         </el-row>
         <el-table

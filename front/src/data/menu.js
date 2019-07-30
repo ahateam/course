@@ -28,6 +28,12 @@ const  adminMenu =[
         child:[]
     },
     {
+        path:'/adminMajor',
+        title:'专业管理',
+        icon:'course_guanli',
+        child:[]
+    },
+    {
         path:'/adminTeacher',
         title:'教师管理',
         icon:'course_xueyuanpeizhi',
