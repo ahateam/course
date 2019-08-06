@@ -3,12 +3,12 @@
 
 /*
 * 权限登录
-* @teacher 教师权限  0
-* @admin  校级管理权限  1
-* @college  学院管理权限 2
-* laboratory 实验室 3
+* @admin 校级教务处  0
+* @college  院级教务处  1
+* @laboratory  实验室 2
+* teacher 教师 3
 * */
-const grade={teacher:'3',admin:'0',college:'1',laboratory:'2'}
+const grade={admin:'0',college:'1',laboratory:'2',teacher:'3',}
 
 
 export default {

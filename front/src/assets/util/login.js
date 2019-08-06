@@ -5,7 +5,7 @@ let api = {};
 
 
 api.login = function (cnt,callback) {
-    util.call(baseUrl+'/login/Login', cnt, callback)
+    util.call(baseUrl+'/userController/loginByNameAndPwd', cnt, callback)
 }
 
 

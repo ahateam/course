@@ -81,13 +81,26 @@
         name: "edit",
         props:['form'],
         data(){
+            var teacherPhone=(rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输电话'));
+                } else if(value.toString().length!==11) {
+                    callback(new Error('电话长度为11位'));
+                }else if(typeof  value !=="number"){
+                    callback(new Error('电话为数字'))
+                }else{
+                    callback()
+                }
+            }
             return{
                 editForm:{},
                 collegeId:"",
                 tableCollege:"",
                 adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},],
                 disabled:{adminId:true,college:true,phone:true},
-                rules:{phoneNumber:[{ min: 11, max: 11, message: '电话长度为11位', trigger: 'blur' },]}
+                rules:{
+                    teacherPhone:[ { validator: teacherPhone, trigger: 'blur' },],
+                }
             }
         },
         computed:{

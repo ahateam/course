@@ -1,8 +1,7 @@
 <template>
         <div>
             <page-title title-text="xxx学院班级管理"></page-title>
-            <el-button type="primary" class="buttonMarginLeft">添加班级</el-button>
-            <el-button type="primary" style="margin-left: 30px">添加专业</el-button>
+            <el-button type="primary" @click="$refs.createDia.openCreate(40)" class="buttonMarginLeft">添加班级</el-button>
 
             <el-table
                     :data="tableData"
@@ -46,19 +45,40 @@
                         <el-button  style="margin-left: 10px" type="text" size="mini" >删除</el-button>
                     </template>
                 </el-table-column>
-
             </el-table>
+            <next-page @transferRandom="changePage" />
+
+            <two-dialog ref="createDia" name="新增"  >
+                <create></create>
+            </two-dialog>
+
+            <two-dialog ref="editDia" name="编辑" >
+                <editClass></editClass>
+            </two-dialog>
         </div>
 </template>
 
 <script>
+    import create from "./createClass.vue"
+    import editClass from "./edit"
     export default {
         name: "collegeSemester",
         data(){
             return{
-                tableData:[{}]
+                tableData:[{}],
             }
-        }
+        },
+        methods:{
+            changePage(nextCnt){
+                this.getTeacher(nextCnt)
+            },
+            openDia(){
+                this.$refs.dialogs.openDel(50)
+            }
+        },
+        components:{create,editClass}
+
+
     }
 </script>
 

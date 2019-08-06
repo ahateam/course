@@ -1,7 +1,7 @@
 <template>
         <div  style="margin-left:30px">
             <page-title title-text="修改课程大纲"></page-title>
-            <el-form ref="editCollegeCourse" :model="editCollegeCourse" label-width="85px" label-position="left" :rules="rules">
+            <el-form ref="editCollegeCourse" :model="editCollegeCourse" label-width="120px" label-position="left" :rules="rules">
                 <el-row :gutter="21">
                     <el-col :span="15" >
                         <el-form-item label="课程名称:" prop="courseName" >
@@ -11,6 +11,26 @@
 
                     <el-col :offset="3" :span="4" style="line-height: 40px;color: #f56c6c">
                         <el-button type="text" v-show="disableForm.disCourseName===true"   @click="disableForm.disCourseName=false">修改</el-button>
+                    </el-col>
+                </el-row>
+
+                <el-row :gutter="21">
+                    <el-col :span="15" >
+                        <el-form-item label="建议课程学时:" prop="courseTime" >
+                            <el-select :disabled="disableForm.courseTime" v-model="editCollegeCourse.courseTime" >
+                                <el-option
+                                        v-for="item in 72"
+                                        :key="item"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+
+                            <!--<el-input  placeholder="请输入内容" v-model="editCollegeCourse.courseTime" :disabled="disableForm.courseTime"></el-input>-->
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col :offset="3" :span="4" style="line-height: 40px;color: #f56c6c">
+                        <el-button type="text" v-show="disableForm.courseTime===true"   @click="disableForm.courseTime=false">修改</el-button>
                     </el-col>
                 </el-row>
 
@@ -24,15 +44,12 @@
                                        :disabled="disableForm.disCourseName===true&&disableForm.assessmentMode===true&&
                             disableForm.courseMajor===true&&
                             disableForm.courseCredit===true&&disableForm.courseTime===true">
-                                确认</el-button>
+                                立即修改</el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
         </div>
-
-
-
 </template>
 
 <script>
@@ -68,7 +85,7 @@
                     courseAge:[{ required: true, message: '请选上课年纪', trigger: 'blur' }],
                     courseCredit:[{ required: true, message: '请选课程学分', trigger: 'blur' }],
                     courseTime:[{ required: true, message: '请选课程学时', trigger: 'blur' }],
-                }
+                },
 
             }
         },
@@ -90,7 +107,8 @@
                 let cnt={
                     courseCode:this.editCollegeCourse.courseCode,
                     courseName:this.editCollegeCourse.courseName,
-                    collegeID:"123456"
+                    courseTime:this.editCollegeCourse.courseTime,
+
                 };
                 this.$college.editCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {

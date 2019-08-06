@@ -1,61 +1,22 @@
 <template>
     <div>
         <page-title title-text="新增课程"></page-title>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="width: 90%">
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px" label-position="left" style="width: 90%">
 
 
             <el-form-item label="课程名称" prop="courseName">
                 <el-input v-model="form.courseName"></el-input>
             </el-form-item>
-            <!--<el-form-item label="课程编码" prop="courseCode">-->
-                <!--<el-input v-model="form.courseCode"></el-input>-->
-            <!--</el-form-item>-->
+            <el-form-item label="建议课程学时:" prop="courseTime" >
+                <el-select v-model="form.courseTime" >
+                    <el-option
+                            v-for="item in 72"
+                            :key="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
 
-            <!--<el-row>-->
-            <!--<el-col :span="12">-->
-            <!--<el-form-item label="考核方式" style="float: left" prop="assessmentMode">-->
-                <!--<el-select v-model="form.assessmentMode" placeholder="请选择活动区域">-->
-                    <!--<el-option label="考察" value="考察"></el-option>-->
-                    <!--<el-option label="考试" value="考试"></el-option>-->
-                <!--</el-select>-->
-            <!--</el-form-item>-->
-            <!--</el-col>-->
-
-            <!--<el-col :span="12">-->
-                <!--<el-form-item label="课程性质" style="float: left" prop="courseNature">-->
-                    <!--<el-select v-model="form.courseNature" placeholder="请选择活动区域">-->
-                        <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                        <!--<el-option label="区域二" value="beijing"></el-option>-->
-                    <!--</el-select>-->
-                <!--</el-form-item>-->
-            <!--</el-col>-->
-
-
-            <!--</el-row>-->
-
-            <!--<el-row>-->
-
-                <!--<el-col :span="12">-->
-                    <!--<el-form-item label="上课年纪" style="float: left"  prop="courseAge">-->
-                        <!--<el-select v-model="form.courseAge" placeholder="请选择活动区域">-->
-                            <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                            <!--<el-option label="区域二" value="beijing"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
-            <!--</el-row>-->
-            <!--<el-row>-->
-                <!--<el-col :span="12">-->
-                    <!--<el-form-item label="课程学分" prop="courseCredit">-->
-                        <!--<el-rate v-model="form.courseCredit" style="line-height: 50px" ></el-rate>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
-            <!--</el-row>-->
-
-
-            <!--<el-form-item label="课程学时" prop="courseTime">-->
-                <!--<el-slider v-model="form.courseTime" show-input :min="18" :max="72" :step="9"  ></el-slider>-->
-            <!--</el-form-item>-->
+            </el-form-item>
 
             <el-form-item>
                 <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
@@ -110,11 +71,11 @@
             //新增课程
             createCourseOutline(){
                 let cnt={
-                    courseCode:parseInt(this.form.courseCode),
+                   // courseCode:parseInt(this.form.courseCode),
                     courseName:this.form.courseName,
                     collegeId:"123",
-                    collegeName:"大数据",
-                    collegeOpenExamStatus:"null"
+                    courseTime:this.form.courseTime
+                    //collegeOpenExamStatus:"null"
                 };
                 this.$college.createCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {

@@ -111,9 +111,9 @@
                                 label="全部">
                         </el-option>
                         <el-option
-                                v-for="item in tableCollege"
+                                v-for="item in $store.state.tableCollege"
                                 :key="item.collegeName"
-                                :lable="item.collegeName"
+                                :label="item.collegeName"
                                 :value="item.collegeId">
                         </el-option>
                     </el-select>
@@ -268,9 +268,15 @@
                 let labName =     this.look.labName
                 let labBuildId= this.look.labBuildId
 
-                if(collegeId==="") cnt.collegeId=this.lookup.collegeId
+                if(collegeId==="") {cnt.collegeId=this.lookup.collegeId}
+                else{cnt.collegeId=collegeId}
+
                 if(labName==="") cnt.labName=this.lookup.labName
+                else{cnt.labName=labName}
+
                 if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
+                else{cnt.labBuildId=labBuildId}
+                console.log(cnt)
 
                 this.$admin.lookupLabor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){

@@ -255,10 +255,7 @@
                 }],
 
                 dialogVisible:false, //新增课程弹出
-                page:1,
-                pageOver:false,
-                count:10,
-                offset:0,
+
 
                 edit:false,
                 editCollege:{
@@ -276,12 +273,15 @@
 
             //获取学院
             getDepartments(cnt){
+               // const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                 this.$admin.getDepartments(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res))
+                        console.log(res)
+                        //loading.close()
                     }else{
                         this.tableData = []
+                        //loading.close()
                     }
                     //判断是否到达最后一页
                     this.$refs.nextPage.judge(this.tableData.length)
@@ -382,7 +382,7 @@
                                 collegeName:NAME,
                                 collegeId:ID
                             }
-                            //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
+                            const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                             this.$admin.editDepartment(cnt,(res)=>{
                                 if(res.data.rc === this.$util.RC.SUCCESS){
                                     this.$message({type:'success',message:"修改成功"})
@@ -425,8 +425,8 @@
         mounted(){
             //获取学院信息
             let cnt={
-                offset:this.offset,
-                count:this.count
+                offset:this.$store.state.offset,
+                count:this.$store.state.count
             }
             this.getDepartments(cnt)
         },

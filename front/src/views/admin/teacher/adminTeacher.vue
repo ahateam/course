@@ -1,7 +1,7 @@
 <template>
     <div class="changeDia">
         <page-title title-text="教师信息"></page-title>
-        <el-button class="buttonMarginLeft" type="primary">新增教师</el-button>
+        <el-button class="buttonMarginLeft" @click="$refs.createDia.openCreate(50)" type="primary">新增教师</el-button>
         <el-table
                 :data="tableData"
                 class="tableWidthMargin">
@@ -10,27 +10,14 @@
                     type="index"
                     width="50">
             </el-table-column>
-            <el-table-column
-                    prop="date"
-                    width="200">
-                <template slot="header" slot-scope="scope">
-                    <el-select v-model="collegeId" placeholder="选择学院" size="mini" @change="lookupTeacher()">
-                        <el-option
-                                v-for="item in tableCollege"
-                                :key="item.collegeName"
-                                :label="item.collegeName"
-                                :value="item.collegeId">
-                        </el-option>
-                    </el-select>
-                </template>
-            </el-table-column>
+
             <el-table-column
                     prop="teacherName"
                     label="姓名">
                 <template slot="header" slot-scope="scope">
                     <el-input
                             v-model="teacherName"
-                            size="mini"
+
                             clearable
                             @change="lookupTeacher()"
                             placeholder="姓名"/>
@@ -42,16 +29,38 @@
                 <template slot="header" slot-scope="scope">
                     <el-input
                             v-model="username"
-                            size="mini"
+
                             clearable
                             @change="lookupTeacher()"
                             placeholder="工号"/>
                 </template>
             </el-table-column>
             <el-table-column
+                    prop="date"
+                    width="200">
+                <template slot="header" slot-scope="scope">
+                    <el-select v-model="collegeId" placeholder="选择学院"  @change="lookupTeacher()">
+                        <el-option
+                                value=""
+                                label="全部">
+                        </el-option>
+                        <el-option
+                                v-for="item in $store.state.tableCollege"
+                                :key="item.collegeName"
+                                :label="item.collegeName"
+                                :value="item.collegeId">
+                        </el-option>
+                    </el-select>
+                </template>
+                <template  slot-scope="scope">
+                    {{scope.row.collegeName}}
+                </template>
+            </el-table-column>
+            <el-table-column
                     prop="teacherPosition"
                     label="职称">
             </el-table-column>
+
             <el-table-column
                     prop="teacherPhone"
                     label="联系方式">
@@ -69,8 +78,8 @@
                 <template slot-scope="scope">
                     <el-button @click="details=true" type="text" size="small">详情</el-button>
                     <el-button @click="edits(scope.row)" type="text" size="small"
-                                :disabled="scope.row.adminId==='1'">编辑</el-button>
-                    <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminId==='1'">
+                                :disabled="scope.row.adminId==='0'">编辑</el-button>
+                    <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminId==='0'">
                         删除</el-button>
                 </template>
             </el-table-column>
@@ -87,22 +96,18 @@
             </span>
         </el-dialog>
 
-        <el-dialog
-                title="修改教师信息"
-                :visible.sync="edit"
-                width="50%">
+        <two-dialog ref="editDia">
             <edit @transferRandom="closeEdit" ref="editTeacher" :form="editref"></edit>
 
-        </el-dialog>
+        </two-dialog>
 
-        <el-dialog
-                title="删除教师"
-                :visible.sync="delTeacher"
-                width="40%">
+        <two-dialog ref="delDia">
             <del-information @transferRandom="delForm"/>
+        </two-dialog>
 
-        </el-dialog>
-
+        <two-dialog ref="createDia">
+            <create></create>
+        </two-dialog>
         <next-page ref="nextPage"  @transferRandom="changePage" />
 
     </div>
@@ -110,17 +115,14 @@
 
 <script>
     import edit from "./edit"
-
+    import create from "./create"
     export default {
         name: "adminTeacher",
         data(){
             return{
-                page:1,
-                pageOver:false,
-                count:10,
-                offset:0,
+
                 tableData:[{teacherName:"www",teacherPhone:187852154654,adminId:'1'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
-                ,{teacherName:"www",teacherPhone:187852154654,adminId:'3'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
+                ,{teacherName:"www",teacherPhone:187852154654,adminId:'0'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
                 ],
                 tableCollege:[],//选择学院
                 collegeId:"",  //选择选择器后得到
@@ -132,13 +134,14 @@
                 delTeacher:false,//删除教师
                 delUsername:"",//删除教师的工号
                 lookup:{
-                    username:"any(select username from table_name)",
+                    username:"any(select username from tb_teacher_user)",
                     teacherName:"",
-                    collegeId:"any(select collegeId from table_name)"
+                    collegeId:"any(select collegeId from tb_teacher_user)"
                 },
             }
         },
         components:{
+            create,
             edit
         },
 
@@ -156,6 +159,7 @@
                     this.$admin.getSchoolTeacher(cnt,(res)=>{
                         if(res.data.rc === this.$util.RC.SUCCESS){
                             this.tableData = this.$util.tryParseJson(res.data.c)
+                            console.log(this.tableData)
                         }else{
                             this.tableData = []
                         }
@@ -191,7 +195,7 @@
                     count:this.$store.state.count,
                     offset:0,
                 }//查询为空时
-                if(this.username===""&&this.collegeId===""&&this.collegeId===""){
+                if(this.username===""&&this.collegeId===""&&this.teacherName===""){
                     this.getTeacher(cnt)
                 }
                 else{
@@ -206,7 +210,7 @@
                 if(this.collegeId===""){cnt.collegeId=this.lookup.collegeId}
                 else{cnt.collegeId=this.collegeId}
 
-
+                console.log(cnt)
                 this.$college.lookupCollegeTeacher(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
@@ -220,7 +224,8 @@
 
             //点击删除按钮
             del(row){
-                this.delTeacher=true
+                this.$refs.delDia.openDel(40)
+                //this.delTeacher=true
                 this.delUsername=row.username
             },
 
@@ -248,22 +253,23 @@
 
             //传值给edit界面
             edits(row){
-                this.edit=true
+                //this.edit=true
+                this.$refs.editDia.openEdit(50)
                 this.editref=row
                 this.$refs.editTeacher.again()
             },
             //权限id变为权限名称
             changeAdminId(row,col,val){
-                if(val==='0') return "教师"
-                if(val==='1') return "教务处管理员"
-                if(val==='2') return "学院管理员"
-                if(val==='3') return "实验室管理员"
+                if(val==='0') return "教务处管理员"
+                if(val==='1') return "学院管理员"
+                if(val==='2') return "实验室管理员"
+                if(val==='3') return "教师"
             }
         },
         mounted(){
             let cnt = {
-                count:this.count,
-                offset:(this.page-1)*this.count
+                count:this.$store.state.count,
+                offset:(this.page-1)*this.$store.state.count
             }
             this.getTeacher(cnt)
 

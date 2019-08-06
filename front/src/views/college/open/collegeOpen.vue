@@ -3,16 +3,11 @@
     <div>
         <page-title title-text="xxx学院开设课程"></page-title>
 
-        <!--新增课程大纲-->
-        <el-dialog
-                :visible.sync="dialogVisible"
-                width="40%">
-            <new-curriculum></new-curriculum>
-        </el-dialog>
+
 
         <el-row class="row-box" >
 
-            <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增课程</el-button>
+            <el-button type="primary" class="buttonMarginLeft" @click="$refs.createDia.openCreate(40)">新增课程</el-button>
 
         </el-row>
         <el-row class="row-box">
@@ -36,19 +31,24 @@
                         label="课程编码"
                 >
                 </el-table-column>
+                <el-table-column
+                        prop="courseTime"
+                        label="建议课程学时"
+                >
+                </el-table-column>
 
                 <el-table-column
                         align="center"
                         prop="courseExamStatus"
                         label="审核状态">
                     <template slot-scope="scope">
-                        <span v-show="scope.row.courseExamStatus==='agree'" style="color:#67c23a;">
+                        <span v-show="scope.row.collegeOpenExamStatus==='agree'" style="color:#67c23a;">
                             通过
                         </span>
-                        <span v-show="scope.row.courseExamStatus==='disagree'" style="color:#f56c6c;">
+                        <span v-show="scope.row.collegeOpenExamStatus==='disagree'" style="color:#f56c6c;">
                             未通过
                         </span>
-                        <span v-show="scope.row.courseExamStatus==='null'" style="color:#ff9800;">
+                        <span v-show="scope.row.collegeOpenExamStatus==='null'" style="color:#ff9800;">
                             审核中
                         </span>
                     </template>
@@ -69,32 +69,22 @@
             </el-table>
         </el-row>
 
-        <el-dialog
-                :visible.sync="delCour"
-                :title="del.courseName"
-                width="30%">
-            <div style="height: 140px">
-                <el-input
-                        type="textarea"
-                        placeholder="删除备注 30字以内"
-                        v-model="delRemark"
-                        maxlength="30"
-                        resize="none"
-                        :autosize="{minRows:3,maxRows:5}"
-                        show-word-limit>
-                </el-input>
-                <el-button @click="delCourseOutline(del)" type="danger" style="float: right;margin: 30px 0 0 0">确认删除</el-button>
-            </div>
+        <!--新增课程大纲-->
+        <two-dialog ref="createDia">
+            <new-curriculum></new-curriculum>
+        </two-dialog>
 
-        </el-dialog>
+
+        <!--****  删除  *****-->
+        <two-dialog ref="delDia">
+            <del-information @transferRandom="delForm"/>
+
+        </two-dialog>
 
         <!--*******   编辑大纲弹窗   ****-->
-        <el-dialog
-                :visible.sync="editCourse"
-                width="40%">
+        <two-dialog ref="editDia">
             <edit ref="edit"  :editCollegeCourse="editCollegeCourse"></edit>
-
-        </el-dialog>
+        </two-dialog>
 
 
         <next-page ref="nextPage"  @transferRandom="changePage" />
@@ -168,7 +158,25 @@
         },
         methods:{
 
-
+            delForm(delForm){
+                let cnt={
+                    courseCode:this.del.courseCode
+                }
+                console.log(cnt)
+                this.$college.delCollegeOpen(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.$message({
+                            type:"success",
+                            message:"删除成功"
+                        })
+                    }else{
+                        this.$message({
+                            type:"warning",
+                            message:"删除失败"
+                        })
+                    }
+                })
+            },
             //分页
             changePage(nextCnt){
                 // this.page = page
@@ -186,6 +194,7 @@
                 this.$college.getCollegeOpen(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(this.tableData)
                     }else{
                         this.tableData = []
                     }
@@ -198,22 +207,8 @@
             //点击删除
             delCourse(row){
                 this.del=row
-                this.delCour=true
+                this.$refs.delDia.openDel()
             },
-
-            //删除大纲
-            delCourseOutline(row){
-                let cnt={
-                    courseCode:row.code,
-                }
-                this.$college.delCollegeOpen(cnt,(res)=> {
-                    if (res.data.rc === this.$util.RC.SUCCESS) {
-                        this.$message("删除成功，等待管理员审核")
-                    } else {
-                    }
-                })
-            },
-
 
             //编辑
             edit(row){
@@ -221,7 +216,7 @@
                 if(this.clickEditNum!==0){ this.$refs.edit.again()}
                 this.clickEditNum++
                 this.editCollegeCourse=row
-                this.editCourse=true
+                this.$refs.editDia.openEdit(40)
 
             }
         },
@@ -229,7 +224,7 @@
             this.$refs.nextPage.changePage(1)
             //获取开设课程
             let cnt={
-                collegeId:"大数据",
+                collegeId:"123",
                 offset:this.offset,
                 count:this.count
             }

@@ -73,8 +73,11 @@ api.delDepartment = function (cnt,callback) {
  * 教师管理 schoolTeacher
  * */
 //获取教师 schoolTeacher
+// api.getSchoolTeacher = function (cnt,callback) {
+//     util.call(baseUrl+'/schoolTeacher/getTeacher', cnt, callback)
+// }
 api.getSchoolTeacher = function (cnt,callback) {
-    util.call(baseUrl+'/schoolTeacher/getTeacher', cnt, callback)
+    util.call(baseUrl+'/userController/getSchoolTeacher', cnt, callback)
 }
 
 //编辑教师

@@ -3,17 +3,11 @@
     <div>
         <page-title title-text="xxx学院课程大纲"></page-title>
 
-        <!--新增课程大纲-->
-            <el-dialog
-                :visible.sync="dialogVisible"
-                width="40%"
-                :before-close="handleClose">
-                <new-curriculum></new-curriculum>
-        </el-dialog>
+
 
             <el-row class="row-box" >
 
-                    <el-button type="primary" class="buttonMarginLeft" @click="dialogVisible = true">新增课程</el-button>
+                    <el-button type="primary" class="buttonMarginLeft" @click="$refs.createDia.openCreate(40)">新增课程</el-button>
                     <el-button type="primary" style="margin-left: 30px"  @click="importModal =true">批量导入</el-button>
 
             </el-row>
@@ -114,11 +108,8 @@
             </el-table>
             </el-row>
 
-        <el-dialog
-                :visible.sync="delCour"
-                :title="del.courseName"
-                width="30%">
-            <div style="height: 140px">
+        <two-dialog ref="delDia">
+            <div>
                 <el-input
                         type="textarea"
                         placeholder="删除备注 30字以内"
@@ -128,10 +119,11 @@
                         :autosize="{minRows:3,maxRows:5}"
                         show-word-limit>
                 </el-input>
-                <el-button @click="delCourseOutline(del)" type="danger" style="float: right;margin: 30px 0 0 0">确认删除</el-button>
+                <el-button @click="delCourseOutline(del)" type="danger" style="margin: 30px 0 0 80%">确认删除</el-button>
+
             </div>
 
-        </el-dialog>
+        </two-dialog>
 
         <!--批量导入弹窗-->
         <el-dialog
@@ -177,13 +169,15 @@
         </el-dialog>
 
          <!--*******   编辑大纲弹窗   ****-->
-        <el-dialog
-                :visible.sync="editCourse"
-                width="40%">
+        <two-dialog ref="editDia">
                 <edit ref="edit"  :editCollegeCourse="editCollegeCourse"></edit>
 
-        </el-dialog>
+        </two-dialog>
 
+        <!--新增课程大纲-->
+        <two-dialog ref="createDia">
+            <new-curriculum></new-curriculum>
+        </two-dialog>
 
         <next-page ref="nextPage"  @transferRandom="changePage" />
 
@@ -266,7 +260,7 @@
                 pageOver:false,
                 count:10,
                 offset:0,
-                editCourse:false,//编辑大纲弹窗
+                //editCourse:false,//编辑大纲弹窗
                 clickEditNum:0,   //调用子组件函数 清除表单验证
             }
         },
@@ -375,6 +369,7 @@
                 this.$college.getCourseOutlineByTermId(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(this.tableData)
                     }else{
                         this.tableData = []
                     }
@@ -389,7 +384,7 @@
             //点击删除
             delCourse(row){
                 this.del=row
-                this.delCour=true
+                this.$refs.delDia.openDel(40)
             },
 
             //删除大纲
@@ -413,7 +408,7 @@
                 if(this.clickEditNum!==0){ this.$refs.edit.again()}
                 this.clickEditNum++
                 this.editCollegeCourse=row
-                this.editCourse=true
+                this.$refs.editDia.openEdit(40)
 
             }
         },
@@ -435,7 +430,7 @@
 
             //获取课程大纲
             let cnt={
-                courseCollege:"大数据",
+                collegeId:"123",
                 offset:this.offset,
                 count:this.count
             }

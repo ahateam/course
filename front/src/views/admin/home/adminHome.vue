@@ -13,7 +13,6 @@
                     offset:20,
                     count:0
                 }
-
                 //获取实验室
                 this.$admin.getDepartments(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){

@@ -51,23 +51,23 @@ let api = {};
  */
         //获取课程大纲
         api.getCourseOutlineByTermId = function (cnt,callback) {
-            util.call(baseUrl+'/sch/getCourseOutlineByTermId', cnt, callback)
+            util.call(baseUrl+'/courseOutline/getCourseOutline', cnt, callback)
         }
 
         //新增大纲
         api.createCourseOutline = function (cnt,callback) {
-            util.call(baseUrl+'/sch/createCourseOutline', cnt, callback)
+            util.call(baseUrl+'/courseOutline/createCourseOutline', cnt, callback)
         }
 
         //删除大纲
         api.delCourseOutline = function (cnt,callback) {
-            util.call(baseUrl+'/sch/delCourseOutline', cnt, callback)
+            util.call(baseUrl+'/courseOutline/delCourseOutline', cnt, callback)
         }
 
         //修改大纲
 
         api.editCourseOutline = function (cnt,callback) {
-            util.call(baseUrl+'/sch/editCourseOutline', cnt, callback)
+            util.call(baseUrl+'/courseOutline/editCourseOutline', cnt, callback)
         }
 
 /**
@@ -77,6 +77,11 @@ let api = {};
         api.getCollegeTeacher = function (cnt,callback) {
             util.call(baseUrl+'/collegeTeacher/getCollegeTeacher', cnt, callback)
         };
+
+        api.createCollegeTeacher = function (cnt,callback) {
+            util.call(baseUrl+'/collegeTeacher/createCollegeTeacher', cnt, callback)
+        };
+
 
         //删除教师
         api.delCollegeTeacher = function (cnt,callback) {
@@ -90,7 +95,7 @@ let api = {};
 
         //工号查询教师
         api.lookupCollegeTeacher = function (cnt,callback) {
-            util.call(baseUrl+'/collegeTeacher/lookupCollegeTeacher', cnt, callback)
+            util.call(baseUrl+'/userController/lookupCollegeTeacher', cnt, callback)
         };
 
 /**

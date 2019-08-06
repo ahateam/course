@@ -122,15 +122,13 @@
 
 
         <!--*****   修改实验室信息  *****-->
-        <el-dialog
-                :visible.sync="editBuild"
-                width="70%">
-            <div style="">
+        <two-dialog ref="editDia">
+            <div>
                 <page-title title-text="修改信息"></page-title>
                 <edit :rule-form="editTable"></edit>
             </div>
 
-        </el-dialog>
+        </two-dialog>
 
 
     </div>
@@ -259,7 +257,7 @@
             editData(row){
                 this.editTable.splice(0,1)
                 this.editTable[0]=row
-                this.editBuild=true //修改实验室弹框
+                this.$refs.editDia.openEdit(60) //修改实验室弹框
 
             },
             getLaborBuild(){

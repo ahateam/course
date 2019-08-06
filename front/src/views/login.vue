@@ -33,7 +33,7 @@
                 </span>
             </el-form-item>
 
-            <el-radio-group v-model="user.adminId" >
+            <el-radio-group v-model="user.adminId">
                 <el-radio  v-for="(item,index) in adminLabel" :label="item.adminId" :key="index">{{item.name}}</el-radio>
             </el-radio-group>
 
@@ -69,7 +69,10 @@
                 user:{username: '',password: '',adminId:""},
                 passwordType: 'password',
                 loading: false,
-                rules:{username:[{ min: 7, max: 10, message: '账号长度在 7 到 10 ', trigger: 'blur' }]},
+                rules:{
+                    username:[{ min: 7, max: 10, message: '账号长度在 7 到 10位', trigger: 'blur' }],
+                    password:[{ min: 6, max: 16, message: '密码长度在 6 到 16位 ', trigger: 'blur' }],
+                },
                 adminLabel:[{name:"教师",adminId:'3'},{name:"学院",adminId:'1'},{name:"实验室",adminId:'2'},{name:"教务处",adminId:'0'},]
             }
         },
@@ -103,38 +106,66 @@
                 },
 
             //登录
-            loginBtn(key){
-                if(this.user.username === '' || this.user.password === ''){
-                    this.$message.error('请将账号密码输入完整')
-                }else{
+            loginBtn(key) {
+                let cnt = {
+                    username: this.user.username,
+                    password: this.user.password,
+                    //adminId: key
+                }
+                this.loginAdmin(key)
+                this.$login.login(cnt, (res) => {
+                    if (res.data.rc === this.$util.RC.SUCCESS) {
+                        sessionStorage.setItem('teacherInformation',res.data.c)
+                        //let time=new Date(parseInt(this.$store.state.teacherInformation.loginTime)).toLocaleDateString()
+                        let teacherInformation=this.$store.state.teacherInformation
+                        console.log(res)
+                       // console.log(teacherInformation)
+                        this.$notify({
+                            type: 'success',
+                            title: '欢迎登录',
+                            message: `您好：${teacherInformation.teacherName}`
+                        });
+
+
+                    } else {
+                        if(res.data.c==="user not exist"){
+                            this.$message({
+                                type:"warning",
+                                message:"用户不存在"
+                            })
+                        }
+                        this.tableData = []
+                    }
+                })
+            },
+            loginAdmin(key){
+                // if(this.user.username === '' || this.user.password === ''){
+                //     this.$message.error('请将账号密码输入完整')
+                // }else{
                    if(key === this.$constData.grade.teacher){
                        //教师登录
                        localStorage.setItem('grade',this.$constData.grade.teacher)
-                       localStorage.setItem('user_name','教师姓名')
                        localStorage.setItem('user_id','3')
                         this.$router.push('/teacherHome')
                    }else if(key === this.$constData.grade.laboratory){
                        //实验室管理员登录
                        localStorage.setItem('grade',this.$constData.grade.laboratory)
-                       localStorage.setItem('user_name','实验室姓名')
                        localStorage.setItem('user_id','2')
                        this.$router.push('/laborHome')
                    }
                    else if(key === this.$constData.grade.admin){
                        //学校管理员登录
                        localStorage.setItem('grade',this.$constData.grade.admin)
-                       localStorage.setItem('user_name','管理员姓名')
                        localStorage.setItem('user_id','0')
                        this.$router.push('/adminHome')
                    }else if(key === this.$constData.grade.college){
                        //学院登录
 
                        localStorage.setItem('grade',this.$constData.grade.college)
-                       localStorage.setItem('user_name','二级学院管理员姓名')
                        localStorage.setItem('user_id','1')
                        this.$router.push('/collegeHome')
                    }
-                }
+             //   }
             }
         },
         mounted(){

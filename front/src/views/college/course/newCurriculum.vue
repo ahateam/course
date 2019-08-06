@@ -6,8 +6,8 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="开课学院" style="float: left" prop="openCollege">
-                        <el-select v-model="form.openCollege" placeholder="选择学院">
-                            <el-option @change="getCollegeOpen(item)" v-for="(item,index) in tableCollege" :key="index" :label="item.collegeName" :value="item"></el-option>
+                        <el-select v-model="form.collegeId" placeholder="选择学院">
+                            <el-option @change="getCollegeOpen(item)" v-for="(item,index) in $store.state.tableCollege" :key="index" :label="item.collegeName" :value="item.collegeId"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -94,7 +94,8 @@
                 courseData:"",//选择学院的课程
 
                 form: {
-                    openCollege:"",//开课学院
+                    collegeId:"",//开课学院
+                    collegeName:"",//开课学院
                     openCourse:"",//选择课程
 
                     assessmentMode: "" ,//考核方式

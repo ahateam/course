@@ -97,9 +97,9 @@
                         label="管理部门">
                     <template  slot-scope="scope">
                         <span v-if="!scope.row.ifShow">
-                            <el-select v-model="scope.row.collegeId" :placeholder="scope.row.collegeName" size="mini" >
+                            <el-select v-model="scope.row.collegeId" title="item.collegeName" :placeholder="scope.row.collegeName" size="mini" >
                                 <el-option
-                                        v-for="item in tableCollege"
+                                        v-for="item in $store.state.tableCollege"
                                         :key="item.collegeName"
                                         :label="item.collegeName"
                                         :value="item.collegeId">

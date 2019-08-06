@@ -21,17 +21,18 @@
         methods:{
             changePage(page){
                 this.page=page
-                let cnts={
-                    pageOver:false,
-                     cnt:{
-                        count:this.count,
-                        offset:(this.page-1)*this.count
-                    }
-                }
+                // let cnts={
+                //     pageOver:false,
+                //      cnt:{
+                //         count:this.count,
+                //         offset:(this.page-1)*this.count
+                //     },
+                // }
                 let cnt = {
-                    count:this.count,
-                    offset:(this.page-1)*this.count
+                    count:this.$store.state.count,
+                    offset:parseInt(page-1)*parseInt(this.$store.state.count)
                 }
+                console.log(cnt)
                 this.$emit('transferRandom',cnt)
             },
 

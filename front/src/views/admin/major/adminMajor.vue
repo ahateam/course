@@ -23,7 +23,7 @@
                     label="专业名称">
                 <template slot="header" slot-scope="scope">
                     <el-input
-                            v-model="lookup.majorName"
+                            v-model="look.majorName"
                             clearable
                             @change="lookupMajor()"
                             placeholder="专业名称"/>
@@ -32,13 +32,27 @@
             <el-table-column
                     prop="collegeName"
                     label="所属学院">
+                <template slot="header" slot-scope="scope">
+                    <el-select v-model="look.collegeId" placeholder="选择学院"  @change="lookupMajor()">
+                        <el-option
+                                value=""
+                                label="全部">
+                        </el-option>
+                        <el-option
+                                v-for="item in $store.state.tableCollege"
+                                :key="item.collegeName"
+                                :label="item.collegeName"
+                                :value="item.collegeId">
+                        </el-option>
+                    </el-select>
+                </template>
             </el-table-column>
             <el-table-column
                     align="center"
                     label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="edits(scope.row)" >编辑</el-button>
-                    <el-button @click="delCourse(scope.row)" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
+                    <el-button @click="del(scope.row)" style="margin-left: 10px" type="text" size="mini" >删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -46,9 +60,9 @@
         <!--  删除专业   -->
         <el-dialog
                 :visible.sync="dialog.delMajor"
-                title="del.collegeName"
-                width="30%">
-
+                title="删除专业"
+                width="40%">
+            <del-information @transferRandom="delForm"/>
         </el-dialog>
 
         <!--****  编辑专业  ***-->
@@ -107,7 +121,7 @@
                     <el-col :span="16">
                         <el-select  v-model="editMajorForm.collegeId" :placeholder="editMajorForm.collegeName" size="mini" >
                             <el-option
-                                    v-for="item in this.$store.state.tableCollege"
+                                    v-for="item in $store.state.tableCollege"
                                     :key="item.collegeName"
                                     :label="item.collegeName"
                                     :value="item.collegeId">
@@ -153,14 +167,21 @@
                     collegeId:[{ required: true, message: '请选择专业ID', trigger: 'blur' }]
 
                 },
-                lookup:{
+
+                //查询
+                look:{
                     majorName:"",
                     collegeId:""
+                },//没有查询条件
+                lookup:{
+                    majorName:"",
+                    collegeId:"any(select collegeId from table_name)"
                 },
                 disable:{
                     majorName:true,
                     collegeId:true
                 },
+                delMajorId:"",//删除专业id
                 tableData:[{
                     collegeName:"大数据学院",//学院名称
                     collegeId:"1005",//学院ID
@@ -207,7 +228,34 @@
         methods:{
             //查询专业
             lookupMajor(){
-
+                this.$refs.nextPage.defaultPage() //变为第一页
+                let cnt={
+                    offset:this.$store.state.offset,
+                    count:this.$store.state.count
+                }
+                if(this.look.collegeId===""&&this.look.majorName===""){
+                    this.getMajor(cnt)
+                }else{
+                    this.adminLookupMajor(cnt)
+                }
+            },
+            adminLookupMajor(cnt){
+                if(this.look.collegeId===""){
+                    cnt.collegeId=this.lookup.collegeId
+                }
+                else{cnt.collegeId=this.look.collegeId}
+                cnt.majorName=this.look.majorName
+                console.log(cnt)
+                this.$admin.lookupMajor(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$util.tryParseJson(res))
+                    }else{
+                        this.tableData = []
+                    }
+                    //判断是否到达最后一页
+                    this.$refs.nextPage.judge(this.tableData.length)
+                })
             },
 
             changePage(nextCnt){
@@ -216,7 +264,7 @@
 
             //获取学院
             getMajor(cnt){
-                this.$admin.getDepartments(cnt,(res)=>{
+                this.$admin.getMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
                         console.log(this.$util.tryParseJson(res))
@@ -232,35 +280,6 @@
             getindex({row, rowIndex}){
                 row.index = rowIndex;
             },
-
-            // 新增学院
-            // createDepartment(){
-            //     //表单验证
-            //     this.$refs['createCollege'].validate((valid) => {
-            //         if (valid) {
-            //             let cnt={
-            //                 collegeName:this.createCollege.collegeName,
-            //                 // collegeId:this.createCollege.collegeId
-            //             }
-            //             //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
-            //             //添加学院
-            //             this.$admin.createDepartment(cnt,(res)=>{
-            //                 if(res.data.rc === this.$util.RC.SUCCESS){
-            //                     //loading.close()
-            //                     this.$message({type:'success',message:"添加成功"})
-            //
-            //                 }else{
-            //                     //loading.close()
-            //                     this.$message({type:'warning',message:"添加失败"})
-            //                 }
-            //             })
-            //         } else {
-            //             this.$message({type:'warning',message:"请输入完整信息"})
-            //
-            //             return false;
-            //         }
-            //     });
-            // },
 
             //点击编辑按钮
             edits(row){
@@ -327,13 +346,37 @@
                     }
                 })
             },
+            //删除专业
+            del(row){
+                this.dialog.delMajor=true
+                this.delMajorId=row.majorId
+            },
+            delForm(delForm){
+                let cnt={
+                    majorId:this.delMajorId
+                }
+                this.$college.delCollegeTeacher(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.$message({
+                            type:"success",
+                            message:"删除成功"
+                        })
+                        this.delUsername=""
+                    }else{
+                        this.$message({
+                            type:"warning",
+                            message:"删除失败"
+                        })
+                    }
+                })
+            },
 
         },
         mounted(){
             //获取学院信息
             let cnt={
-                offset:this.offset,
-                count:this.count
+                offset:this.$store.state.offset,
+                count:this.$store.state.count
             }
             this.getMajor(cnt)
         },
