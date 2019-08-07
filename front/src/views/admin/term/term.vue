@@ -10,7 +10,6 @@
                     <template>
                         <el-table
                                 :data="tableData"
-                                border
                                 class="tableWidthMargin"
                         >
                             <el-table-column

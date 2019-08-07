@@ -116,6 +116,12 @@ const collegeMenu = [
         child:[]
     },
     {
+        path:'/collegeTeacher',
+        title:'教师管理',
+        icon:'course_xiugai1',
+        child:[]
+    },
+    {
         path:'/collegeClass',
         title:'班级管理',
         icon:'course_tongzhi',

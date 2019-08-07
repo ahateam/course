@@ -15,7 +15,7 @@ const collegeFree = ()=>import('./free/collegeFree')
 const collegeClass = ()=>import('./class/collegeClass')
 
 const collegeOpen = ()=>import('./open/collegeOpen')
-
+const collegeTeacher = ()=>import('./teacher/collegeTeacher')
 
 
 
@@ -30,6 +30,11 @@ let routes=[
                 path:'/collegeCourse',
                 name:'collegeCourse',
                 component:collegeCourse
+            },
+            {
+                path:'/collegeTeacher',
+                name:'collegeTeacher',
+                component:collegeTeacher
             },
             {
                 path:'/newCurriculum',
@@ -53,7 +58,7 @@ let routes=[
             },
             {
                 path:'/collegeRoom',
-                name:'collegeRoom',
+                name:'实验室管理',
                 component:collegeRoom
             },
             {

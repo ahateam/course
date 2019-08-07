@@ -35,27 +35,27 @@
                             placeholder="工号"/>
                 </template>
             </el-table-column>
-            <el-table-column
-                    prop="date"
-                    width="200">
-                <template slot="header" slot-scope="scope">
-                    <el-select v-model="collegeId" placeholder="选择学院"  @change="lookupTeacher()">
-                        <el-option
-                                value=""
-                                label="全部学院">
-                        </el-option>
-                        <el-option
-                                v-for="item in $store.state.tableCollege"
-                                :key="item.collegeId"
-                                :label="item.collegeName"
-                                :value="item.collegeId">
-                        </el-option>
-                    </el-select>
-                </template>
-                <template  slot-scope="scope">
-                    {{scope.row.collegeName}}
-                </template>
-            </el-table-column>
+            <!--<el-table-column-->
+                    <!--prop="date"-->
+                    <!--width="200">-->
+                <!--<template slot="header" slot-scope="scope">-->
+                    <!--<el-select v-model="collegeId" placeholder="选择学院"  @change="lookupTeacher()">-->
+                        <!--<el-option-->
+                                <!--value=""-->
+                                <!--label="全部学院">-->
+                        <!--</el-option>-->
+                        <!--<el-option-->
+                                <!--v-for="item in $store.state.tableCollege"-->
+                                <!--:key="item.collegeId"-->
+                                <!--:label="item.collegeName"-->
+                                <!--:value="item.collegeId">-->
+                        <!--</el-option>-->
+                    <!--</el-select>-->
+                <!--</template>-->
+                <!--<template  slot-scope="scope">-->
+                    <!--{{scope.row.collegeName}}-->
+                <!--</template>-->
+            <!--</el-table-column>-->
             <el-table-column
                     prop="teacherPosition"
                     label="职称">
@@ -79,8 +79,7 @@
                     <el-button @click="details=true" type="text" size="small">详情</el-button>
                     <el-button @click="edits(scope.row)" type="text" size="small"
                                 :disabled="scope.row.adminId==='0'">编辑</el-button>
-                    <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminId==='0'">
-                        删除</el-button>
+
                 </template>
             </el-table-column>
         </el-table>
@@ -101,9 +100,9 @@
 
         </two-dialog>
 
-        <two-dialog ref="delDia">
-            <del-information @transferRandom="delForm"/>
-        </two-dialog>
+        <!--<two-dialog ref="delDia">-->
+            <!--<del-information @transferRandom="delForm"/>-->
+        <!--</two-dialog>-->
 
         <two-dialog ref="createDia">
             <create></create>
@@ -179,8 +178,9 @@
             changePage(nextCnt){
                 //let cnt =nextCnt.cnt
                 //如果选择学院后 获取选择学院的教师信息
-                //if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
-                if(this.username===""&&this.collegeId===""&&this.collegeId==="") {
+                //if(this.collegeId!=="")
+                nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
+                if(this.username===""&&this.teacherName==="") {
                     this.getTeacher(nextCnt)
                 }
                 else{
@@ -193,8 +193,9 @@
                 let cnt ={
                     count:this.$store.state.count,
                     offset:0,
+                    collegeId:this.$store.state.teacherInformation.collegeId,
                 }//查询为空时
-                if(this.username===""&&this.collegeId===""&&this.teacherName===""){
+                if(this.username===""&&this.teacherName===""){
                     this.getTeacher(cnt)
                 }
                 else{
@@ -209,8 +210,7 @@
 
                 if(this.username===""){cnt.username=this.lookup.username}
                 else{cnt.username=this.username}
-                if(this.collegeId===""){cnt.collegeId=this.lookup.collegeId}
-                else{cnt.collegeId=this.collegeId}
+
 
                 this.$college.lookupCollegeTeacher(cnt,(res)=>{
 
@@ -225,33 +225,33 @@
 
 
             //点击删除按钮
-            del(row){
-                this.$refs.delDia.openDel(40)
-                //this.delTeacher=true
-                this.delUsername=row.username
-            },
-
-            //删除教师
-            delForm(delForm){
-                let cnt={
-                    username:this.delUsername,
-                    delRemark:delForm.del
-                }
-                this.$college.delCollegeTeacher(cnt,(res)=>{
-                    if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.$message({
-                            type:"success",
-                            message:"删除成功"
-                        })
-                        this.delUsername=""
-                    }else{
-                        this.$message({
-                            type:"warning",
-                            message:"删除失败"
-                        })
-                    }
-                })
-            },
+            // del(row){
+            //     this.$refs.delDia.openDel(40)
+            //     //this.delTeacher=true
+            //     this.delUsername=row.username
+            // },
+            //
+            // //删除教师
+            // delForm(delForm){
+            //     let cnt={
+            //         username:this.delUsername,
+            //         delRemark:delForm.del
+            //     }
+            //     this.$college.delCollegeTeacher(cnt,(res)=>{
+            //         if(res.data.rc === this.$util.RC.SUCCESS){
+            //             this.$message({
+            //                 type:"success",
+            //                 message:"删除成功"
+            //             })
+            //             this.delUsername=""
+            //         }else{
+            //             this.$message({
+            //                 type:"warning",
+            //                 message:"删除失败"
+            //             })
+            //         }
+            //     })
+            // },
 
             //传值给edit界面
             edits(row){
@@ -271,7 +271,8 @@
         mounted(){
             let cnt = {
                 count:this.$store.state.count,
-                offset:this.$store.state.offset
+                offset:this.$store.state.offset,
+                collegeId:this.$store.state.teacherInformation.collegeId,
             }
             this.getTeacher(cnt)
 

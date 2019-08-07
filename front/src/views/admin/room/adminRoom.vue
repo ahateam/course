@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="changeDia">
         <page-title title-text="实验室管理" />
         <el-button class="buttonMarginLeft" @click="createBuild=true" type="primary" size="small">新增实验楼</el-button>
         <el-table
@@ -78,29 +78,29 @@
 
             <el-table-column
                     align="center"
+
                     label="地点">
-                <template slot="header" slot-scope="scope">
-                    <el-select v-model="look.labBuildId" placeholder="位置"  @change="lookupLab()">
-                        <el-option
-                                value=""
-                                label="全部">
-                        </el-option>
+                <!--<template slot="header" slot-scope="scope">-->
+                <!--<el-select v-model="look.labBuildId" placeholder="位置"  @change="lookupLab()">-->
+                <!--<el-option-->
+                <!--value=""-->
+                <!--label="全部">-->
+                <!--</el-option>-->
 
-                        <el-option
-                                v-for="item in tableLabBuild"
-                                :key="item.collegeName"
-                                :label="item.labBuildName"
+                <!--<el-option-->
+                <!--v-for="item in tableLabBuild"-->
+                <!--:key="item.collegeName"-->
+                <!--:label="item.labBuildName"-->
 
-                                :value="item.labBuildId">
-                        </el-option>
-                    </el-select>
-                </template>
+                <!--:value="item.labBuildId">-->
+                <!--</el-option>-->
+                <!--</el-select>-->
+                <!--</template>-->
                 <template slot-scope="scope">
                     {{scope.row.labBuildName}}-{{scope.row.labRoomNum}}
                 </template>
             </el-table-column>
             <el-table-column
-                    align="center"
                     prop="collegeName"
                     label="管理部门">
                 <template slot="header" slot-scope="scope">
@@ -111,7 +111,7 @@
                         </el-option>
                         <el-option
                                 v-for="item in $store.state.tableCollege"
-                                :key="item.collegeName"
+                                :key="item.collegeId"
                                 :label="item.collegeName"
                                 :value="item.collegeId">
                         </el-option>
@@ -193,9 +193,9 @@
                 editBuild:false,//修改实验室 弹框
                 editTable:[],//传给修改页面的值
                 lookup:{
-                    labName:"",
-                    labBuildId:"any(select labBuildId from table_name)",
-                    collegeId:"any(select collegeId from table_name)",
+                    labName:"0",
+                    labBuildId:0,
+                    collegeId:0,
                 },//默认查询条件
                 look:{
                     labName:"",
@@ -252,10 +252,10 @@
                 this.$refs.nextPage.defaultPage()
                 let nextCnt={
                     count:this.$store.state.count,
-                    offset:0
+                    offset:this.$store.state.offset,
                 }
-                console.log(nextCnt)
-                if(this.look.collegeId===""&&this.look.labId===""&&this.look.labBuildId===""){
+               // console.log(nextCnt)
+                if(this.look.collegeId===""&&this.look.labName===""){
                     this.getSchoolLabor(nextCnt)
                 }
                 else{
@@ -265,7 +265,7 @@
             lookupLabor(cnt){
                 let collegeId =   this.look.collegeId
                 let labName =     this.look.labName
-                let labBuildId= this.look.labBuildId
+                //let labBuildId= this.look.labBuildId
 
                 if(collegeId==="") {cnt.collegeId=this.lookup.collegeId}
                 else{cnt.collegeId=collegeId}
@@ -273,8 +273,8 @@
                 if(labName==="") cnt.labName=this.lookup.labName
                 else{cnt.labName=labName}
 
-                if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
-                else{cnt.labBuildId=labBuildId}
+                // if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
+                // else{cnt.labBuildId=labBuildId}
                 console.log(cnt)
 
                 this.$admin.lookupLabor(cnt,(res)=>{
@@ -328,8 +328,18 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     .elform /deep/ .el-form-item__label{
         color:#9e9e9e
+    }
+
+    .changeDia/deep/ {
+    .el-select{
+        padding-left: 0;
+    }
+    .el-input{
+        padding-left: 0;
+        width: 70%;
+    }
     }
 </style>

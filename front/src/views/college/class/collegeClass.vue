@@ -1,7 +1,7 @@
 <template>
         <div>
             <page-title title-text="xxx学院班级管理"></page-title>
-            <el-button type="primary" @click="$refs.createDia.openCreate(40)" class="buttonMarginLeft">添加班级</el-button>
+            <el-button type="primary" @click="create()" class="buttonMarginLeft">添加班级</el-button>
 
             <el-table
                     :data="tableData"
@@ -39,10 +39,10 @@
                         label="操作">
                     <template slot-scope="scope">
                         <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
-                        <el-button type="text" size="small" >编辑</el-button>
+                        <el-button @click="edit" type="text" size="small" >编辑</el-button>
 
                         <!--<el-button @click="delCourseOutline(scope.row.courseCode)" type="warning" style="float: right;margin: 15px 0 ">确认删除</el-button>-->
-                        <el-button  style="margin-left: 10px" type="text" size="mini" >删除</el-button>
+                        <el-button  style="margin-left: 10px" type="text" @click="$refs.delDia.openDel(40)" size="mini" >删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -54,6 +54,10 @@
 
             <two-dialog ref="editDia" name="编辑" >
                 <editClass></editClass>
+            </two-dialog>
+
+            <two-dialog ref="delDia" name="删除" >
+                <del-information></del-information>
             </two-dialog>
         </div>
 </template>
@@ -72,8 +76,11 @@
             changePage(nextCnt){
                 this.getTeacher(nextCnt)
             },
-            openDia(){
-                this.$refs.dialogs.openDel(50)
+            create(){
+                this.$refs.createDia.openCreate(50)
+            },
+            edit(){
+                this.$refs.editDia.openEdit(50)
             }
         },
         components:{create,editClass}

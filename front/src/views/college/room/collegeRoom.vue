@@ -79,22 +79,22 @@
             <el-table-column
                     align="center"
                     label="地点">
-                <template slot="header" slot-scope="scope">
-                    <el-select v-model="look.labBuildId" placeholder="位置" size="mini" @change="lookupLab()">
-                        <el-option
-                                value=""
-                                label="全部">
-                        </el-option>
+                <!--<template slot="header" slot-scope="scope">-->
+                    <!--<el-select v-model="look.labBuildId" placeholder="位置" size="mini" @change="lookupLab()">-->
+                        <!--<el-option-->
+                                <!--value=""-->
+                                <!--label="全部">-->
+                        <!--</el-option>-->
 
-                        <el-option
-                                v-for="item in tableLabBuild"
-                                :key="item.collegeName"
-                                :label="item.labBuildName"
+                        <!--<el-option-->
+                                <!--v-for="item in tableLabBuild"-->
+                                <!--:key="item.collegeName"-->
+                                <!--:label="item.labBuildName"-->
 
-                                :value="item.labBuildId">
-                        </el-option>
-                    </el-select>
-                </template>
+                                <!--:value="item.labBuildId">-->
+                        <!--</el-option>-->
+                    <!--</el-select>-->
+                <!--</template>-->
                 <template slot-scope="scope">
                     {{scope.row.labBuildName}}-{{scope.row.labRoomNum}}
                 </template>
@@ -158,7 +158,7 @@
                 editBuild:false,//修改实验室 弹框
                 editTable:[],//传给修改页面的值
                 lookup:{
-                    labName:"",
+                    labName:"0",
                     labBuildId:"any(select labBuildId from table_name)",
                     collegeId:"本院id",
                 },//默认查询条件
@@ -217,7 +217,7 @@
                 let nextCnt={
                     count:this.$store.state.count,
                     offset:0,
-                    collegeId:"本院ID"
+                    collegeId:this.$store.state.teacherInformation.collegeId
                 }
                 console.log(nextCnt)
                 if(this.look.labId===""&&this.look.labBuildId===""){
@@ -229,10 +229,12 @@
             },
             lookupLabor(cnt){
                 let labName =     this.look.labName
-                let labBuildId= this.look.labBuildId
+                //let labBuildId= this.look.labBuildId
 
-                if(labName==="") cnt.labName=this.lookup.labName
-                if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
+                if(labName==="") {cnt.labName=this.lookup.labName}else{
+                    cnt.labName=labName
+                }
+                //if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
 
                 this.$admin.lookupLabor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
@@ -246,8 +248,8 @@
                 })
             },
             changePage(nextCnt) {
-                nextCnt.collegeId="本院ID"
-                if ( this.look.labId === "" && this.look.labBuildId === "") {
+                nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
+                if ( this.look.labName === "") {
                     this.getCollegeLabor(nextCnt)
                 } else {
                     this.lookupLabor(nextCnt)
@@ -260,26 +262,28 @@
                 this.$refs.editDia.openEdit(60) //修改实验室弹框
 
             },
-            getLaborBuild(){
-                let cnt={}
-                this.$admin.getLaborBuild(cnt,(res)=>{
-                    if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.tableLabBuild = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res.data.c))
-                    }else{
-                        this.tableLabBuild = []
-                    }
-
-                })
-            }
+            // getLaborBuild(){
+            //     let cnt={}
+            //     this.$admin.getLaborBuild(cnt,(res)=>{
+            //         if(res.data.rc === this.$util.RC.SUCCESS){
+            //             this.tableLabBuild = this.$util.tryParseJson(res.data.c)
+            //             console.log(this.$util.tryParseJson(res.data.c))
+            //         }else{
+            //             this.tableLabBuild = []
+            //         }
+            //
+            //     })
+            // }
         },
         mounted(){
             let cnt = {
-                count:this.count,
-                offset:(this.page-1)*this.count
+                count:this.$store.state.count,
+                offset:this.$store.state.offset,
+                collegeId:this.$store.state.teacherInformation.collegeId
             }
             this.getCollegeLabor(cnt)
-            this.getLaborBuild()
+           // this.getLaborBuild()
+            console.log(this.$store.state.teacherInformation)
         },
         components: {edit}
     }

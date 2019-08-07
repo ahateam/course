@@ -40,7 +40,7 @@
                         </el-option>
                         <el-option
                                 v-for="item in $store.state.tableCollege"
-                                :key="item.collegeName"
+                                :key="item.collegeId"
                                 :label="item.collegeName"
                                 :value="item.collegeId">
                         </el-option>
@@ -82,11 +82,11 @@
                 </el-form-item>
                 <el-form-item label="管理学院:" prop="collegeId" >
                     <el-col :span="16">
-                        <el-select :disabled="disable.collegeId" v-model="editMajorForm.collegeId" :label="editMajorForm.collegeName" :placeholder="editMajorForm.collegeName" size="mini" >
+                        <el-select :disabled="disable.collegeId" v-model="editMajorForm.collegeId" :label="editMajorForm.collegeName" :placeholder="editMajorForm.collegeName"  >
 
                             <el-option
                                     v-for="item in this.$store.state.tableCollege"
-                                    :key="item.collegeName"
+                                    :key="item.collegeId"
                                     :label="item.collegeName"
                                     :value="item.collegeId">
                             </el-option>
@@ -119,10 +119,10 @@
                 </el-form-item>
                 <el-form-item label="管理学院:" prop="collegeId" >
                     <el-col :span="16">
-                        <el-select  v-model="editMajorForm.collegeId" :placeholder="editMajorForm.collegeName" size="mini" >
+                        <el-select  v-model="editMajorForm.collegeId" :placeholder="editMajorForm.collegeName"  >
                             <el-option
                                     v-for="item in $store.state.tableCollege"
-                                    :key="item.collegeName"
+                                    :key="item.collegeId"
                                     :label="item.collegeName"
                                     :value="item.collegeId">
                             </el-option>
@@ -174,8 +174,8 @@
                     collegeId:""
                 },//没有查询条件
                 lookup:{
-                    majorName:"",
-                    collegeId:"any(select collegeId from table_name)"
+                    majorName:"0",
+                    collegeId:0
                 },
                 disable:{
                     majorName:true,
@@ -242,11 +242,16 @@
             adminLookupMajor(cnt){
                 if(this.look.collegeId===""){
                     cnt.collegeId=this.lookup.collegeId
+                } else{
+                    cnt.collegeId=this.look.collegeId
                 }
-                else{cnt.collegeId=this.look.collegeId}
-                cnt.majorName=this.look.majorName
+                if(this.look.majorName===""){
+                    cnt.majorName=this.lookup.majorName
+                } else{
+                    cnt.majorName=this.look.majorName
+                }
                 console.log(cnt)
-                this.$admin.lookupMajor(cnt,(res)=>{
+                this.$admin.lookupSchoolMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
                         console.log(this.$util.tryParseJson(res))
@@ -264,7 +269,7 @@
 
             //获取学院
             getMajor(cnt){
-                this.$admin.getMajor(cnt,(res)=>{
+                this.$admin.getSchoolMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
                         console.log(this.$util.tryParseJson(res))
@@ -304,7 +309,7 @@
                             collegeId:this.editMajorForm.collegeId
                         }
                         //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
-                        this.$admin.editMajor(cnt,(res)=>{
+                        this.$admin.editSchoolMajor(cnt,(res)=>{
                             if(res.data.rc === this.$util.RC.SUCCESS){
                                 this.$message({type:'success',message:"修改成功"})
                             }
@@ -331,7 +336,7 @@
                             collegeId:this.editMajorForm.collegeId
                         }
                         //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
-                        this.$admin.editMajor(cnt,(res)=>{
+                        this.$admin.editSchoolMajor(cnt,(res)=>{
                             if(res.data.rc === this.$util.RC.SUCCESS){
                                 this.$message({type:'success',message:"修改成功"})
                             }
@@ -383,7 +388,7 @@
     }
 </script>
 
-<style >
+<style scoped lang="scss">
     .elform .el-form-item__label{
         color:#9e9e9e
     }
@@ -393,5 +398,15 @@
 
     .change .el-button--text{
         color:red
+    }
+
+    .elform/deep/ {
+        .el-select{
+            padding-left: 0;
+        }
+        .el-input{
+            padding-left: 0;
+            width: 70%;
+        }
     }
 </style>

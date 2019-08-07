@@ -1,6 +1,6 @@
 <!--******   学院工作量   ***********-->
 <template>
-    <div>
+    <div class="changeInput">
         <page-title title-text="xxx学院课程大纲"></page-title>
 
 
@@ -14,7 +14,6 @@
             <el-row class="row-box">
             <el-table
                     :data="tableData"
-                    border
                     class="tableWidthMargin">
                 <el-table-column
                         label="序号"
@@ -60,6 +59,7 @@
                     <!--</template>-->
                 <!--</el-table-column>-->
                 <el-table-column
+                        style="margin-left: 20px"
                         prop="courseMajor"
                         label="上课年纪">
                     <template slot="header" slot-scope="scope">
@@ -648,5 +648,13 @@
         color: #333;
         font-weight: 600;
         background: rgb(236,245,255);
+    }
+    .changeInput/deep/ {
+        .el-select{
+            padding-left: 0;
+        }
+        .el-input{
+            padding-left: 0;
+        }
     }
 </style>
