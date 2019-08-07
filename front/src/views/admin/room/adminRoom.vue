@@ -28,7 +28,6 @@
                                     <el-col :span="6">
                                         <el-form-item label="建成时间:">
                                             {{new Date(parseInt(scope.row.labTime)).toLocaleDateString()}}
-
                                         </el-form-item>
                                     </el-col>
 
@@ -81,7 +80,7 @@
                     align="center"
                     label="地点">
                 <template slot="header" slot-scope="scope">
-                    <el-select v-model="look.labBuildId" placeholder="位置" size="mini" @change="lookupLab()">
+                    <el-select v-model="look.labBuildId" placeholder="位置"  @change="lookupLab()">
                         <el-option
                                 value=""
                                 label="全部">
@@ -105,7 +104,7 @@
                     prop="collegeName"
                     label="管理部门">
                 <template slot="header" slot-scope="scope">
-                    <el-select v-model="look.collegeId" placeholder="管理学院" size="mini" @change="lookupLab()">
+                    <el-select v-model="look.collegeId" placeholder="管理学院"  @change="lookupLab()">
                         <el-option
                                 value=""
                                 label="全部">

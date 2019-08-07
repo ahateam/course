@@ -12,21 +12,22 @@ export default new Vuex.Store({
     count:10,
     offset:0,
     teacherInformation:JSON.parse(sessionStorage.getItem("teacherInformation")),
-    tableCollege:[
-      {
-        collegeId:123,
-        collegeName:"大数据"
-      },
-      {
-        collegeId:123135,
-        collegeName:"土木"
-      },
-      {
-        collegeId:1251515,
-        collegeName:"理学院"
-      },
-
-    ]
+    tableCollege:JSON.parse(sessionStorage.getItem("tableCollege"))
+        // [
+        //     {
+        //         collegeId:123,
+        //         collegeName:"大数据"
+        //     },
+        //         {
+        //             collegeId:123135,
+        //             collegeName:"土木"
+        //         },
+        //         {
+        //             collegeId:1251515,
+        //             collegeName:"理学院"
+        //         },
+        //
+        //     ]
 
         //localStorage.getItem('tableCollege')
   },

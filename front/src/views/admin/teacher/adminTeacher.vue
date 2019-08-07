@@ -42,11 +42,11 @@
                     <el-select v-model="collegeId" placeholder="选择学院"  @change="lookupTeacher()">
                         <el-option
                                 value=""
-                                label="全部">
+                                label="全部学院">
                         </el-option>
                         <el-option
                                 v-for="item in $store.state.tableCollege"
-                                :key="item.collegeName"
+                                :key="item.collegeId"
                                 :label="item.collegeName"
                                 :value="item.collegeId">
                         </el-option>
@@ -134,9 +134,9 @@
                 delTeacher:false,//删除教师
                 delUsername:"",//删除教师的工号
                 lookup:{
-                    username:"any(select username from tb_teacher_user)",
-                    teacherName:"",
-                    collegeId:"any(select collegeId from tb_teacher_user)"
+                    username:0,//"any(select username from tb_teacher_user)",
+                    teacherName:"0",
+                    collegeId:0,//"any(select collegeId from tb_teacher_user)"
                 },
             }
         },
@@ -204,7 +204,10 @@
                 }
             },
             lookupCollegeTeacher(cnt){
-                cnt.teacherName=this.teacherName
+                if(this.teacherName===""){cnt.teacherName="0"}else{
+                    cnt.teacherName=this.teacherName
+                }
+
                 if(this.username===""){cnt.username=this.lookup.username}
                 else{cnt.username=this.username}
                 if(this.collegeId===""){cnt.collegeId=this.lookup.collegeId}
@@ -212,8 +215,10 @@
 
                 console.log(cnt)
                 this.$college.lookupCollegeTeacher(cnt,(res)=>{
+
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(JSON.parse(res.data.c))
                     }else{
                         this.tableData = []
                     }
@@ -269,22 +274,22 @@
         mounted(){
             let cnt = {
                 count:this.$store.state.count,
-                offset:(this.page-1)*this.$store.state.count
+                offset:this.$store.state.offset
             }
             this.getTeacher(cnt)
 
-            let cns ={
-                count:20,
-                offset:0
-            }
-            //获取选择学院
-            this.$admin.getDepartments(cns,(res)=>{
-                if(res.data.rc === this.$util.RC.SUCCESS){
-                    this.tableCollege = this.$util.tryParseJson(res.data.c)
-                }else{
-                    this.tableCollege = []
-                }
-            })
+            // let cns ={
+            //     count:20,
+            //     offset:0
+            // }
+            // //获取选择学院
+            // this.$admin.getDepartments(cns,(res)=>{
+            //     if(res.data.rc === this.$util.RC.SUCCESS){
+            //         this.tableCollege = this.$util.tryParseJson(res.data.c)
+            //     }else{
+            //         this.tableCollege = []
+            //     }
+            // })
         }
 
     }

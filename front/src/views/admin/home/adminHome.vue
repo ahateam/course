@@ -10,13 +10,15 @@
         methods:{
             getCollege() {
                 let cnt={
-                    offset:20,
-                    count:0
+                    offset:0,
+                    count:20
                 }
                 //获取实验室
                 this.$admin.getDepartments(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.tableCollege = this.$util.tryParseJson(res.data.c)
+                        sessionStorage.setItem("tableCollege",res.data.c)
+                       // this.$store.state.tableCollege = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$store.state.tableCollege)
                     }else{
                         this.tableCollege = []
                     }
