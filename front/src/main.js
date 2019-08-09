@@ -15,8 +15,8 @@ import labor from './assets/util/labor'
 
 import "./assets/css/table_width_margin.css";
 
-import messages from"./message"
-Vue.prototype.$messages= messages
+import getCollegeName from "./getCollegeName"
+Vue.prototype.$getCollegeName= getCollegeName
 
  import axios from "axios"
  Vue.prototype.$ajax= axios

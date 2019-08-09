@@ -112,13 +112,14 @@
                     password: this.user.password,
                     //adminId: key
                 }
-                this.loginAdmin(key)
+                //this.loginAdmin(key)
                 this.$login.login(cnt, (res) => {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         sessionStorage.setItem('teacherInformation',res.data.c)
                         //let time=new Date(parseInt(this.$store.state.teacherInformation.loginTime)).toLocaleDateString()
                         let teacherInformation=this.$store.state.teacherInformation
                         console.log(res)
+                        this.loginAdmin(key)
                        // console.log(teacherInformation)
                         this.$notify({
                             type: 'success',

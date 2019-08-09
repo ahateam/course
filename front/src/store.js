@@ -12,7 +12,19 @@ export default new Vuex.Store({
     count:10,
     offset:0,
     teacherInformation:JSON.parse(sessionStorage.getItem("teacherInformation")),
-    tableCollege:JSON.parse(sessionStorage.getItem("tableCollege"))
+    tableCollege:JSON.parse(sessionStorage.getItem("tableCollege")),
+
+    //获取学院名称
+    // getCollegeName(collegeId){
+    //   let tableCollege=this.state.teacherInformation
+    //   console.log(collegeId)
+    //   teacherInformation.forEach((val,index,arr)=>{
+    //     if(val.collegeId===collegeId){
+    //       console.log(555)
+    //       return val.collegeName
+    //     }
+    //   })
+    // }
         // [
         //     {
         //         collegeId:123,
@@ -31,6 +43,16 @@ export default new Vuex.Store({
 
         //localStorage.getItem('tableCollege')
   },
-  mutations: {},
+  mutations: {
+    getCollegeName(state,collegeId){
+      let teacherInformation=this.teacherInformation
+      console.log(state)
+      teacherInformation.forEach((val,index,arr)=>{
+        if(val.collegeId===collegeId){
+          return val.collegeName
+        }
+      })
+    }
+  },
   actions: {}
 })

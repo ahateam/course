@@ -13,9 +13,10 @@
                     offset:0,
                     count:20
                 }
-                //获取实验室
+                console.log(this.$store.state.tableCollege) //获取实验室
                 this.$admin.getDepartments(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
+                        sessionStorage.clear()
                         sessionStorage.setItem("tableCollege",res.data.c)
                        // this.$store.state.tableCollege = this.$util.tryParseJson(res.data.c)
                         console.log(this.$store.state.tableCollege)

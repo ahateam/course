@@ -82,7 +82,7 @@ api.getSchoolTeacher = function (cnt,callback) {
 
 //编辑教师
 api.editSchoolTeacher = function (cnt,callback) {
-    util.call(baseUrl+'/schoolTeacher/editTeacher', cnt, callback)
+    util.call(baseUrl+'/userController/editCollegeTeacher', cnt, callback)
 }
 
 // //添加教师
@@ -102,30 +102,34 @@ api.delSchoolTeacher = function (cnt,callback) {
 
 //获取实验室
 api.getSchoolLabor = function (cnt,callback) {
-    util.call(baseUrl+'/schoolLabor/getSchoolLabor', cnt, callback)
+    util.call(baseUrl+'/classRoom/getSchoolLabor', cnt, callback)
 }
 
 //新增实验室大楼
 api.createLaborBuild = function (cnt,callback) {
-    util.call(baseUrl+'/schoolLabor/createLaborBuild', cnt, callback)
+    util.call(baseUrl+'/classRoom/createLaborBuild', cnt, callback)
 }
-
+//获取实验室大楼
 api.getLaborBuild = function (cnt,callback) {
-    util.call(baseUrl+'/schoolLabor/getLaborBuild', cnt, callback)
+    util.call(baseUrl+'/classRoom/getLaborBuild', cnt, callback)
+}
+//获取楼层
+api.getFloorNum = function (cnt,callback) {
+    util.call(baseUrl+'/classRoom/getFloorNum', cnt, callback)
 }
 
 //修改实验室
 api.editSchoolLabor = function (cnt,callback) {
-    util.call(baseUrl+'/schoolLabor/editSchoolLabor', cnt, callback)
+    util.call(baseUrl+'/classRoom/editSchoolLabor', cnt, callback)
 }
 
 //条件查询实验室
 api.lookupLabor = function (cnt,callback) {
-    util.call(baseUrl+'/schoolLabor/lookupLabor', cnt, callback)
+    util.call(baseUrl+'/classRoom/lookupLabor', cnt, callback)
 }
 
 /**
- * 专业管理 SchoolMajor
+ * 专业管理 major
  * */
 api.lookupSchoolMajor = function (cnt,callback) {
     util.call(baseUrl+'/major/lookupMajor', cnt, callback)

@@ -4,24 +4,34 @@
             <el-form-item label="实验大楼名称:" prop="labBuildName">
                 <el-input v-model="form.labBuildName"></el-input>
             </el-form-item>
+                <el-row>
+                    <el-col :span="22">
+                        <el-form-item label="楼层数:" prop="floorNum">
+                            <el-slider
+                                    :min="0"
+                                    :max="7"
+                                    v-model="form.floorNum"
+                                    show-input>
+                            </el-slider>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
 
-            <el-form-item label="楼层数:" prop="floorNum">
-                <el-slider
-                        :min="0"
-                        :max="7"
-                        v-model="form.floorNum"
-                        show-input>
-                </el-slider>
-            </el-form-item>
+                <el-row>
+                    <el-col :span="22">
+                        <el-form-item label="每层房间数:" prop="floorRoomNum">
+                            <el-slider
+                                    :min="0"
+                                    :max="50"
+                                    v-model="form.floorRoomNum"
+                                    show-input>
+                            </el-slider>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
 
-            <el-form-item label="每层房间数:" prop="floorRoomNum">
-                <el-slider
-                        :min="0"
-                        :max="50"
-                        v-model="form.floorRoomNum"
-                        show-input>
-                </el-slider>
-            </el-form-item>
+
+
 
             <el-form-item label="建成日期:" prop="labTime">
                 <el-date-picker
@@ -32,7 +42,7 @@
                         value-format="timestamp">
                 </el-date-picker>
             </el-form-item>
-
+            {{form.labTime}}
 
         </el-form>
         <el-button type="primary"  @click="submitForm('form')" style="margin-left: 80%">确认</el-button>
@@ -45,7 +55,7 @@
         data(){
             return{
                 form:{
-                    labTime:20231213212,//建成日期
+                    labTime:"1564934400000",//建成日期
                     labBuildName:"",//大楼名称
                     floorNum:0,//楼层数
                     floorRoomNum:0,//每层房间数
@@ -87,6 +97,8 @@
                     }
                 })
             }
+        },
+        mounted(){
         }
     }
 </script>

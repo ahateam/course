@@ -180,12 +180,12 @@
                 //如果选择学院后 获取选择学院的教师信息
                 //if(this.collegeId!=="")
                 nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
-                if(this.username===""&&this.teacherName==="") {
-                    this.getTeacher(nextCnt)
-                }
-                else{
+                // if(this.username===""&&this.teacherName==="") {
+                //     this.getTeacher(nextCnt)
+                // }
+                // else{
                     this.lookupCollegeTeacher(nextCnt)
-                }
+               // }
             },
             lookupTeacher(){
 
@@ -274,7 +274,7 @@
                 offset:this.$store.state.offset,
                 collegeId:this.$store.state.teacherInformation.collegeId,
             }
-            this.getTeacher(cnt)
+            this.lookupCollegeTeacher(cnt)
 
             // let cns ={
             //     count:20,

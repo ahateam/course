@@ -9,7 +9,7 @@
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="工号:">
-                        {{editForm.name}}
+                        {{editForm.username}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -21,31 +21,31 @@
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="入职时间:">
-                        {{editForm.name}}
+                        {{editForm.workTime}}
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="20">
                     <el-form-item label="权限:">
-                        <el-radio-group v-model="editForm.adminId" :disabled="disabled.adminId">
-                            <el-radio  v-for="(item,index) in adminLabel" :label="item.adminId" :key="index">{{item.name}}</el-radio>
+                        <el-radio-group v-model="editForm.adminID" :disabled="disabled.adminID">
+                            <el-radio  v-for="(item,index) in adminLabel" :label="item.adminID" :key="index">{{item.name}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4" style="line-height: 40px;color: #f56c6c">
-                    <el-button type="text"  @click="disabled.adminId=false">修改</el-button>
+                    <el-button type="text"  @click="disabled.adminID=false">修改</el-button>
                 </el-col>
             </el-row>
 
             <el-row>
                 <el-col :span="20">
                     <el-form-item label="所属学院:" >
-                        <el-select v-model="collegeId" :disabled="disabled.college" placeholder="选择学院" size="mini" >
+                        <el-select v-model="editForm.collegeId" :disabled="disabled.college" placeholder="选择学院"  >
                             <el-option
-                                    v-for="item in tableCollege"
-                                    :key="item.collegeName"
-                                    :lable="item.collegeName"
+                                    v-for="item in $store.state.tableCollege"
+                                    :key="item.collegeId"
+                                    :label="item.collegeName"
                                     :value="item.collegeId">
                             </el-option>
                         </el-select>
@@ -58,8 +58,8 @@
 
             <el-row>
                 <el-col :span="20">
-                    <el-form-item label="电话:" prop="phoneNumber"  >
-                        <el-input  placeholder="请输入内容" v-model="editForm.phoneNumber" :disabled="disabled.phone"></el-input>
+                    <el-form-item label="电话:" prop="phoneNumber" >
+                        <el-input  placeholder="请输入内容" v-model="editForm.teacherPhone" :disabled="disabled.phone"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4" style="line-height: 40px;color: #f56c6c">
@@ -96,8 +96,8 @@
                 editForm:{},
                 collegeId:"",
                 tableCollege:"",
-                adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},],
-                disabled:{adminId:true,college:true,phone:true},
+                adminLabel:[{name:"教务处",adminID:'0'},{name:"教务科",adminID:'1'},{name:"实验室",adminID:'2'},{name:"教师",adminID:'3'},],
+                disabled:{adminID:true,college:true,phone:true},
                 rules:{
                     teacherPhone:[ { validator: teacherPhone, trigger: 'blur' },],
                 }
@@ -126,15 +126,16 @@
             },
             editSchoolTeacher(){
                 let cnt={
-                    collegeId:"1234564",
-                    collegeName:"f三十分",
+                    collegeId:this.editForm.collegeId,
                     teacherName: this.editForm.teacherName,
                     username:this.editForm.username,
                     teacherPosition:this.editForm.teacherPosition,
                     teacherPhone:this.editForm.teacherPhone,
-                    adminId:this.editForm.adminId,
+                    adminID:this.editForm.adminID,
+                    email:"123@qq.com"
 
                 }
+                console.log("dian"+cnt)
                 this.$admin.editSchoolTeacher(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.$message({
@@ -178,6 +179,8 @@
             }
         },
         mounted() {
+            this.editForm=this.form
+            console.log(this.form)
             //disabled:{adminId:true,college:true,phone:true},
 
 

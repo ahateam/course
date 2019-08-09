@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="changeDia">
         <page-title title-text="实验室管理" />
         <el-table
                 :data="tableData"
@@ -77,24 +77,42 @@
             </el-table-column>
 
             <el-table-column
-                    align="center"
+                    width="300"
                     label="地点">
-                <!--<template slot="header" slot-scope="scope">-->
-                    <!--<el-select v-model="look.labBuildId" placeholder="位置" size="mini" @change="lookupLab()">-->
-                        <!--<el-option-->
-                                <!--value=""-->
-                                <!--label="全部">-->
-                        <!--</el-option>-->
+                <template slot="header" slot-scope="scope">
+                    <el-row>
+                        <el-col :span="16">
+                            <el-select v-model="look.labBuildId" placeholder="大楼"  @change="getFloorNum(look.labBuildId)">
+                                <el-option
+                                        value=""
+                                        label="全部">
+                                </el-option>
+                                <el-option
+                                        v-for="item in tableLabBuild"
+                                        :key="item.labBuildId"
+                                        :label="item.labBuildName"
+                                        :value="item.labBuildId">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="8" :offset="-1">
+                            <el-select v-model="look.floor" placeholder="楼层"  @change="lookupLab()" :disabled="look.labBuildId===''">
+                                <el-option
+                                        value=""
+                                        label="全部">
+                                </el-option>
+                                <el-option
+                                        v-for="item in tableFloorNum"
+                                        :key="item"
+                                        :label="'第'+item+'楼'"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </el-row>
 
-                        <!--<el-option-->
-                                <!--v-for="item in tableLabBuild"-->
-                                <!--:key="item.collegeName"-->
-                                <!--:label="item.labBuildName"-->
 
-                                <!--:value="item.labBuildId">-->
-                        <!--</el-option>-->
-                    <!--</el-select>-->
-                <!--</template>-->
+                </template>
                 <template slot-scope="scope">
                     {{scope.row.labBuildName}}-{{scope.row.labRoomNum}}
                 </template>
@@ -150,6 +168,7 @@
 
                 tableCollege:[],//获取的学院
                 tableLabBuild:[],
+                tableFloorNum:"",
                 collegeId:"",//选择的学院
                 page:1,
                 pageOver:false,
@@ -159,13 +178,16 @@
                 editTable:[],//传给修改页面的值
                 lookup:{
                     labName:"0",
-                    labBuildId:"any(select labBuildId from table_name)",
-                    collegeId:"本院id",
+                    labBuildId:0,
+                    collegeId:0,
+                    floor:"0"
                 },//默认查询条件
                 look:{
                     labName:"",
                     labBuildId:"",
-                    collegeId:""
+                    collegeId:"",
+                    floor:"",//楼层
+
 
                 },//是否改变查询条件
                 chioceTeacher:false
@@ -175,41 +197,6 @@
 
 
             //获取全校实验室情况
-            getCollegeLabor(cnt){
-                //如果未选择学院
-                //if(this.collegeId===""){
-                this.$college.getCollegeLabor(cnt,(res)=>{
-                    if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.tableData = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res.data.c))
-                    }else{
-                        this.tableData = []
-                    }
-                    //判断是否到达最后一页
-                    this.$refs.nextPage.judge(this.tableData.length)
-                })
-                // }
-
-                // else{
-                //
-                //     //查询某个学院的实验室
-                //     this.$labor.getCollegeLabor(cnt,(res)=>{
-                //         if(res.data.rc === this.$util.RC.SUCCESS){
-                //             this.tableData = this.$util.tryParseJson(res.data.c)
-                //             console.log(this.$util.tryParseJson(res.data.c))
-                //         }else{
-                //             this.tableData = []
-                //         }
-                //         //判断是否到达最后一页
-                //         if(this.tableData.length <this.count){
-                //             this.pageOver= true
-                //         }else{
-                //             this.pageOver = false
-                //         }
-                //     })
-                // }
-            },
-
 
 
             lookupLab(){
@@ -220,21 +207,26 @@
                     collegeId:this.$store.state.teacherInformation.collegeId
                 }
                 console.log(nextCnt)
-                if(this.look.labId===""&&this.look.labBuildId===""){
-                    this.getCollegeLabor(nextCnt)
-                }
-                else{
+
+
                     this.lookupLabor(nextCnt)
-                }
+
             },
             lookupLabor(cnt){
                 let labName =     this.look.labName
-                //let labBuildId= this.look.labBuildId
+                let labBuildId= this.look.labBuildId
+                let floor=this.look.floor
 
-                if(labName==="") {cnt.labName=this.lookup.labName}else{
-                    cnt.labName=labName
+                if(labName==="") {cnt.labName=this.lookup.labName} else{
+                    cnt.labName=labName}
+
+
+                if(labBuildId==="") {cnt.labBuildId=this.lookup.labBuildId} else{
+                    cnt.labBuildId=labBuildId
                 }
-                //if(labBuildId==="") cnt.labBuildId=this.lookup.labBuildId
+
+                if(floor==="") {cnt.floor=this.lookup.floor} else{
+                    cnt.floor=floor}
 
                 this.$admin.lookupLabor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
@@ -249,11 +241,8 @@
             },
             changePage(nextCnt) {
                 nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
-                if ( this.look.labName === "") {
-                    this.getCollegeLabor(nextCnt)
-                } else {
+
                     this.lookupLabor(nextCnt)
-                }
             },
             //点击编辑按钮
             editData(row){
@@ -262,26 +251,50 @@
                 this.$refs.editDia.openEdit(60) //修改实验室弹框
 
             },
-            // getLaborBuild(){
-            //     let cnt={}
-            //     this.$admin.getLaborBuild(cnt,(res)=>{
-            //         if(res.data.rc === this.$util.RC.SUCCESS){
-            //             this.tableLabBuild = this.$util.tryParseJson(res.data.c)
-            //             console.log(this.$util.tryParseJson(res.data.c))
-            //         }else{
-            //             this.tableLabBuild = []
-            //         }
-            //
-            //     })
-            // }
+            getLaborBuild(){
+                let cnt={
+                    offset:0,
+                    count:15,
+                }
+                this.$admin.getLaborBuild(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.tableLabBuild = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$util.tryParseJson(res.data.c))
+                    }else{
+                        this.tableLabBuild = 0
+                    }
+                    //  this.$refs.nextPage.judge(this.tableData.length)
+
+                })
+            },
+            getFloorNum(buildId){
+                this.look.floor=""
+                let cnt={
+                    offset:0,
+                    count:10,//最多10楼
+                    labBuildId:buildId
+                }
+                if(buildId!==""){
+                    this.$admin.getFloorNum(cnt,(res)=>{
+                        if(res.data.rc === this.$util.RC.SUCCESS){
+                            this.tableFloorNum = this.$util.tryParseJson(res.data.c)
+                            console.log(this.$util.tryParseJson(res.data.c))
+                        }else{
+                            this.tableFloorNum = 0
+                        }
+                        //  this.$refs.nextPage.judge(this.tableData.length)
+
+                    })
+                }
+
+                this.lookupLab()
+                console.log(this.$store.state.teacherInformation)
+            }
         },
         mounted(){
-            let cnt = {
-                count:this.$store.state.count,
-                offset:this.$store.state.offset,
-                collegeId:this.$store.state.teacherInformation.collegeId
-            }
-            this.getCollegeLabor(cnt)
+
+            this.getLaborBuild()
+            this.lookupLab()
            // this.getLaborBuild()
             console.log(this.$store.state.teacherInformation)
         },
@@ -289,8 +302,27 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     .elform /deep/ .el-form-item__label{
         color:#9e9e9e
+    }
+    .changeDia/deep/ {
+    .el-select{
+        padding-left: 0;
+    }
+    .el-input{
+        padding-left: 0;
+        width: 90%;
+    }
+    .el-cascader__label{
+    //padding: 0 25px 0 45px;
+    }
+    .el-table .cell, .el-table th div{
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .el-table th div{
+        line-height: 15px;
+    }
     }
 </style>

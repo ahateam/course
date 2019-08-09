@@ -1,6 +1,6 @@
 <template>
     <div class="change" v-show="displayTable">
-        <el-form :model="ruleForm[0]" status-icon :rules="rules" ref="ruleForm" v-show="displayTable"  >
+        <el-form :model="ruleForm[0]" status-icon ref="ruleForm" v-show="displayTable"  >
             <el-table
                     :data="ruleForm"
                     border
@@ -29,20 +29,20 @@
                 <el-table-column
                         prop="labSeat"
                         label="座位数(最大容纳人数)">
-                    <template slot-scope="scope">
-                    <span v-if="!scope.row.ifShow">
-                        <el-form-item prop="labSeat"  :rules="rules.labSeat">
-                            <el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="mini" v-if="show">
-                                <el-option
-                                        v-for="item in peopleNum"
-                                        :key="item.value"
-                                        :value="item">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                    <!--<template slot-scope="scope">-->
+                    <!--<span v-if="!scope.row.ifShow">-->
+                        <!--<el-form-item prop="labSeat"  :rules="rules.labSeat">-->
+                            <!--<el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="mini" v-if="show">-->
+                                <!--<el-option-->
+                                        <!--v-for="item in peopleNum"-->
+                                        <!--:key="item.value"-->
+                                        <!--:value="item">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
-                    </span>
-                    </template>
+                    <!--</span>-->
+                    <!--</template>-->
                 </el-table-column>
 
                 <el-table-column
@@ -51,10 +51,10 @@
                     <template slot="header" slot-scope="scope">
                         面积/m<sup>2</sup>
                     </template>
-                    <el-form-item prop="labArea"  :rules="rules.labArea">
-                        <el-input size="small" v-model="ruleForm[0].labArea" >
-                        </el-input>
-                    </el-form-item>
+                    <!--<el-form-item prop="labArea"  :rules="rules.labArea">-->
+                        <!--<el-input size="small" v-model="ruleForm[0].labArea" >-->
+                        <!--</el-input>-->
+                    <!--</el-form-item>-->
 
                 </el-table-column>
 
@@ -97,10 +97,10 @@
                         label="管理部门">
                     <template  slot-scope="scope">
                         <span v-if="!scope.row.ifShow">
-                            <el-select v-model="scope.row.collegeId" title="item.collegeName" :placeholder="scope.row.collegeName" size="mini" >
+                            <el-select v-model="ruleForm[0].collegeId" title="item.collegeName" :placeholder="scope.row.collegeName" size="mini" >
                                 <el-option
                                         v-for="item in $store.state.tableCollege"
-                                        :key="item.collegeName"
+                                        :key="item.collegeId"
                                         :label="item.collegeName"
                                         :value="item.collegeId">
                                 </el-option>
@@ -164,6 +164,7 @@
                 //     floorRoomNum:""
                 // },
                 peopleNum:['10','15','20','25','30','35','40','45','50'],
+                collegeId:"",
                 rules: {
                     labName: [
                         {  required: true, message: '实验室名称',},
@@ -184,33 +185,35 @@
                     ],
                 },
                 displayTable:true,//强制刷新界面
-                tableCollege:""
             }
 
         },
         methods:{
 
             submitForm() {
-                this.$refs["ruleForm"].validate((valid) => {
-                    if (valid) {
-                        this.editSchoolLabor()
-                    } else {
-                        this.$message({
-                            type:"warning",
-                            message:"请输入完整"
-                        })
-                        return false;
-                    }
-                });
+                this.editSchoolLabor()
+
+                // this.$refs["ruleForm"].validate((valid) => {
+                //     if (valid) {
+                //         this.editSchoolLabor()
+                //     } else {
+                //         this.$message({
+                //             type:"warning",
+                //             message:"请输入完整"
+                //         })
+                //         return false;
+                //     }
+                // });
             },
             editSchoolLabor(){
 
                 let cnt={
                     labName:this.ruleForm[0].labName,
                     labId: this.ruleForm[0].labId,
-                    labSeat: this.ruleForm[0].labSeat,
-                    labArea:this.ruleForm[0].labArea,
+                    //labSeat: this.ruleForm[0].labSeat,
+                    //labArea:this.ruleForm[0].labArea,
                     lecturerName:this.ruleForm[0].lecturerName,
+                    collegeId:this.ruleForm[0].collegeId
                 }
                 console.log(this.ruleForm)
                 console.log(cnt)

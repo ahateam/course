@@ -88,5 +88,11 @@ for(let i=0;i<routes.length;i++){
     ROUTES[i].meta.require_college=true
 
 }
+// ROUTES.forEach((val,index,arr)=>{
+//     console.log(arr[index])
+//     arr[index].meta={
+//        require_college:true
+//     }
+// })
 
 export default ROUTES

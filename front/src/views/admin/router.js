@@ -80,6 +80,11 @@ let routes=[
             ROUTES[i].meta.require_admin=true
 
         }
-
+// ROUTES.forEach((val,index,arr)=>{
+//     console.log(arr[index])
+//     arr[index].meta={
+//        require_admin:true
+//     }
+// })
 
 export default ROUTES

@@ -66,11 +66,14 @@
                     label="联系方式">
             </el-table-column>
             <el-table-column
-                    prop="adminId"
+                    prop="adminID"
                     label="权限"
                     width="120"
                     :formatter="changeAdminId">
             </el-table-column>
+                <!--<template slot-scope="scope">-->
+                    <!--{{scope.row.adminId}}-->
+                <!--</template>-->
             <el-table-column
                     fixed="right"
                     label="操作"
@@ -121,8 +124,8 @@
         data(){
             return{
 
-                tableData:[{teacherName:"www",teacherPhone:187852154654,adminId:'1'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
-                ,{teacherName:"www",teacherPhone:187852154654,adminId:'0'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
+                tableData:[{teacherName:"www",teacherPhone:187852154654,adminID:'1'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
+                ,{teacherName:"www",teacherPhone:187852154654,adminID:'0'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
                 ],
                 tableCollege:[],//选择学院
                 collegeId:"",  //选择选择器后得到
@@ -159,6 +162,7 @@
                     this.$admin.getSchoolTeacher(cnt,(res)=>{
                         if(res.data.rc === this.$util.RC.SUCCESS){
                             this.tableData = this.$util.tryParseJson(res.data.c)
+                            console.log(typeof this.tableData[0].adminID)
                         }else{
                             this.tableData = []
                         }
@@ -235,7 +239,7 @@
             delForm(delForm){
                 let cnt={
                     username:this.delUsername,
-                    delRemark:delForm.del
+                    //delRemark:delForm.del
                 }
                 this.$college.delCollegeTeacher(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
@@ -266,6 +270,7 @@
                 if(val==='1') return "学院管理员"
                 if(val==='2') return "实验室管理员"
                 if(val==='3') return "教师"
+
             }
         },
         mounted(){

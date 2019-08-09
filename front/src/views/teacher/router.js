@@ -52,5 +52,11 @@ let routes=[
         ROUTES[i].meta.require_teacher=true
 
     }
+// ROUTES.forEach((val,index,arr)=>{
+//     console.log(arr[index])
+//     arr[index].meta={
+//        require_teacher:true
+//     }
+// })
 
 export default ROUTES

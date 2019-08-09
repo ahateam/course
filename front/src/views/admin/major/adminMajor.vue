@@ -30,7 +30,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="collegeName"
+                    prop="collegeId"
                     label="所属学院">
                 <template slot="header" slot-scope="scope">
                     <el-select v-model="look.collegeId" placeholder="选择学院"  @change="lookupMajor()">
@@ -45,6 +45,10 @@
                                 :value="item.collegeId">
                         </el-option>
                     </el-select>
+                </template>
+                <template  slot-scope="scope">
+                    <!--{{scope.row.collegeName}}-->
+                    {{$getCollegeName(scope.row.collegeId)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -184,7 +188,7 @@
                 delMajorId:"",//删除专业id
                 tableData:[{
                     collegeName:"大数据学院",//学院名称
-                    collegeId:"1005",//学院ID
+                    collegeId:399887044258381,//学院ID
                     majorNum: 5,// 专业数量
                     classNum: 18 ,//班级数量
                     teacherNum :41 ,//教师数量
@@ -196,7 +200,7 @@
                     majorName:"人工智能"
                 },{
                     collegeName:"理学院",//学院名称
-                    collegeId:"1005",//学院ID
+                    collegeId:399887051293007,//学院ID
                     majorNum: 5,// 专业数量
                     classNum: 18 ,//班级数量
                     teacherNum :41 ,//教师数量
@@ -210,7 +214,7 @@
 
                 },{
                     collegeName:"大数据学院",//学院名称
-                    collegeId:"1005",//学院ID
+                    collegeId:399887044258381,//学院ID
                     majorNum: 5,// 专业数量
                     classNum: 18 ,//班级数量
                     teacherNum :41 ,//教师数量
@@ -271,8 +275,8 @@
             getMajor(cnt){
                 this.$admin.getSchoolMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.tableData = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res))
+                        this.tableData = JSON.parse(res.data.c)
+                        //console.log(this.tableData)
                     }else{
                         this.tableData = []
                     }
@@ -295,19 +299,17 @@
                 this.editMajorForm.collegeName=row.collegeName
                 this.editMajorForm.collegeId=row.collegeId
                 this.dialog.editMajor=true
-
-
             },
             //编辑专业
             editMajor(){
                 this.$refs['editMajorForm'].validate((valid) => {
                     if (valid) {
-                        console.error(444)
                         let cnt={
                             majorId:this.editMajorForm.majorId,
                             majorName:this.editMajorForm.majorName,
                             collegeId:this.editMajorForm.collegeId
                         }
+                        console.log(cnt)
                         //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                         this.$admin.editSchoolMajor(cnt,(res)=>{
                             if(res.data.rc === this.$util.RC.SUCCESS){
@@ -331,12 +333,11 @@
                     console.log("createMajorForm")
                     if (valid) {
                         let cnt={
-                            majorId:this.editMajorForm.majorId,
                             majorName:this.editMajorForm.majorName,
                             collegeId:this.editMajorForm.collegeId
                         }
                         //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
-                        this.$admin.editSchoolMajor(cnt,(res)=>{
+                        this.$admin.createSchoolMajor(cnt,(res)=>{
                             if(res.data.rc === this.$util.RC.SUCCESS){
                                 this.$message({type:'success',message:"修改成功"})
                             }
@@ -360,7 +361,7 @@
                 let cnt={
                     majorId:this.delMajorId
                 }
-                this.$college.delCollegeTeacher(cnt,(res)=>{
+                this.$admin.delSchoolMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.$message({
                             type:"success",
@@ -375,6 +376,7 @@
                     }
                 })
             },
+
 
         },
         mounted(){

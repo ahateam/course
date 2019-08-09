@@ -85,7 +85,7 @@ let api = {};
 
         //删除教师
         api.delCollegeTeacher = function (cnt,callback) {
-            util.call(baseUrl+'/collegeTeacher/delCollegeTeacher', cnt, callback)
+            util.call(baseUrl+'/userController/delCollegeTeacher', cnt, callback)
         };
 
         //编辑教师
