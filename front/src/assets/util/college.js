@@ -133,7 +133,7 @@ let api = {};
 
         //修改实验室
         api.editCollegeLabor = function (cnt,callback) {
-            util.call(baseUrl+'/collegeLabor/editSchoolLabor', cnt, callback)
+            util.call(baseUrl+'/classRoom/editCollegeLabor', cnt, callback)
         }
 
 export default api

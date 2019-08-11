@@ -112,9 +112,9 @@
                 };
                 this.$college.editCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
-                        this.$message("新增成功，请等待教务处管理员审核")
+                        this.$message("编辑成功，请等待教务处管理员审核")
                     }
-                    else { this.$message("新增失败")}
+                    else { this.$message("编辑失败")}
 
                 })
             },

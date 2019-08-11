@@ -80,7 +80,15 @@
                         teacherName: "www",
                         username: 187852154654,
                         teacherPhone: '3'
-                    }
+                    },{teacherName: "www", username: 187852154654, teacherPhone: '3'}, {
+                        teacherName: "www",
+                        username: 187852154654,
+                        teacherPhone: '3'
+                    },{teacherName: "www", username: 187852154654, teacherPhone: '3'}, {
+                        teacherName: "www",
+                        username: 187852154654,
+                        teacherPhone: '3'
+                    },.0
                 ],
                 tableCollege: [],//选择学院
                 collegeId: "",  //选择选择器后得到
@@ -89,9 +97,9 @@
                 teacherName: "",//输入框的
 
                 lookup: {
-                    username: "any(select username from table_name)",
-                    teacherName: "",
-                    collegeId: "any(select collegeId from table_name)"
+                    username: 0,
+                    teacherName: "0",
+                    collegeId: 0
                 },
             }
         },
@@ -104,79 +112,59 @@
 
 
             //获取教师信息
-            getTeacher(cnt) {
-                cnt.collegeId = "本院Id"
-                this.$admin.getCollegeTeacher(cnt, (res) => {
-                    if (res.data.rc === this.$util.RC.SUCCESS) {
-                        this.tableData = this.$util.tryParseJson(res.data.c)
-                    } else {
-                        this.tableData = []
-                    }
-                    this.$refs.nextPage.judge(this.tableData.length)
-                })
-            },
-
 
             changePage(nextCnt) {
                 //let cnt =nextCnt.cnt
                 //如果选择学院后 获取选择学院的教师信息
                 //if(this.collegeId!=="") nextCnt.collegeId=this.collegeId
-                if (this.username === "" && this.collegeId === "" && this.collegeId === "") {
-                    this.getTeacher(nextCnt)
-                } else {
+                nextCnt.offset=parseInt(nextCnt.offset)*0.6
+                nextCnt.count=6
+                //console.log(nextCnt)
                     this.lookupCollegeTeacher(nextCnt)
-                }
             },
             lookupTeacher() {
 
                 this.$refs.nextPage.defaultPage()
                 let cnt = {
-                    count: this.$store.state.count,
+                    count: 6,
                     offset: 0,
+
                 }//查询为空时
-                if (this.username === "" && this.teacherName === "") {
-                    this.getTeacher(cnt)
-                } else {
+
                     this.lookupCollegeTeacher(cnt)
-                    //查询输入工号的教师
-                }
+
             },
             lookupCollegeTeacher(cnt) {
-
-                cnt.teacherName = this.teacherName
+                cnt.collegeId=this.$store.state.teacherInformation.collegeId
+                if(this.teacherName===""){cnt.teacherName="0"}else{
+                    cnt.teacherName=this.teacherName
+                }
                 if (this.username === "") {
                     cnt.username = this.lookup.username
                 } else {
                     cnt.username = this.username
                 }
-                cnt.collegeId = "本院ID"
-                console.log(cnt)
+                //console.log(cnt)
 
                 this.$college.lookupCollegeTeacher(cnt, (res) => {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(this.tableData)
                     } else {
                         this.tableData = []
                     }
-                    this.$refs.nextPage.judge(this.tableData.length)
+                    this.$refs.nextPage.judge(this.tableData.length+4)
                 })
             },
 
 
-            mounted() {
-                let cnt = {
-                    count: this.count,
-                    offset: (this.page - 1) * this.count
-                }
-                this.getTeacher(cnt)
+        },
+        mounted() {
 
-                let cns = {
-                    count: 20,
-                    offset: 0
-                }
-                //获取选择学院
+            console.log("选择较上次")
+            this.lookupTeacher()
 
-            }
+            //获取选择学院
 
         }
     }

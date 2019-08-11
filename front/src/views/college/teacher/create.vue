@@ -22,15 +22,21 @@
                 </el-col>
                 <el-col :span="9" :offset="2">
                     <el-form-item label="入职时间:" prop="workTime">
-                        <el-input  placeholder="请输入内容" v-model="createForm.workTime" ></el-input>
+                        <el-date-picker
+                                v-model="createForm.workTime"
+                                type="date"
+                                placeholder="选择日期"
+                                format="yyyy 年 MM 月 dd 日"
+                                value-format="timestamp">
+                        </el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="20">
-                    <el-form-item label="权限:" prop="adminId">
-                        <el-radio-group v-model="createForm.adminId" >
-                            <el-radio  v-for="(item,index) in adminLabel" :label="item.adminId" :key="index">{{item.name}}</el-radio>
+                    <el-form-item label="权限:" prop="adminID">
+                        <el-radio-group v-model="createForm.adminID" >
+                            <el-radio  v-for="(item,index) in adminLabel" :label="item.adminID" :key="index">{{item.name}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
@@ -39,14 +45,19 @@
             <el-row>
                 <el-col :span="20">
                     <el-form-item label="所属学院:" prop="collegeId">
-                        <el-select v-model="createForm.collegeId"  placeholder="选择学院"  >
-                            <el-option
-                                    v-for="item in $store.state.tableCollege"
-                                    :key="item.collegeName"
-                                    :label="item.collegeName"
-                                    :value="item.collegeId">
-                            </el-option>
-                        </el-select>
+                        <span>
+                            {{createForm.adminID}}
+                            <!--{{$getCollegeName(createForm.collegeId)}}-->
+                        </span>
+
+                        <!--<el-select v-model="createForm.collegeId"  placeholder="选择学院"  >-->
+                            <!--<el-option-->
+                                    <!--v-for="item in $store.state.tableCollege"-->
+                                    <!--:key="item.collegeName"-->
+                                    <!--:label="item.collegeName"-->
+                                    <!--:value="item.collegeId">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
                     </el-form-item>
                 </el-col>
 
@@ -93,13 +104,13 @@
                     username:"",
                     teacherName:"",
                     workTime:"",
-                    adminId:"",
+                    adminID:"",
                     teacherPhone: "",
                     collegeId:""
                 },
                 collegeId:"",
                 tableCollege:"",
-                adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},],
+                adminLabel:[{name:"教务处",adminID:'0'},{name:"教务科",adminID:'1'},{name:"实验室",adminID:'2'},{name:"教师",adminID:'3'}],
                 rules:{
                     teacherPosition:[ { required: true, message: '请选择教师职称', trigger: 'blur' },],
 
@@ -111,11 +122,10 @@
 
                     workTime:[ { required: true, message: '请选择入职时间', trigger: 'blur' },],
 
-                    adminId:[ { required: true, message: '请选择权限', trigger: 'blur' },],
+                    adminID:[ { required: true, message: '请选择权限', trigger: 'blur' },],
 
-                    teacherPhone:[ { validator: teacherPhone, trigger: 'blur' },],
+                    teacherPhone:[ { required: true, validator: teacherPhone, trigger: 'blur' },],
 
-                    collegeId:[ { required: true, message: '请选择学院', trigger: 'blur' },],
                 }
             }
         },
@@ -128,7 +138,7 @@
                     if (valid) {
                         this.createCollegeTeacher()
                     } else {
-                        this.$messages.message("warning","请填写完整")
+                        this.$message({type:"warning",message:"请填写完整"})
                         return false;
                     }
                 });
@@ -144,7 +154,7 @@
                     username:this.createForm.username,
                     teacherPosition:this.createForm.teacherPosition,
                     teacherPhone:this.createForm.teacherPhone,
-                    adminId:this.createForm.adminId,
+                    adminID:this.createForm.adminID,
 
                 }
                 console.log(cnt)

@@ -60,25 +60,30 @@
                     prop="teacherPosition"
                     label="职称">
             </el-table-column>
+            <el-table-column
+                    prop="workTime"
+                    label="入职时间">
+                <template slot-scope="scope">
+                    {{new Date(parseInt(scope.row.workTime)).toLocaleDateString()}}
+                </template>
+            </el-table-column>
 
             <el-table-column
                     prop="teacherPhone"
                     label="联系方式">
             </el-table-column>
-            <el-table-column
-                    prop="adminId"
-                    label="权限"
-                    width="120"
-                    :formatter="changeAdminId">
-            </el-table-column>
+            <!--<el-table-column-->
+                    <!--prop="adminId"-->
+                    <!--label="权限"-->
+                    <!--width="120"-->
+                    <!--:formatter="changeAdminId">-->
+            <!--</el-table-column>-->
             <el-table-column
                     fixed="right"
                     label="操作"
                     width="140">
                 <template slot-scope="scope">
-                    <el-button @click="details=true" type="text" size="small">详情</el-button>
-                    <el-button @click="edits(scope.row)" type="text" size="small"
-                                :disabled="scope.row.adminId==='0'">编辑</el-button>
+                    <el-button @click="edits(scope.row)" type="text" size="small">编辑</el-button>
 
                 </template>
             </el-table-column>
@@ -96,7 +101,7 @@
         </el-dialog>
 
         <two-dialog ref="editDia">
-            <edit @transferRandom="closeEdit" ref="editTeacher" :form="editref"></edit>
+            <edit @transferRandom="closeEdit" ref="editTeacher" :editForm="editref"></edit>
 
         </two-dialog>
 
@@ -120,8 +125,8 @@
         data(){
             return{
 
-                tableData:[{teacherName:"www",teacherPhone:187852154654,adminId:'1'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
-                ,{teacherName:"www",teacherPhone:187852154654,adminId:'0'},{teacherName:"www",teacherPhone:187852154654,adminId:'3'}
+                tableData:[{teacherName:"www",teacherPhone:187852154654,adminId:'1',workTime:1560355200000},{teacherName:"www",teacherPhone:187852154654,adminId:'3',workTime:1560355200000}
+                ,{teacherName:"www",teacherPhone:187852154654,adminId:'0',workTime:1560355200000},{teacherName:"www",teacherPhone:187852154654,adminId:'3',workTime:1560355200000}
                 ],
                 tableCollege:[],//选择学院
                 collegeId:"",  //选择选择器后得到
@@ -154,32 +159,12 @@
                 this.$refs.editTeacher.editSchoolTeacher()
             },
             //获取教师信息
-            getTeacher(cnt){
-                    this.$admin.getSchoolTeacher(cnt,(res)=>{
-                        if(res.data.rc === this.$util.RC.SUCCESS){
-                            this.tableData = this.$util.tryParseJson(res.data.c)
-                        }else{
-                            this.tableData = []
-                        }
-                            this.$refs.nextPage.judge(this.tableData.length)
-                    })
-            },
-            //选择学院后
-            // choiceCollege(){
-            //     let nextCnt={
-            //         collegeId:this.collegeId,
-            //         offset:this.offset,
-            //         count:this.count,
-            //     }
-            //     this.changePage(nextCnt)
-            //     this.$refs.nextPage.defaultPage()
-            // },
 
             changePage(nextCnt){
                 //let cnt =nextCnt.cnt
                 //如果选择学院后 获取选择学院的教师信息
                 //if(this.collegeId!=="")
-                nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
+                // nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
                 // if(this.username===""&&this.teacherName==="") {
                 //     this.getTeacher(nextCnt)
                 // }
@@ -195,13 +180,8 @@
                     offset:0,
                     collegeId:this.$store.state.teacherInformation.collegeId,
                 }//查询为空时
-                if(this.username===""&&this.teacherName===""){
-                    this.getTeacher(cnt)
-                }
-                else{
                     this.lookupCollegeTeacher(cnt)
                     //查询输入工号的教师
-                }
             },
             lookupCollegeTeacher(cnt){
                 if(this.teacherName===""){cnt.teacherName="0"}else{
@@ -216,6 +196,7 @@
 
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
+                        console.log(typeof this.$util.tryParseJson(res.data.c)[0].username)
                     }else{
                         this.tableData = []
                     }
@@ -256,9 +237,11 @@
             //传值给edit界面
             edits(row){
                 //this.edit=true
-                this.$refs.editDia.openEdit(50)
                 this.editref=row
+
+                this.$refs.editDia.openEdit(50)
                 this.$refs.editTeacher.again()
+
             },
             //权限id变为权限名称
             changeAdminId(row,col,val){
@@ -269,12 +252,13 @@
             }
         },
         mounted(){
-            let cnt = {
-                count:this.$store.state.count,
-                offset:this.$store.state.offset,
-                collegeId:this.$store.state.teacherInformation.collegeId,
-            }
-            this.lookupCollegeTeacher(cnt)
+            // let cnt = {
+            //     count:this.$store.state.count,
+            //     offset:this.$store.state.offset,
+            //     collegeId:this.$store.state.teacherInformation.collegeId,
+            // }
+            // this.lookupCollegeTeacher(cnt)
+            this.lookupTeacher()
 
             // let cns ={
             //     count:20,

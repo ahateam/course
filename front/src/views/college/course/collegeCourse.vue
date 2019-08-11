@@ -20,11 +20,7 @@
                         type="index"
                         width="50">
                 </el-table-column>
-                <el-table-column
-                        prop="collegeName"
-                        label="开课学院"
-                >
-                </el-table-column>
+
 
                 <el-table-column
                         prop="courseName"
@@ -65,16 +61,22 @@
                     <template slot="header" slot-scope="scope">
                         <el-select v-model="courseAge" placeholder="年纪" size="mini" @change="changePage(1)">
                             <el-option
-                                    v-for="item in tableLevel"
-                                    :key="item.collegeName"
+                                    v-for="item in 8"
+                                    :key="item"
+                                    :label="$getCourseAge(item)"
                                     :value="item">
                             </el-option>
                         </el-select>
                     </template>
                     <template slot-scope="scope">
                             <!--{{scope.row.courseMajor}} - -->
-                        {{scope.row.courseAge}}
+                        {{$getCourseAge(scope.row.courseAge)}}
                     </template>
+                </el-table-column>
+                <el-table-column
+                        prop="collegeName"
+                        label="开课学院"
+                >
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -214,8 +216,8 @@
                     courseName: '高数1',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "大数据",// 上课专业
-                    courseAge: "大一上" ,//上课年纪
+                    courseMajor: "123,456",// 上课专业
+                    courseAge: 1 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
                     courseExamStatus:"agree"//审核状态
@@ -226,7 +228,7 @@
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
                     courseMajor: "大数据",// 上课专业
-                    courseAge: "大一下" ,//上课年纪
+                    courseAge: 2 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
                     courseExamStatus:"disagree"//审核状态
@@ -238,7 +240,7 @@
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
                     courseMajor: "大数据",// 上课专业
-                    courseAge: "大二上" ,//上课年纪
+                    courseAge: 2 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
                     courseExamStatus:"null"//审核状态

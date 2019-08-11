@@ -339,10 +339,10 @@
                         //const loading = this.$loading({lock: true, text: '拼命加载中...', spinner: 'el-icon-loading'})
                         this.$admin.createSchoolMajor(cnt,(res)=>{
                             if(res.data.rc === this.$util.RC.SUCCESS){
-                                this.$message({type:'success',message:"修改成功"})
+                                this.$message({type:'success',message:"新增成功"})
                             }
-                            else{
-                                this.$message({type:'warning',message:"修改失败"})
+                            else if(res.data.rm==="sql execute error"){
+                                this.$message({type:'warning',message:"已有此专业"})
                             }
                         })
                     }

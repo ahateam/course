@@ -81,8 +81,8 @@
                 <template slot-scope="scope">
                     <el-button @click="details=true" type="text" size="small">详情</el-button>
                     <el-button @click="edits(scope.row)" type="text" size="small"
-                                :disabled="scope.row.adminId==='0'">编辑</el-button>
-                    <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminId==='0'">
+                                :disabled="scope.row.adminID==='0'">编辑</el-button>
+                    <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminID==='0'">
                         删除</el-button>
                 </template>
             </el-table-column>
@@ -266,9 +266,9 @@
             },
             //权限id变为权限名称
             changeAdminId(row,col,val){
-                if(val==='0') return "教务处管理员"
-                if(val==='1') return "学院管理员"
-                if(val==='2') return "实验室管理员"
+                if(val==='0') return "教务处"
+                if(val==='1') return "教务科"
+                if(val==='2') return "实验室"
                 if(val==='3') return "教师"
 
             }

@@ -22,7 +22,13 @@
                 </el-col>
                 <el-col :span="9" :offset="2">
                     <el-form-item label="入职时间:" prop="workTime">
-                        <el-input  placeholder="请输入内容" v-model="createForm.workTime" ></el-input>
+                        <el-date-picker
+                                v-model="createForm.workTime"
+                                type="date"
+                                placeholder="选择日期"
+                                format="yyyy 年 MM 月 dd 日"
+                                value-format="timestamp">
+                        </el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -99,7 +105,7 @@
                 },
                 collegeId:"",
                 tableCollege:"",
-                adminLabel:[{name:"教师",adminId:'0'},{name:"学院",adminId:'2'},{name:"实验室",adminId:'3'},{name:"教务处",adminId:'1'},],
+                adminLabel:[{name:"教务处",adminID:'0'},{name:"教务科",adminID:'1'},{name:"实验室",adminID:'2'},{name:"教师",adminID:'3'}],
                 rules:{
                     teacherPosition:[ { required: true, message: '请选择教师职称', trigger: 'blur' },],
 
@@ -113,7 +119,7 @@
 
                     adminId:[ { required: true, message: '请选择权限', trigger: 'blur' },],
 
-                    teacherPhone:[ { validator: teacherPhone, trigger: 'blur' },],
+                    teacherPhone:[ {required: true, validator: teacherPhone, trigger: 'blur' },],
 
                     collegeId:[ { required: true, message: '请选择学院', trigger: 'blur' },],
                 }

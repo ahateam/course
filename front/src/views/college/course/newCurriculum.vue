@@ -5,19 +5,25 @@
 
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="开课学院" style="float: left" prop="openCollege">
-                        <el-select v-model="form.collegeId" placeholder="选择学院">
-                            <el-option @change="getCollegeOpen(item)" v-for="(item,index) in $store.state.tableCollege" :key="index" :label="item.collegeName" :value="item.collegeId"></el-option>
-                        </el-select>
+                    <el-form-item label="课程名称" style="float: left" prop="courseCode">
+
+                    <el-popover
+                            v-model="chioceVisible"
+                            placement="left"
+                            width="600"
+                            trigger="click">
+                        <chioceOpen :collegeId="form.collegeId" ref="chioceTea" @transferRandom="chioceOpen" />
+                        <el-button  slot="reference" type="text">选择课程</el-button>
+                    </el-popover>
+                    <!--<el-select :disabled="form.collegeId===''" v-model="form.openCourse" placeholder="请选择课程名称">-->
+                    <!--<el-option v-for="(item,index) in courseData" :key="index" :label="item.courseName" :value="item"></el-option>-->
+                    <!--</el-select>-->
+                        {{form.courseName}}
                     </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
-                    <el-form-item label="课程名称" style="float: left" prop="openCourse">
-                        <el-select v-model="form.openCourse" placeholder="请选择课程名称">
-                            <el-option v-for="(item,index) in courseData" :key="index" :label="item.courseName" :value="item"></el-option>
-                        </el-select>
-                    </el-form-item>
+                    <el-button :disabled="form.collegeId===''" slot="reference" type="text">选择课程</el-button>
                 </el-col>
 
 
@@ -37,8 +43,8 @@
             <el-col :span="12">
                 <el-form-item label="课程性质" style="float: left" prop="courseNature">
                     <el-select v-model="form.courseNature" placeholder="请选择课程性质">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                        <el-option :value="item" v-for="item in courseNature" :key="item"></el-option>
+
                     </el-select>
                 </el-form-item>
             </el-col>
@@ -47,20 +53,29 @@
             </el-row>
 
             <el-row>
-                <!--<el-col :span="12">-->
-                    <!--<el-form-item label="上课专业" style="float: left" prop="courseMajor" >-->
-                        <!--<el-select v-model="form.courseMajor" placeholder="请选择活动区域">-->
-                            <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                            <!--<el-option label="区域二" value="beijing"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
                 <el-col :span="12">
                     <el-form-item label="上课年纪" style="float: left"  prop="courseAge">
-                        <el-select v-model="form.courseAge" placeholder="请选择上课年纪">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+
+                        <el-select v-model="form.courseAge" placeholder="请选择上课年纪" >
+                            <el-option
+                                    v-for="item in 8"
+                                    :key="item"
+                                    :label="$getCourseAge(item)"
+                                    :value="item">
+                            </el-option>
                         </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="上课专业" style="float: left"  prop="courseMajor">
+
+                        <!--<el-select v-model="form.courseMajor" placeholder="请选择上课年纪" size="mini">-->
+                        <!--</el-select>-->
+                        <el-checkbox-group v-model="form.courseMajor" >
+                            <el-checkbox v-for="item in tableMajor"  :label="item.majorId" :key="item.majorId">{{item.majorName}}</el-checkbox>
+                        </el-checkbox-group>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -87,27 +102,30 @@
 
 </template>
 <script>
+    const cityOptions = ['上海', '北京', '广州', '深圳'];
+    import chioceOpen from "./chioceOpen"
     export default {
         data() {
             return {
                 tableCollege:"",//选择学院
                 courseData:"",//选择学院的课程
-
+                chioceVisible:false,
                 form: {
                     collegeId:"",//开课学院
-                    collegeName:"",//开课学院
-                    openCourse:"",//选择课程
+                    courseCode:"",//选择课程
+                    courseName:'',//课程名称
 
                     assessmentMode: "" ,//考核方式
-                    courseNature :10 ,//课程性质
-                    courseMajor: "",// 上课专业
+                    courseNature :"" ,//课程性质
+                    courseMajor: [],// 上课专业
                     courseAge:"" ,//上课年纪
                     courseCredit: 2,// 课程学分
                     courseTime: 36 ,//课程学时
                 },
+                tableLevel:["大一上","大一下","大二上","大二下","大三上","大三下","大四上","大四下",],
+                courseNature:["必修","选修"],
                 rules:{
-                    openCollege:[{ required: true, message: '请选择开课学院', trigger: 'blur' },],
-                    openCourse:[{ required: true, message: '请选择课程', trigger: 'blur' }],
+                    courseCode:[{ required: true, message: '选择课程', trigger: 'blur' }],
                     assessmentMode:[{ required: true, message: '请选择考核方式', trigger: 'blur' }],
                     courseNature:[{ required: true, message: '请选择课程性质', trigger: 'blur' }],
                     courseMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
@@ -116,12 +134,29 @@
                     courseTime:[{ required: true, message: '请选课程学时', trigger: 'blur' }],
                 },
 
+                tableMajor:[{majorId:123,majorName:"大数据"},{majorId:456,majorName:"网络工程"},],
+                array:[],
+                //选择专业
+                checkAll: false,//是否全选
+                checkedCities: [],
+                cities: cityOptions,
+                isIndeterminate: false
+
             }
         },
         methods: {
+            chioceOpen(row){
+
+                this.chioceVisible=false  //关闭弹框
+                this.form.courseName=row.courseName
+                this.form.courseCode=row.courseCode
+                this.form.courseTime=row.courseTime
+                console.log(row)
+            },
 
             //验证表单
             submitForm(formName) {
+                //console.log(this.form.courseMajor)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         //alert('submit!');
@@ -135,20 +170,20 @@
 
             //新增大纲
             createCourseOutline(){
+                let courseMajor=this.form.courseMajor.join(",");//数组变为字符串
+                //let arr=courseMajor.split(",")  //字符串变为数组
+                //console.log(arr)
                 let cnt={
-                    collegeId:this.form.openCollege.collegeId,
-                    collegeName:this.form.openCollege.collegeName,
-
-                    courseCode:this.form.openCourse.courseCode,
-                    courseName:this.form.openCourse.courseName,
+                    //后台自动加 courseId    大纲课程Id
+                    collegeId:this.$store.state.teacherInformation.collegeId,//本学院ID 大纲学院
+                    courseCode:this.form.courseCode,
+                    //courseName:this.form.openCourse.courseName,
                     assessmentMode:this.form.assessmentMode,
                     courseNature:this.form.courseNature,
-                    courseMajor:this.form.courseMajor,
+                    courseMajor:courseMajor,
                     courseAge:this.form.courseAge,
                     courseCredit:this.form.courseCredit,
                     courseTime:this.form.courseTime,
-                    courseCollegeId:"上课学院",
-                    courseCollegeName:"上课学院",
                 };
                 this.$college.createCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
@@ -158,36 +193,31 @@
 
                 })
             },
-            //获取开设课程
-            getCollegeOpen(item){
-                let cnt={
-                    count:50,
-                    offset:0,
-                    collegeId:item.collegeId
-                }
 
-                this.$college.getCollegeOpen(cnt,(res)=>{
+            getMajor(){//获取专业
+               let cnt={
+                   collegeId: this.$store.state.teacherInformation.collegeId,
+                   count: 10,
+                   majorName: "0",
+                   offset: 0
+               }
+                this.$admin.lookupSchoolMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.courseData = this.$util.tryParseJson(res.data.c)
+                        this.tableMajor = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$util.tryParseJson(res))
                     }else{
-                        this.courseData = []
+                        this.tableMajor = []
                     }
                 })
             },
+
+
+
         },
         mounted(){
-            // 获取选择学院
-            let cns ={
-                count:20,
-                offset:0
-            }
-            this.$admin.getDepartments(cns,(res)=>{
-                if(res.data.rc === this.$util.RC.SUCCESS){
-                    this.tableCollege = this.$util.tryParseJson(res.data.c)
-                }else{
-                    this.tableCollege = []
-                }
-            })
-        }
+            this.getMajor()
+
+        },
+        components:{chioceOpen}
     }
 </script>

@@ -18,6 +18,9 @@ import "./assets/css/table_width_margin.css";
 import getCollegeName from "./getCollegeName"
 Vue.prototype.$getCollegeName= getCollegeName
 
+import getCourseAge from "./getCourseAge"
+Vue.prototype.$getCourseAge= getCourseAge
+
  import axios from "axios"
  Vue.prototype.$ajax= axios
 

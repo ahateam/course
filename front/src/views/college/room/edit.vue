@@ -27,15 +27,17 @@
                         prop="labSeat"
                         label="座位数(最大容纳人数)">
                     <template slot-scope="scope">
-                    <span v-if="!scope.row.ifShow">
-                        <el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="mini" v-if="show">
-                            <el-option
-                                    v-for="item in peopleNum"
-                                    :key="item.value"
-                                    :value="item">
-                            </el-option>
-                        </el-select>
-                    </span>
+                        <el-form-item prop="labSeat"  :rules="rules.labSeat">
+                            <span v-if="!scope.row.ifShow">
+                                <el-select v-model="ruleForm[0].labSeat" :placeholder="ruleForm[0].labSeat" size="small" v-if="show">
+                                    <el-option
+                                            v-for="item in peopleNum"
+                                            :key="item.value"
+                                            :value="item">
+                                    </el-option>
+                                </el-select>
+                            </span>
+                        </el-form-item>
                     </template>
                 </el-table-column>
 
@@ -88,18 +90,10 @@
                 <el-table-column
                         prop="collegeName"
                         label="管理部门">
-                    <!--<template  slot-scope="scope">-->
-                        <!--<span v-if="!scope.row.ifShow">-->
-                            <!--<el-select v-model="scope.row.collegeId" :placeholder="scope.row.collegeName" size="mini" >-->
-                                <!--<el-option-->
-                                        <!--v-for="item in tableCollege"-->
-                                        <!--:key="item.collegeName"-->
-                                        <!--:label="item.collegeName"-->
-                                        <!--:value="item.collegeId">-->
-                                <!--</el-option>-->
-                            <!--</el-select>-->
-                        <!--</span>-->
-                    <!--</template>-->
+
+                    <template  slot-scope="scope">
+                        {{$getCollegeName(scope.row.collegeId)}}
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="面向专业">
@@ -116,7 +110,7 @@
                                 placement="left"
                                 width="600"
                                 trigger="click">
-                            <chioceTeacher @transferRandom="chioceteacher" />
+                            <chioceTeacher ref="chioceTea" @transferRandom="chioceteacher" />
                             <el-button slot="reference" type="text">选择负责人</el-button>
                         </el-popover>
                     </template>
@@ -181,6 +175,10 @@
                         {  required: true, message: '实验室面积',},
 
                     ],
+                    labSeat:[
+                        {  required: true, message: '实验室座位数',},
+
+                    ],
                 },
                 displayTable:true,//强制刷新界面
                 tableCollege:""
@@ -231,10 +229,14 @@
 
 
             chioceteacher(row){
+
                 this.chioceVisible=false  //关闭弹框
                 this.ruleForm[0].teacherName=row.teacherName
                 this.ruleForm[0].username=row.username
                 this.ruleForm[0].teacherPhone=row.teacherPhone
+                //强制渲染表格
+                this.displayTable=false
+                this.displayTable=true
                 //console.log(row)
             },
 

@@ -18,6 +18,14 @@
                 </el-table-column>
 
                 <el-table-column
+                        prop="courseAge"
+                        label="年纪">
+                    <template slot-scope="scope">
+                        {{$getCourseAge(scope.row.courseAge)}}
+                    </template>
+
+                </el-table-column>
+                <el-table-column
                         prop="classGrade"
                         label="级别">
                 </el-table-column>
@@ -28,9 +36,11 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="collegeName"
-                        label="学院">
+                        prop="peoNum"
+                        label="人数">
                 </el-table-column>
+
+
 
 
                 <el-table-column
@@ -69,7 +79,7 @@
         name: "collegeSemester",
         data(){
             return{
-                tableData:[{}],
+                tableData:[{className:"网络工程171",courseAge:1,classGrade:2017,majorName:"网络工程",peoNum:46}],
             }
         },
         methods:{

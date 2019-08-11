@@ -206,7 +206,7 @@
                     offset:0,
                     collegeId:this.$store.state.teacherInformation.collegeId
                 }
-                console.log(nextCnt)
+               // console.log(nextCnt)
 
 
                     this.lookupLabor(nextCnt)
@@ -231,7 +231,7 @@
                 this.$admin.lookupLabor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableData = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res.data.c))
+                        //console.log(this.$util.tryParseJson(res.data.c))
                     }else{
                         this.tableData = []
                     }
@@ -288,7 +288,7 @@
                 }
 
                 this.lookupLab()
-                console.log(this.$store.state.teacherInformation)
+                //console.log(this.$store.state.teacherInformation)
             }
         },
         mounted(){

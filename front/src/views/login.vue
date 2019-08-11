@@ -112,20 +112,23 @@
                     password: this.user.password,
                     //adminId: key
                 }
-                //this.loginAdmin(key)
+                this.loginAdmin(key)
                 this.$login.login(cnt, (res) => {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         sessionStorage.setItem('teacherInformation',res.data.c)
                         //let time=new Date(parseInt(this.$store.state.teacherInformation.loginTime)).toLocaleDateString()
-                        let teacherInformation=this.$store.state.teacherInformation
-                        console.log(res)
-                        this.loginAdmin(key)
-                       // console.log(teacherInformation)
-                        this.$notify({
-                            type: 'success',
-                            title: '欢迎登录',
-                            message: `您好：${teacherInformation.teacherName}`
-                        });
+                        let teacherInformation=JSON.parse(sessionStorage.getItem("teacherInformation"))
+                        console.log(JSON.parse(sessionStorage.getItem("teacherInformation")),)
+                        setTimeout(()=>{
+                            this.loginAdmin(key)
+                            this.$notify({
+                                type: 'success',
+                                title: '欢迎登录',
+                                message: `您好：${teacherInformation.teacherName}`
+                            });
+                        },1)
+
+
 
 
                     } else {

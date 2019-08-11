@@ -136,7 +136,7 @@
                     </el-select>
                 </template>
                 <template slot-scope="scope">
-                    {{$getCollegeName(scope.row.collegeId)}}
+                    <!--{{$getCollegeName(scope.row.collegeId)}}-->
                 </template>
             </el-table-column>
             <!--<el-table-column-->

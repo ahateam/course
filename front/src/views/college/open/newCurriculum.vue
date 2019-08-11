@@ -73,10 +73,11 @@
                 let cnt={
                    // courseCode:parseInt(this.form.courseCode),
                     courseName:this.form.courseName,
-                    collegeId:"123",
+                    collegeId:this.$store.state.teacherInformation.collegeId,
                     courseTime:this.form.courseTime
                     //collegeOpenExamStatus:"null"
                 };
+                console.log(cnt)
                 this.$college.createCollegeOpen(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")

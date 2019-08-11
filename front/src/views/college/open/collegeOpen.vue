@@ -25,12 +25,12 @@
                         prop="courseName"
                         label="课程名称"
                 >
+                    <template slot="header" slot-scope="scope">
+                        <el-input placeholder="课程名称" clearable v-model="look.courseName"
+                                  @change="lookupOpen()"></el-input>
+                    </template>
                 </el-table-column>
-                <el-table-column
-                        prop="courseCode"
-                        label="课程编码"
-                >
-                </el-table-column>
+
                 <el-table-column
                         prop="courseTime"
                         label="建议课程学时"
@@ -114,6 +114,12 @@
                 delCour:false,//删除大纲
                 del:"",//获取行
                 delRemark:"",//删除备注
+                lookup:{
+                    courseName:"0"
+                },
+                look:{
+                    courseName:""
+                },
                 tableData:[{
                     courseCode:10,//课程编码
                     courseName: '高数1',// 课程名称
@@ -185,7 +191,10 @@
                 //     count:this.count,
                 //     offset:(this.page-1)*this.count
                 // }
-                nextCnt.collegeId="555"
+                if(this.look.courseName===""){nextCnt.courseName=this.lookup.courseName}else{
+                    nextCnt.courseName=this.look.courseName
+                }
+                nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
                 this.getCollegeOpen(nextCnt)
             },
 
@@ -201,6 +210,20 @@
                     //判断是否到达最后一页
                     this.$refs.nextPage.judge(this.tableData.length)
                 })
+            },
+            lookupOpen(){
+                this.$refs.nextPage.defaultPage()
+                let cnt={
+                    collegeId:this.$store.state.teacherInformation.collegeId,
+                    offset:0,
+                    count:this.$store.state.count,
+                }
+                if(this.look.courseName===""){cnt.courseName=this.lookup.courseName}else{
+                    cnt.courseName=this.look.courseName
+                }
+                console.log(cnt)
+                this.getCollegeOpen(cnt)
+
             },
 
 
@@ -223,12 +246,8 @@
         mounted(){
             this.$refs.nextPage.changePage(1)
             //获取开设课程
-            let cnt={
-                collegeId:"123",
-                offset:this.offset,
-                count:this.count
-            }
-            this.getCollegeOpen(cnt)
+
+            this.lookupOpen()
         },
         components:{newCurriculum,edit}
 
