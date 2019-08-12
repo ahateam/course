@@ -11,8 +11,8 @@ export default new Vuex.Store({
     detailsRow:{},
     count:10,
     offset:0,
-    teacherInformation:JSON.parse(sessionStorage.getItem("teacherInformation")),
-    tableCollege:JSON.parse(sessionStorage.getItem("tableCollege")),
+    teacherInformation:JSON.parse(localStorage.getItem("teacherInformation")),
+    tableCollege:JSON.parse(localStorage.getItem("tableCollege")),
 
     //获取学院名称
     // getCollegeName(collegeId){

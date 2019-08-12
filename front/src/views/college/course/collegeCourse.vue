@@ -24,9 +24,15 @@
 
                 <el-table-column
                         prop="courseName"
-                        label="课程名称"
-                >
+                        label="课程名称">
+                    <template slot="header" slot-scope="scope">
+                        <el-input v-model="look.courseName"
+                                  clearable
+                                  @change="lookupCourse()"
+                                  placeholder="课程名称"></el-input>
+                    </template>
                 </el-table-column>
+
                 <el-table-column
                         prop="courseCredit"
                         label="课程学分"
@@ -56,10 +62,14 @@
                 <!--</el-table-column>-->
                 <el-table-column
                         style="margin-left: 20px"
-                        prop="courseMajor"
+                        prop="classMajor"
                         label="上课年纪">
                     <template slot="header" slot-scope="scope">
-                        <el-select v-model="courseAge" placeholder="年纪" size="mini" @change="changePage(1)">
+                        <el-select v-model="look.courseAge" placeholder="年纪"  @change="lookupCourse()">
+                            <el-option
+                                    label="全部"
+                                    value="0">
+                            </el-option>
                             <el-option
                                     v-for="item in 8"
                                     :key="item"
@@ -69,7 +79,7 @@
                         </el-select>
                     </template>
                     <template slot-scope="scope">
-                            <!--{{scope.row.courseMajor}} - -->
+                            <!--{{scope.row.classMajor}} - -->
                         {{$getCourseAge(scope.row.courseAge)}}
                     </template>
                 </el-table-column>
@@ -82,6 +92,17 @@
                         align="center"
                         prop="courseExamStatus"
                         label="审核状态">
+                    <template slot="header" slot-scope="scope">
+                        <el-select v-model="look.courseExamStatus" placeholder="审核状态" @change="lookupCourse()">
+
+                            <el-option
+                                    v-for="item in openStatus"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.val">
+                            </el-option>
+                        </el-select>
+                    </template>
                     <template slot-scope="scope">
                         <span v-show="scope.row.courseExamStatus==='agree'" style="color:#67c23a;">
                             通过
@@ -200,6 +221,7 @@
         data() {
             return {
                 editCollegeCourse:[],
+                openStatus:[{val:'',label:'全部'},{val:'null',label:'审核中'},{val:'agree',label:'通过'},{val:'disagree',label:'未通过'},],
                 form:{
                     name:""
                 },
@@ -210,13 +232,25 @@
                 delCour:false,//删除大纲
                 del:"",//获取行
                 delRemark:"",//删除备注
+                look:{
+                    collegeId:"",
+                    courseAge:"",
+                    courseName:"",
+                    courseExamStatus:"",
+                },
+                lookup:{
+                    collegeId:0,
+                    courseAge:0,
+                    courseName:"0",
+                    courseExamStatus:"0",
+                },
                 tableData:[{
                     collegeName:"大数据",
                     courseCode:10,//课程编码
                     courseName: '高数1',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "123,456",// 上课专业
+                    classMajor: "123,456",// 上课专业
                     courseAge: 1 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -227,7 +261,7 @@
                     courseName: '高数2',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "大数据",// 上课专业
+                    classMajor: "大数据",// 上课专业
                     courseAge: 2 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -239,7 +273,7 @@
                     courseName: '线性代数',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "大数据",// 上课专业
+                    classMajor: "大数据",// 上课专业
                     courseAge: 2 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -362,7 +396,21 @@
 
 
             changePage(nextCnt){
-                nextCnt.collegeId="sssss"
+                nextCnt.collegeId=this.$teacherInformation.collegeId
+                let courseAge=this.look.courseAge
+                let courseName=this.look.courseName
+                let courseExamStatus=this.look.courseExamStatus
+
+                if(courseAge===""){nextCnt.courseAge=this.lookup.courseAge}else{
+                    nextCnt.courseAge=courseAge
+                }
+                if(courseName===""){nextCnt.courseName=this.lookup.courseName}else{
+                    nextCnt.courseName=courseName
+                }
+                if(courseExamStatus===""){nextCnt.courseExamStatus=this.lookup.courseExamStatus}else{
+                    nextCnt.courseExamStatus=courseExamStatus
+                }
+                console.log(nextCnt)
                 this.getCourseOutlineByTermId(nextCnt)
             },
 
@@ -378,6 +426,33 @@
                     //判断是否到达最后一页
                     this.$refs.nextPage.judge(this.tableData.length)
                 })
+            },
+            lookupCourse(){
+                // collegeId:"",
+                //     courseAge:"",
+                //     courseName:"",
+                //     courseExamStatus:"",
+                let cnt={
+                    offset:0,
+                    count:this.$store.state.count,
+                    collegeId:this.$teacherInformation.collegeId
+                }
+                let courseAge=this.look.courseAge
+                let courseName=this.look.courseName
+                let courseExamStatus=this.look.courseExamStatus
+
+                if(courseAge===""){cnt.courseAge=this.lookup.courseAge}else{
+                    cnt.courseAge=courseAge
+                }
+                if(courseName===""){cnt.courseName=this.lookup.courseName}else{
+                    cnt.courseName=courseName
+                }
+                if(courseExamStatus===""){cnt.courseExamStatus=this.lookup.courseExamStatus}else{
+                    cnt.courseExamStatus=courseExamStatus
+                }
+                console.log(cnt)
+                this.getCourseOutlineByTermId(cnt)
+
             },
 
 
@@ -431,12 +506,8 @@
 
 
             //获取课程大纲
-            let cnt={
-                collegeId:"123",
-                offset:this.offset,
-                count:this.count
-            }
-            this.getCourseOutlineByTermId(cnt)
+
+            this.lookupCourse()
 
             //获取选择学院
 

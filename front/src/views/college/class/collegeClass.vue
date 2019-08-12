@@ -1,5 +1,5 @@
 <template>
-        <div>
+        <div class="changeInput">
             <page-title title-text="xxx学院班级管理"></page-title>
             <el-button type="primary" @click="create()" class="buttonMarginLeft">添加班级</el-button>
 
@@ -18,30 +18,55 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="courseAge"
+                        prop="classAge"
                         label="年纪">
+
                     <template slot-scope="scope">
-                        {{$getCourseAge(scope.row.courseAge)}}
+                        {{$getCourseAge(scope.row.classAge)}}
                     </template>
 
                 </el-table-column>
                 <el-table-column
                         prop="classGrade"
                         label="级别">
+                    <template slot="header" slot-scope="scope">
+                        <el-select v-model="look.classGrade" placeholder="级别"  @change="lookupClass()">
+                            <el-option
+                                    label="全部"
+                                    value="0">
+                            </el-option>
+                            <el-option
+                                    v-for="item in getDates()"
+                                    :key="item"
+                                    :value="item">
+                            </el-option>
+                        </el-select>
+                    </template>
                 </el-table-column>
 
                 <el-table-column
                         prop="majorName"
                         label="专业">
+                    <template slot="header" slot-scope="scope">
+                        <el-select v-model="look.majorId" placeholder="专业"  @change="lookupClass()">
+                            <el-option
+                                    label="全部"
+                                    value="0">
+                            </el-option>
+                            <el-option
+                                    v-for="item in tableMajor"
+                                    :key="item.majorId"
+                                    :label="item.majorName"
+                                    :value="item.majorId">
+                            </el-option>
+                        </el-select>
+                    </template>
                 </el-table-column>
 
                 <el-table-column
                         prop="peoNum"
                         label="人数">
                 </el-table-column>
-
-
-
 
                 <el-table-column
                         align="center"
@@ -79,26 +104,122 @@
         name: "collegeSemester",
         data(){
             return{
-                tableData:[{className:"网络工程171",courseAge:1,classGrade:2017,majorName:"网络工程",peoNum:46}],
+                tableData:[{className:"网络工程171",classAge:1,classGrade:2017,majorName:"网络工程",peoNum:46}],
+                tableMajor:[{majorId:123456,majorName:"大数据",collegeId:43},{majorId:1234564,majorName:"网络工程",collegeId:42},{majorId:1234567,majorName:"智能",collegeId:41}],
+                look:{
+                    classGrade:"",
+                    collegeId:"",
+                    majorId:"",
+                },
+                lookup:{
+                    classGrade:0,
+                    collegeId:0,
+                    majorId:0,
+                },
+
             }
         },
         methods:{
-            changePage(nextCnt){
-                this.getTeacher(nextCnt)
-            },
+
             create(){
-                this.$refs.createDia.openCreate(50)
+                this.$refs.createDia.openCreate(40)
             },
             edit(){
-                this.$refs.editDia.openEdit(50)
-            }
+                this.$refs.editDia.openEdit(40)
+            },
+
+
+            changePage(nextCnt){
+                let majorId=this.look.majorId
+                let classGrade=this.look.classGrade
+
+                if(majorId===""){nextCnt.majorId=this.lookup.majorId}else{
+                    nextCnt.majorId=majorId
+                }
+                if(classGrade===""){nextCnt.classGrade=this.lookup.classGrade}else{
+                    nextCnt.classGrade=classGrade
+                }
+
+                nextCnt.collegeId=this.$teacherInformation.collegeId
+                console.log(nextCnt)
+                this.getClass(nextCnt)
+            },
+            lookupClass(){
+                this.$refs.nextPage.defaultPage()
+                let cnt={
+                    offset:0,
+                    count:this.$store.state.count,
+                    collegeId:this.$teacherInformation.collegeId
+                }
+
+                let majorId=this.look.majorId
+                let classGrade=this.look.classGrade
+
+                if(majorId===""){cnt.majorId=this.lookup.majorId}else{
+                    cnt.majorId=majorId
+                }
+                if(classGrade===""){cnt.classGrade=this.lookup.classGrade}else{
+                    cnt.classGrade=classGrade
+                }
+                console.log(cnt)
+                this.getClass(cnt)
+            },
+            getClass(cnt){
+                this.$college.getCollegeClass(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.tableCollege = this.$util.tryParseJson(res.data.c)
+                        console.log(this.$store.state.tableCollege)
+                    }else{
+                        this.tableCollege = []
+                    }
+                })
+                this.$refs.nextPage.judge(this.tableData.length)
+            },
+            getDates(){//获取年份
+                let date=new Date()
+                let year = date.getFullYear()
+                return [year, year - 1, year - 2, year - 3, year - 4]
+                //let classGrade=[year,year-1,year-2,year-3,year-4]
+                //return classGrade
+            },
+            getMajorName(){
+
+             },
+            getMajor(){//获取专业
+                let cnt={
+                    count: 10,
+                    majorName: "0",
+                    offset: 0,
+                    collegeId:this.$teacherInformation.collegeId,
+                }
+                //console.log("this.$store.state.teacherInformation")
+                //cnt.collegeId= this.$store.state.teacherInformation.collegeId
+                //console.log(JSON.parse(sessionStorage.getItem("teacherInformation")))
+                this.$admin.lookupSchoolMajor(cnt,(res)=>{
+                    if(res.data.rc === this.$util.RC.SUCCESS){
+                        this.tableMajor = this.$util.tryParseJson(res.data.c)
+                        //console.log(this.$util.tryParseJson(res))
+                    }else{
+                        this.tableMajor = []
+                    }
+                })
+            },
+        },
+
+        mounted(){
+            this.getMajor()
         },
         components:{create,editClass}
-
-
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    .changeInput/deep/ {
+        .el-select{
+            padding-left: 0;
+        }
+        .el-input{
+            padding-left: 0;
+        }
+    }
 </style>

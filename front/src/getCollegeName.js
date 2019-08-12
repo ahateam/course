@@ -1,5 +1,6 @@
 import store from './store'
 export default function getCollegeName(collegeId){
+    if(collegeId===null || !collegeId ||collegeId==="") {return ""}
     let collegeName
     const tableCollege=store.state.tableCollege
     for(let i=0;i<tableCollege.length;i++){

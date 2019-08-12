@@ -42,7 +42,7 @@
                         <el-form-item>
                             <el-button type="primary" @click="submitForm('editCollegeCourse')"
                                        :disabled="disableForm.disCourseName===true&&disableForm.assessmentMode===true&&
-                            disableForm.courseMajor===true&&
+                            disableForm.classMajor===true&&
                             disableForm.courseCredit===true&&disableForm.courseTime===true">
                                 立即修改</el-button>
                         </el-form-item>
@@ -64,7 +64,7 @@
                     courseName: 15,// 课程名称
                     assessmentMode: 10 ,//考核方式
                     courseNature :10 ,//课程性质
-                    courseMajor: 10,// 上课专业
+                    classMajor: 10,// 上课专业
                     courseAge: 3 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -72,7 +72,7 @@
                 disableForm:{
                     disCourseName:true,
                     assessmentMode:true,
-                    courseMajor:true,
+                    classMajor:true,
                     courseCredit:true,
                     courseTime:true
                 },
@@ -81,7 +81,7 @@
                     courseName:[{ required: true, message: '请输入课程名称', trigger: 'blur' }],
                     assessmentMode:[{ required: true, message: '请选择考核方式', trigger: 'blur' }],
                     courseNature:[{ required: true, message: '请选择课程性质', trigger: 'blur' }],
-                    courseMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
+                    classMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
                     courseAge:[{ required: true, message: '请选上课年纪', trigger: 'blur' }],
                     courseCredit:[{ required: true, message: '请选课程学分', trigger: 'blur' }],
                     courseTime:[{ required: true, message: '请选课程学时', trigger: 'blur' }],
@@ -124,7 +124,7 @@
                 this.disableForm={
                         disCourseName:true,
                         assessmentMode:true,
-                        courseMajor:true,
+                        classMajor:true,
                         courseCredit:true,
                         courseTime:true
                 };

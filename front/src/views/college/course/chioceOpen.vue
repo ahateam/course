@@ -2,6 +2,7 @@
     <div>
         <page-title title-text="选择课程"></page-title>
         <el-table
+                v-show="disableTable"
                 :data="tableData"
 
                 class="tableWidthMargin"
@@ -66,7 +67,6 @@
 <script>
     export default {
         name: "chioceOpen",
-        props:["collegeId"],
         data(){
             return{
                 tableData:[{courseName:"高数",courseCode:123,courseTime:36,collegeId: 456},{},{},{},{},{},{},{},{},{}],
@@ -78,6 +78,7 @@
                     courseName:"",
                     collegeId:""
                 },
+                disableTable:true
             }
         },
         methods:{
@@ -94,6 +95,7 @@
                 if(this.look.collegeId===""){nextCnt.collegeId=this.lookup.collegeId}else{
                     nextCnt.collegeId=this.look.collegeId
                 }
+                nextCnt.collegeOpenExamStatus="agree"
                 this.getCollegeOpen(nextCnt)
             },
 
@@ -101,19 +103,25 @@
             getCollegeOpen(cnt){
                 this.$college.getCollegeOpen(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.tableData = this.$util.tryParseJson(res.data.c)
+                        this.tableData = [...this.$util.tryParseJson(res.data.c)]
                         console.log(this.tableData)
+                        console.log(this.tableData.length  +"changdu")
+                        this.disableTable=false
+                        this.disableTable=true
                     }else{
                         this.tableData = []
                     }
                     //判断是否到达最后一页
-                    this.$refs.nextPage.judge(this.tableData.length)
+                    // setTimeout(()=>{
+                    //     this.$refs.nextPage.judge(this.tableData.length)
+                    // },1)
+                    //console.log(typeof this.tableData)
+
                 })
             },
             lookupOpen(){
                 this.$refs.nextPage.defaultPage()
                 let cnt={
-                    collegeId:this.$store.state.teacherInformation.collegeId,
                     offset:0,
                     count:this.$store.state.count,
                 }
@@ -123,7 +131,8 @@
                 if(this.look.courseName===""){cnt.courseName=this.lookup.courseName}else{
                     cnt.courseName=this.look.courseName
                 }
-                console.log(cnt)
+                cnt.collegeOpenExamStatus="agree"
+                //console.log(cnt)
                 this.getCollegeOpen(cnt)
 
             },

@@ -136,4 +136,24 @@ let api = {};
             util.call(baseUrl+'/classRoom/editCollegeLabor', cnt, callback)
         }
 
+
+/**getCollegeClass
+* collegeClass  班级管理
+* */
+        api.getCollegeClass = function (cnt,callback) {
+            util.call(baseUrl+'/collegeClass/getCollegeClass', cnt, callback)
+        }
+
+        api.editCollegeClass = function (cnt,callback) {
+            util.call(baseUrl+'/collegeClass/editCollegeClass', cnt, callback)
+        }
+
+        api.createCollegeClass = function (cnt,callback) {
+            util.call(baseUrl+'/collegeClass/createCollegeClass', cnt, callback)
+        }
+
+        api.delCollegeClass = function (cnt,callback) {
+            util.call(baseUrl+'/collegeClass/delCollegeClass', cnt, callback)
+        }
+
 export default api

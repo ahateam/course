@@ -38,8 +38,8 @@
 
                 <el-row :gutter="21">
                     <!--<el-col :span="12">-->
-                        <!--<el-form-item label="上课专业:" prop="courseMajor" >-->
-                            <!--<el-select v-model="editCollegeCourse.courseMajor" placeholder="请选择活动区域" :disabled="disableForm.courseMajor">-->
+                        <!--<el-form-item label="上课专业:" prop="classMajor" >-->
+                            <!--<el-select v-model="editCollegeCourse.classMajor" placeholder="请选择活动区域" :disabled="disableForm.classMajor">-->
                                 <!--<el-option label="考察" value="考察"></el-option>-->
                                 <!--<el-option label="考试" value="考试"></el-option>-->
                             <!--</el-select>-->
@@ -47,7 +47,7 @@
                     <!--</el-col>-->
                     <el-col :span="18">
                         <el-form-item label="上课年纪:" prop="courseAge">
-                            <el-select v-model="editCollegeCourse.courseAge" placeholder="请选择上课年纪" :disabled="disableForm.courseMajor">
+                            <el-select v-model="editCollegeCourse.courseAge" placeholder="请选择上课年纪" :disabled="disableForm.classMajor">
                                 <el-option
                                         v-for="item in 8"
                                         :key="item"
@@ -58,14 +58,14 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="4" style="line-height: 40px;color: #f56c6c">
-                        <el-button type="text" v-show="disableForm.courseMajor===true"   @click="disableForm.courseMajor=false">修改</el-button>
+                        <el-button type="text" v-show="disableForm.classMajor===true"   @click="disableForm.classMajor=false">修改</el-button>
                     </el-col>
                 </el-row>
                 <el-row :gutter="21">
                     <el-col :span="21">
-                        <el-form-item label="上课专业:" prop="courseMajor" >
-                            <el-checkbox-group v-model="editCollegeCourse.courseMajor" >
-                                <el-checkbox v-for="item in tableMajor"  :label="item.majorId" :key="item.majorId" :disabled="disableForm.courseMajor">{{item.majorName}}</el-checkbox>
+                        <el-form-item label="上课专业:" prop="classMajor" >
+                            <el-checkbox-group v-model="editCollegeCourse.classMajor" >
+                                <el-checkbox v-for="item in tableMajor"  :label="item.majorId" :key="item.majorId" :disabled="disableForm.classMajor">{{item.majorName}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
                     </el-col>
@@ -97,7 +97,7 @@
                         <el-form-item>
                             <el-button type="primary" @click="submitForm('editCollegeCourse')"
                                        :disabled="disableForm.disCourseName===true&&disableForm.assessmentMode===true&&
-                            disableForm.courseMajor===true&&
+                            disableForm.classMajor===true&&
                             disableForm.courseCredit===true&&disableForm.courseTime===true">
                                 确认</el-button>
                         </el-form-item>
@@ -124,7 +124,7 @@
 
                     assessmentMode: 10 ,//考核方式
                     courseNature :10 ,//课程性质
-                    courseMajor: [123,456],// 上课专业
+                    classMajor: [123,456],// 上课专业
                     courseAge: 3 ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -134,7 +134,7 @@
                 disableForm:{
                     disCourseName:true,
                     assessmentMode:true,
-                    courseMajor:true,
+                    classMajor:true,
                     courseCredit:true,
                     courseTime:true
                 },
@@ -144,7 +144,7 @@
 
                     assessmentMode:[{ required: true, message: '请选择考核方式', trigger: 'blur' }],
                     courseNature:[{ required: true, message: '请选择课程性质', trigger: 'blur' }],
-                    courseMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
+                    classMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
                     courseAge:[{ required: true, message: '请选上课年纪', trigger: 'blur' }],
                     courseCredit:[{ required: true, message: '请选课程学分', trigger: 'blur' }],
                     courseTime:[{ required: true, message: '请选课程学时', trigger: 'blur' }],
@@ -169,16 +169,17 @@
             //修改开设课程
             editCourseOutline(){
                 let cnt={
-                    courseCode:this.editCollegeCourse.courseCode,
+                    //courseCode:this.editCollegeCourse.courseCode,
+                    id:this.editCollegeCourse.id,
                     tableMajor:[{majorId:123,majorName:"大数据"},{majorId:456,majorName:"网络工程"},],
                     assessmentMode:this.editCollegeCourse.assessmentMode,
                     courseNature:this.editCollegeCourse.courseNature,
-                    courseMajor:this.editCollegeCourse.courseMajor,
+                    classMajor:this.editCollegeCourse.classMajor,
                     courseAge:this.editCollegeCourse.courseAge,
                     courseCredit:this.editCollegeCourse.courseCredit,
                     courseTime:this.editCollegeCourse.courseTime,
                 };
-                this.$college.editCollegeOpen(cnt,(res)=> {
+                this.$college.editCourseOutline(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")
                     }
@@ -192,7 +193,7 @@
                 this.disableForm={
                         disCourseName:true,
                         assessmentMode:true,
-                        courseMajor:true,
+                        classMajor:true,
                         courseCredit:true,
                         courseTime:true
                 };
@@ -220,12 +221,12 @@
             this.getMajor()
 
             let array=[]
-            let a=this.editCollegeCourse.courseMajor.split(',')
-            console.log( this.editCollegeCourse.courseMajor.split(','))
+            let a=this.editCollegeCourse.classMajor.split(',')
+            console.log( this.editCollegeCourse.classMajor.split(','))
             a.map((val,index,arr)=>{
                 array.push(parseInt(val))
             })
-            this.editCollegeCourse.courseMajor=array
+            this.editCollegeCourse.classMajor=array
             //console.log(this.editCollegeCourse)
         },
 

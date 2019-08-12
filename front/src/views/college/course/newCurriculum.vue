@@ -23,7 +23,7 @@
                 </el-col>
 
                 <el-col :span="12">
-                    <el-button :disabled="form.collegeId===''" slot="reference" type="text">选择课程</el-button>
+                    <el-button  slot="reference" type="text">选择课程</el-button>
                 </el-col>
 
 
@@ -69,11 +69,11 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="上课专业" style="float: left"  prop="courseMajor">
+                    <el-form-item label="上课专业" style="float: left"  prop="classMajor">
 
-                        <!--<el-select v-model="form.courseMajor" placeholder="请选择上课年纪" size="mini">-->
+                        <!--<el-select v-model="form.classMajor" placeholder="请选择上课年纪" size="mini">-->
                         <!--</el-select>-->
-                        <el-checkbox-group v-model="form.courseMajor" >
+                        <el-checkbox-group v-model="form.classMajor" >
                             <el-checkbox v-for="item in tableMajor"  :label="item.majorId" :key="item.majorId">{{item.majorName}}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
@@ -117,7 +117,7 @@
 
                     assessmentMode: "" ,//考核方式
                     courseNature :"" ,//课程性质
-                    courseMajor: [],// 上课专业
+                    classMajor: [],// 上课专业
                     courseAge:"" ,//上课年纪
                     courseCredit: 2,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -128,7 +128,7 @@
                     courseCode:[{ required: true, message: '选择课程', trigger: 'blur' }],
                     assessmentMode:[{ required: true, message: '请选择考核方式', trigger: 'blur' }],
                     courseNature:[{ required: true, message: '请选择课程性质', trigger: 'blur' }],
-                    courseMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
+                    classMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
                     courseAge:[{ required: true, message: '请选上课年纪', trigger: 'blur' }],
                     courseCredit:[{ required: true, message: '请选课程学分', trigger: 'blur' }],
                     courseTime:[{ required: true, message: '请选课程学时', trigger: 'blur' }],
@@ -156,7 +156,7 @@
 
             //验证表单
             submitForm(formName) {
-                //console.log(this.form.courseMajor)
+                //console.log(this.form.classMajor)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         //alert('submit!');
@@ -170,22 +170,23 @@
 
             //新增大纲
             createCourseOutline(){
-                let courseMajor=this.form.courseMajor.join(",");//数组变为字符串
-                //let arr=courseMajor.split(",")  //字符串变为数组
+                let classMajor=this.form.classMajor.join(",");//数组变为字符串
+                //let arr=classMajor.split(",")  //字符串变为数组
                 //console.log(arr)
                 let cnt={
                     //后台自动加 courseId    大纲课程Id
                     collegeId:this.$store.state.teacherInformation.collegeId,//本学院ID 大纲学院
                     courseCode:this.form.courseCode,
                     //courseName:this.form.openCourse.courseName,
-                    assessmentMode:this.form.assessmentMode,
-                    courseNature:this.form.courseNature,
-                    courseMajor:courseMajor,
-                    courseAge:this.form.courseAge,
+                    assessmentMode:0,//this.form.assessmentMode,
+                    courseNature:0,//this.form.courseNature,
+                    classMajor:classMajor,
+                    courseAge:parseInt(this.form.courseAge),
                     courseCredit:this.form.courseCredit,
                     courseTime:this.form.courseTime,
                 };
-                this.$college.createCollegeOpen(cnt,(res)=> {
+                console.log(cnt)
+                this.$college.createCourseOutline(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")
                     }
@@ -196,15 +197,18 @@
 
             getMajor(){//获取专业
                let cnt={
-                   collegeId: this.$store.state.teacherInformation.collegeId,
                    count: 10,
                    majorName: "0",
-                   offset: 0
+                   offset: 0,
+                   collegeId:this.$teacherInformation.collegeId,
                }
+                //console.log("this.$store.state.teacherInformation")
+                //cnt.collegeId= this.$store.state.teacherInformation.collegeId
+                //console.log(JSON.parse(sessionStorage.getItem("teacherInformation")))
                 this.$admin.lookupSchoolMajor(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
                         this.tableMajor = this.$util.tryParseJson(res.data.c)
-                        console.log(this.$util.tryParseJson(res))
+                        //console.log(this.$util.tryParseJson(res))
                     }else{
                         this.tableMajor = []
                     }

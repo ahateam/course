@@ -21,6 +21,11 @@ Vue.prototype.$getCollegeName= getCollegeName
 import getCourseAge from "./getCourseAge"
 Vue.prototype.$getCourseAge= getCourseAge
 
+
+Vue.prototype.$teacherInformation= JSON.parse(localStorage.getItem("teacherInformation"))
+Vue.prototype.$tableCollege= JSON.parse(localStorage.getItem("tableCollege"))
+
+
  import axios from "axios"
  Vue.prototype.$ajax= axios
 

@@ -41,6 +41,17 @@
                         align="center"
                         prop="courseExamStatus"
                         label="审核状态">
+                    <template slot="header" slot-scope="scope">
+                        <el-select v-model="look.collegeOpenExamStatus" placeholder="审核状态" @change="lookupOpen()">
+
+                            <el-option
+                                    v-for="item in openStatus"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.val">
+                            </el-option>
+                        </el-select>
+                    </template>
                     <template slot-scope="scope">
                         <span v-show="scope.row.collegeOpenExamStatus==='agree'" style="color:#67c23a;">
                             通过
@@ -114,18 +125,21 @@
                 delCour:false,//删除大纲
                 del:"",//获取行
                 delRemark:"",//删除备注
+                openStatus:[{val:'',label:'全部'},{val:'null',label:'审核中'},{val:'agree',label:'通过'},{val:'disagree',label:'未通过'},],
                 lookup:{
-                    courseName:"0"
+                    courseName:"0",
+                    collegeOpenExamStatus:"0"
                 },
                 look:{
-                    courseName:""
+                    courseName:"",
+                    collegeOpenExamStatus:""
                 },
                 tableData:[{
                     courseCode:10,//课程编码
                     courseName: '高数1',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "大数据",// 上课专业
+                    classMajor: "大数据",// 上课专业
                     courseAge: "大一上" ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -135,7 +149,7 @@
                     courseName: '高数2',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "大数据",// 上课专业
+                    classMajor: "大数据",// 上课专业
                     courseAge: "大一下" ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -146,7 +160,7 @@
                     courseName: '线性代数',// 课程名称
                     assessmentMode: '考试' ,//考核方式
                     courseNature :"通时必修" ,//课程性质
-                    courseMajor: "大数据",// 上课专业
+                    classMajor: "大数据",// 上课专业
                     courseAge: "大二上" ,//上课年纪
                     courseCredit: 3,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -190,9 +204,13 @@
                 //     collegeID:79839873973,
                 //     count:this.count,
                 //     offset:(this.page-1)*this.count
-                // }
+                // }collegeOpenExamStatus
                 if(this.look.courseName===""){nextCnt.courseName=this.lookup.courseName}else{
                     nextCnt.courseName=this.look.courseName
+                }
+
+                if(this.look.collegeOpenExamStatus===""){nextCnt.collegeOpenExamStatus=this.lookup.collegeOpenExamStatus}else{
+                    nextCnt.collegeOpenExamStatus=this.look.collegeOpenExamStatus
                 }
                 nextCnt.collegeId=this.$store.state.teacherInformation.collegeId
                 this.getCollegeOpen(nextCnt)
@@ -220,6 +238,9 @@
                 }
                 if(this.look.courseName===""){cnt.courseName=this.lookup.courseName}else{
                     cnt.courseName=this.look.courseName
+                }
+                if(this.look.collegeOpenExamStatus===""){cnt.collegeOpenExamStatus=this.lookup.collegeOpenExamStatus}else{
+                    cnt.collegeOpenExamStatus=this.look.collegeOpenExamStatus
                 }
                 console.log(cnt)
                 this.getCollegeOpen(cnt)

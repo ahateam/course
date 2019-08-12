@@ -114,11 +114,14 @@
                 }
                 this.loginAdmin(key)
                 this.$login.login(cnt, (res) => {
-                    if (res.data.rc === this.$util.RC.SUCCESS) {
-                        sessionStorage.setItem('teacherInformation',res.data.c)
+                    if (res.data.rc === this.$util.RC.SUCCESS)
+                    {
+                        localStorage.setItem('teacherInformation',res.data.c)
                         //let time=new Date(parseInt(this.$store.state.teacherInformation.loginTime)).toLocaleDateString()
-                        let teacherInformation=JSON.parse(sessionStorage.getItem("teacherInformation"))
-                        console.log(JSON.parse(sessionStorage.getItem("teacherInformation")),)
+                        console.log(localStorage.getItem("teacherInformation"))
+                        console.log(this.$teacherInformation)
+
+                        let teacherInformation=JSON.parse(localStorage.getItem("teacherInformation"))
                         setTimeout(()=>{
                             this.loginAdmin(key)
                             this.$notify({
@@ -126,9 +129,7 @@
                                 title: '欢迎登录',
                                 message: `您好：${teacherInformation.teacherName}`
                             });
-                        },1)
-
-
+                        },100)
 
 
                     } else {

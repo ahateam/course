@@ -36,7 +36,7 @@
                     courseName: "",// 课程名称
                     assessmentMode: "" ,//考核方式
                     courseNature :10 ,//课程性质
-                    courseMajor: "",// 上课专业
+                    classMajor: "",// 上课专业
                     courseAge:"" ,//上课年纪
                     courseCredit: 2,// 课程学分
                     courseTime: 36 ,//课程学时
@@ -46,7 +46,7 @@
                     courseName:[{ required: true, message: '请输入课程名称', trigger: 'blur' }],
                     assessmentMode:[{ required: true, message: '请选择考核方式', trigger: 'blur' }],
                     courseNature:[{ required: true, message: '请选择课程性质', trigger: 'blur' }],
-                    courseMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
+                    classMajor:[{ required: true, message: '请选上课专业', trigger: 'blur' }],
                     courseAge:[{ required: true, message: '请选上课年纪', trigger: 'blur' }],
                     courseCredit:[{ required: true, message: '请选课程学分', trigger: 'blur' }],
                     courseTime:[{ required: true, message: '请选课程学时', trigger: 'blur' }],
@@ -73,7 +73,7 @@
                 let cnt={
                    // courseCode:parseInt(this.form.courseCode),
                     courseName:this.form.courseName,
-                    collegeId:this.$store.state.teacherInformation.collegeId,
+                    collegeId:this.$teacherInformation.collegeId,
                     courseTime:this.form.courseTime
                     //collegeOpenExamStatus:"null"
                 };
