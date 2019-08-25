@@ -13,6 +13,9 @@ const adminWork  = ()=>import('./work/adminWork')
 const  adminaddCurriculumExamine = ()=>import('./examine/addCurriculumExamine')
 const adminTerm =()=>import('./term/term')
 
+const adminOccupyTeacher =()=>import('./occupy/adminOccupyTeacher')
+const adminOccupyClass =()=>import('./occupy/adminOccupyClass')
+const adminOccupyRoom =()=>import('./occupy/adminOccupyRoom')
 let routes=[
             {
                 path: '/adminHome',
@@ -26,6 +29,22 @@ let routes=[
                 path: '/adminPlan',
                 name: 'adminPlan',
                 component: adminPlan
+            },
+            {
+                path:'/adminOccupyTeacher',
+                name:'教师档期',
+                component: adminOccupyTeacher,
+            },
+            {
+                path:'/adminOccupyClass',
+                name:'班级档期',
+                component: adminOccupyClass,
+            },
+            {
+                path:'/adminOccupyRoom',
+                name:'教室档期',
+                component: adminOccupyRoom,
+
             },
             {
                 path: '/adminCollege',

@@ -485,7 +485,12 @@
                 if(this.clickEditNum!==0){ this.$refs.edit.again()}
                 this.clickEditNum++
                 this.editCollegeCourse=row
+
                 this.$refs.editDia.openEdit(40)
+                setTimeout(()=>{
+                    this.$refs.edit.jiegou()
+                },20)
+
 
             }
         },

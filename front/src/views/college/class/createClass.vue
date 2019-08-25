@@ -120,6 +120,7 @@
                     peoNum:this.ruleForm.peoNum,
                     classAge:this.ruleForm.classAge,
                 }
+                console.log(cnt)
                 this.$college.createCollegeClass(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")

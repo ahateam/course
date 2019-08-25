@@ -61,6 +61,9 @@
                             </el-option>
                         </el-select>
                     </template>
+                    <template slot-scope="scope">
+                        {{getMajorName(scope.row.majorId)}}
+                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -81,7 +84,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <next-page @transferRandom="changePage" />
+            <next-page @transferRandom="changePage" ref="nextPage" />
 
             <two-dialog ref="createDia" name="新增"  >
                 <create></create>
@@ -104,7 +107,7 @@
         name: "collegeSemester",
         data(){
             return{
-                tableData:[{className:"网络工程171",classAge:1,classGrade:2017,majorName:"网络工程",peoNum:46}],
+                tableData:[{className:"网络工程171",classAge:1,classGrade:2017,majorId:123456,peoNum:46}],
                 tableMajor:[{majorId:123456,majorName:"大数据",collegeId:43},{majorId:1234564,majorName:"网络工程",collegeId:42},{majorId:1234567,majorName:"智能",collegeId:41}],
                 look:{
                     classGrade:"",
@@ -167,10 +170,10 @@
             getClass(cnt){
                 this.$college.getCollegeClass(cnt,(res)=>{
                     if(res.data.rc === this.$util.RC.SUCCESS){
-                        this.tableCollege = this.$util.tryParseJson(res.data.c)
+                        this.tableData = this.$util.tryParseJson(res.data.c)
                         console.log(this.$store.state.tableCollege)
                     }else{
-                        this.tableCollege = []
+                        this.tableData = []
                     }
                 })
                 this.$refs.nextPage.judge(this.tableData.length)
@@ -182,8 +185,18 @@
                 //let classGrade=[year,year-1,year-2,year-3,year-4]
                 //return classGrade
             },
-            getMajorName(){
-
+            getMajorName(majorId){//获取专业名
+                console.log(majorId)
+                if(majorId===null || !majorId ||majorId==="") {return ""}
+                let majorName
+                const table=this.tableMajor
+                for(let i=0;i<table.length;i++){
+                    if(table[i].majorId===majorId){
+                        majorName= table[i].majorName
+                        break
+                    }
+                }
+                return majorName
              },
             getMajor(){//获取专业
                 let cnt={
@@ -192,6 +205,7 @@
                     offset: 0,
                     collegeId:this.$teacherInformation.collegeId,
                 }
+                console.log(cnt)
                 //console.log("this.$store.state.teacherInformation")
                 //cnt.collegeId= this.$store.state.teacherInformation.collegeId
                 //console.log(JSON.parse(sessionStorage.getItem("teacherInformation")))
@@ -204,10 +218,12 @@
                     }
                 })
             },
+
         },
 
         mounted(){
             this.getMajor()
+            this.lookupClass()
         },
         components:{create,editClass}
     }

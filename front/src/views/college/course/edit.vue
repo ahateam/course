@@ -138,7 +138,7 @@
                     courseCredit:true,
                     courseTime:true
                 },
-                tableMajor:[{majorId:123,majorName:"大数据"},{majorId:456,majorName:"网络工程"},],
+                tableMajor:"",//[{majorId:123,majorName:"大数据"},{majorId:456,majorName:"网络工程"},],
                 rules:{
                     courseCode:[{ required: true, message: '请输入课程编码', trigger: 'blur' },],
 
@@ -168,17 +168,20 @@
 
             //修改开设课程
             editCourseOutline(){
+
+                let classMajor=this.editCollegeCourse.classMajor.join(",");//数组变为字符串
                 let cnt={
                     //courseCode:this.editCollegeCourse.courseCode,
                     id:this.editCollegeCourse.id,
-                    tableMajor:[{majorId:123,majorName:"大数据"},{majorId:456,majorName:"网络工程"},],
-                    assessmentMode:this.editCollegeCourse.assessmentMode,
-                    courseNature:this.editCollegeCourse.courseNature,
-                    classMajor:this.editCollegeCourse.classMajor,
+                   // tableMajor:[{majorId:123,majorName:"大数据"},{majorId:456,majorName:"网络工程"},],
+                    assessmentMode:0,
+                    courseNature:0,
+                    classMajor:classMajor,
                     courseAge:this.editCollegeCourse.courseAge,
                     courseCredit:this.editCollegeCourse.courseCredit,
                     courseTime:this.editCollegeCourse.courseTime,
                 };
+                console.log(cnt)
                 this.$college.editCourseOutline(cnt,(res)=> {
                     if (res.data.rc === this.$util.RC.SUCCESS) {
                         this.$message("新增成功，请等待教务处管理员审核")
@@ -216,18 +219,21 @@
                     }
                 })
             },
+            jiegou(){
+                let array=[]
+                let a=this.editCollegeCourse.classMajor.split(',')
+                console.log( this.editCollegeCourse.classMajor.split(','))
+                a.map((val,index,arr)=>{
+                    array.push(parseInt(val))
+                })
+                this.editCollegeCourse.classMajor=array
+                //console.log(this.editCollegeCourse)
+            },
         },
         mounted(){
             this.getMajor()
+            this.jiegou()
 
-            let array=[]
-            let a=this.editCollegeCourse.classMajor.split(',')
-            console.log( this.editCollegeCourse.classMajor.split(','))
-            a.map((val,index,arr)=>{
-                array.push(parseInt(val))
-            })
-            this.editCollegeCourse.classMajor=array
-            //console.log(this.editCollegeCourse)
         },
 
 

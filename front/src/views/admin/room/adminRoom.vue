@@ -136,7 +136,7 @@
                     </el-select>
                 </template>
                 <template slot-scope="scope">
-                    <!--{{$getCollegeName(scope.row.collegeId)}}-->
+                    {{$getCollegeName(scope.row.collegeId)}}
                 </template>
             </el-table-column>
             <!--<el-table-column-->
@@ -215,10 +215,10 @@
                 editBuild:false,//修改实验室 弹框
                 editTable:[],//传给修改页面的值
                 lookup:{
-                    labName:"0",
-                    labBuildId:0,
-                    collegeId:0,
-                    floor:"0"
+                    labName:"",
+                    labBuildId:"",
+                    collegeId:"",
+                    floor:""
                 },//默认查询条件
                 look:{
                     labName:"",

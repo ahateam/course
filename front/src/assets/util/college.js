@@ -149,7 +149,7 @@ let api = {};
         }
 
         api.createCollegeClass = function (cnt,callback) {
-            util.call(baseUrl+'/collegeClass/createCollegeClass', cnt, callback)
+            util.call(baseUrl+'/collegeClass/createClass', cnt, callback)
         }
 
         api.delCollegeClass = function (cnt,callback) {

@@ -79,7 +79,7 @@
                     label="操作"
                     width="140">
                 <template slot-scope="scope">
-                    <el-button @click="details=true" type="text" size="small">详情</el-button>
+                    <el-button  type="text" size="small" @click="details(scope.row)">档期</el-button>
                     <el-button @click="edits(scope.row)" type="text" size="small"
                                 :disabled="scope.row.adminID==='0'">编辑</el-button>
                     <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminID==='0'">
@@ -88,16 +88,6 @@
             </el-table-column>
         </el-table>
 
-        <el-dialog
-                title="详情"
-                :visible.sync="details"
-                width="80%">
-            <teacherDetails></teacherDetails>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="details = false">取 消</el-button>
-                <el-button type="primary" @click="details = false">确 定</el-button>
-            </span>
-        </el-dialog>
 
         <two-dialog ref="editDia">
             <edit @transferRandom="closeEdit" ref="editTeacher" :form="editref"></edit>
@@ -124,12 +114,12 @@
         data(){
             return{
 
-                tableData:[{teacherName:"www",teacherPhone:187852154654,adminID:'1'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
+                tableData:[{teacherName:"www",teacherPhone:187852154654,adminID:'1',username:"2017250190"},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
                 ,{teacherName:"www",teacherPhone:187852154654,adminID:'0'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
                 ],
                 tableCollege:[],//选择学院
                 collegeId:"",  //选择选择器后得到
-                details:false,//详情弹框
+                //details:false,//详情弹框
                 edit:false,//编辑弹框
                 username:"",//工号搜索教师
                 teacherName:"",//输入框的
@@ -271,6 +261,11 @@
                 if(val==='2') return "实验室"
                 if(val==='3') return "教师"
 
+            },
+            details(row){
+                console.log(row)
+                this.$store.state.occupy.username=row.username
+                this.$router.push("/adminOccupyTeacher")
             }
         },
         mounted(){
