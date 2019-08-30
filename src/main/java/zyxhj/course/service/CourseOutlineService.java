@@ -12,6 +12,7 @@ import zyxhj.course.domain.Department;
 import zyxhj.course.repository.CourseOutlineRepository;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
+import zyxhj.utils.data.EXP;
 
 
 public class CourseOutlineService {
@@ -70,8 +71,9 @@ public class CourseOutlineService {
 		CourseOutline courseOutline = new CourseOutline();
 		courseOutline.Id = Id;
 		
-	    courseOutlineRepository.deleteByKey(conn, "id", Id);
-		
+//	    courseOutlineRepository.deleteByKey(conn, "id", Id);
+	    
+	    courseOutlineRepository.delete(conn, EXP.INS().key("id", Id));
 	}
 	
  
@@ -99,7 +101,8 @@ public class CourseOutlineService {
 		courseOutline.elect = CourseOutline.ELECT.OBLIGATORY.v();
 		courseOutline.classIds = classIds;
 		
-		courseOutlineRepository.updateByKey(conn, "id", Id, courseOutline, true);
+//		courseOutlineRepository.updateByKey(conn, "id", Id, courseOutline, true);
+		courseOutlineRepository.update(conn, EXP.INS().key("id", Id), courseOutline, true);
 		 return courseOutline;
 	}
 	
@@ -117,8 +120,9 @@ public class CourseOutlineService {
 		CourseOutline courseOutline = new CourseOutline();
 		courseOutline.elect = elect;
 		if (elect == 0 || elect == 1 || elect == 2) {
-			return courseOutlineRepository.getListByKey(conn,"elect",
-					elect, count, offset);
+//			return courseOutlineRepository.getListByKey(conn,"elect",
+//					elect, count, offset);
+			return courseOutlineRepository.getList(conn, EXP.INS().key("elect", elect), count, offset);
 		} else {
 			return null;
 		}
@@ -144,8 +148,9 @@ public class CourseOutlineService {
 		courseOutline.termId = termId;
 		department.collegeName = collegeName;
 		
-		return courseOutlineRepository.getListByANDKeys(conn,new String[] {"college_id","term_id"},
-				new Object[] {collegeName,termId}, count, offset);
+//		return courseOutlineRepository.getListByANDKeys(conn,new String[] {"college_id","term_id"},
+//				new Object[] {collegeName,termId}, count, offset);
+		return courseOutlineRepository.getList(conn, EXP.INS().key("college_id", collegeName).andKey("term_id", termId), count, offset);
 	}
 	
 	

@@ -12,6 +12,7 @@ import zyxhj.course.repository.DepartmentRepository;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.ServerException;
+import zyxhj.utils.data.EXP;
 
 public class DepartmentService {
 	private static Logger log = LoggerFactory.getLogger(DepartmentService.class);
@@ -55,8 +56,8 @@ public class DepartmentService {
 	public void delDepartment (DruidPooledConnection conn, Long collegeId)throws Exception{
 		Department department = new Department();
 		department.collegeId =collegeId;
-		
-		departmentRepository.deleteByKey(conn, "college_id", collegeId);
+		departmentRepository.delete(conn, EXP.INS().key("college_id", collegeId));
+//		departmentRepository.deleteByKey(conn, "college_id", collegeId);
 	} 
 	
 	
@@ -72,7 +73,8 @@ public class DepartmentService {
 		Department department = new Department();
 		department.collegeName =collegeName;
 		
-		 departmentRepository.updateByKey(conn, "college_id", collegeId, department, true);
+//		 departmentRepository.updateByKey(conn, "college_id", collegeId, department, true);
+		 departmentRepository.update(conn, EXP.INS().key("college_id", collegeId), department,true);
 		 return department;
 	}
 	
@@ -87,7 +89,8 @@ public class DepartmentService {
 	 */
 	public Department getDepartment(DruidPooledConnection conn, Long collegeId )throws Exception {
 		
-		return departmentRepository.getByKey(conn,"college_id",collegeId,"college_name");
+//		return departmentRepository.getByKey(conn,"college_id",collegeId,"college_name");
+		return departmentRepository.get(conn, EXP.INS().key("college_id", collegeId),"college_name");
 	}
 	
 	
@@ -107,7 +110,8 @@ public class DepartmentService {
 	 * @throws Exception
 	 */
 	public List<Department> getDepartment(DruidPooledConnection conn,Integer count,Integer offset)throws ServerException{
-		return departmentRepository.getList(conn, count, offset);
+//		return departmentRepository.getList(conn, count, offset);
+		return departmentRepository.getList(conn, null, count, offset);
 	}
 
 }

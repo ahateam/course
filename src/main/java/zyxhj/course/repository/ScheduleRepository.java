@@ -1,5 +1,7 @@
 package zyxhj.course.repository;
 
+import java.util.ArrayList;
+
 import com.alibaba.druid.pool.DruidPooledConnection;
 import com.alibaba.fastjson.JSONObject;
 
@@ -15,7 +17,7 @@ public class ScheduleRepository extends RDSRepository<TempSchedule> {
 	public Integer countAll(DruidPooledConnection conn) throws Exception {
 		StringBuffer sb = new StringBuffer("select count(*) c from tb_temp_schedule");
 		sb.append("").append("");
-		JSONObject jo = sqlGetJSONObject(conn, sb.toString(), new Object[] {});
+		JSONObject jo = sqlGetJSONObject(conn, sb.toString(), new ArrayList<Object>());
 		Integer count = jo.getInteger("c");
 		return count;
 	}

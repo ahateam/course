@@ -18,6 +18,7 @@ import zyxhj.utils.ExcelUtils;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.ServerException;
+import zyxhj.utils.data.EXP;
 
 public class TempScheduleService {
 	private static Logger log = LoggerFactory.getLogger(TempScheduleService.class);
@@ -114,11 +115,13 @@ public class TempScheduleService {
 	}
 
 	public List<TempSchedule> getSchedule(DruidPooledConnection conn, Integer count, Integer offset) throws Exception {
-		return scheduleRepository.getList(conn, count, offset);
+//		return scheduleRepository.getList(conn, count, offset);
+		return scheduleRepository.getList(conn, null, count, offset);
 	}
 
 	public void deleteSchedule(DruidPooledConnection conn, Long schId) throws Exception {
-		scheduleRepository.deleteByKey(conn, "id", schId);
+//		scheduleRepository.deleteByKey(conn, "id", schId);
+		scheduleRepository.delete(conn, EXP.INS().key("id", schId));
 	}
 
 	// 正式导入全校课程
@@ -128,7 +131,8 @@ public class TempScheduleService {
 		// 把数据100条100条拿出来解析
 		Integer offset = 0;
 		for (int i = 0; i < count / 100 + 1; i++) {
-			List<TempSchedule> sc = scheduleRepository.getList(conn, 100, offset);
+			List<TempSchedule> sc = scheduleRepository.getList(conn,null,100,offset);
+			
 			// 1：先拆班级 把班级取出来
 			for (TempSchedule tempSchedule : sc) {
 				CourseScheduleTerm courseScheduleTerm = new CourseScheduleTerm();
@@ -258,8 +262,8 @@ public class TempScheduleService {
 		// 查询班级的档期 将值放入到一个JSONObject中 {clazz1:[{xxx},{xxxx}],clazz2[{xxxx},{xxx}]}
 		JSONObject jo = new JSONObject();
 		for (int i = 0; i < json.size(); i++) {
-			List<CourseScheduleTerm> course = courseScheduleTermRepository.getListByKey(conn, "class_id",
-					json.getString(i), 512, 0);
+			List<CourseScheduleTerm> course = courseScheduleTermRepository.
+					getList(conn,EXP.INS().key("class_id", json.getString(i)),512,0);
 			jo.put(json.getString(i), course);
 		}
 		// 最后返回JSONObjectF
