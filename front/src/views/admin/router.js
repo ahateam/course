@@ -14,6 +14,8 @@ const  adminaddCurriculumExamine = ()=>import('./examine/addCurriculumExamine')
 const adminTerm =()=>import('./term/term')
 
 const adminOccupyTeacher =()=>import('./occupy/adminOccupyTeacher')
+const adminOccupyTeacherPerson =()=>import('./teacher/occupyTeacher')
+
 const adminOccupyClass =()=>import('./occupy/adminOccupyClass')
 const adminOccupyRoom =()=>import('./occupy/adminOccupyRoom')
 let routes=[
@@ -35,6 +37,13 @@ let routes=[
                 name:'教师档期',
                 component: adminOccupyTeacher,
             },
+            {
+                path:'/adminOccupyTeacherPerson',
+                name:'某个教师档期',
+                component: adminOccupyTeacherPerson,
+            },
+
+
             {
                 path:'/adminOccupyClass',
                 name:'班级档期',

@@ -265,7 +265,7 @@
             details(row){
                 console.log(row)
                 this.$store.state.occupy.username=row.username
-                this.$router.push("/adminOccupyTeacher")
+                this.$router.push("/adminOccupyTeacherPerson")
             }
         },
         mounted(){
