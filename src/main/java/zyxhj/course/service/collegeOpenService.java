@@ -11,6 +11,7 @@ import zyxhj.course.repository.collegeOpenRepository;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
 import zyxhj.utils.api.ServerException;
+import zyxhj.utils.data.EXP;
 
 public class collegeOpenService {
 	private static Logger log = LoggerFactory.getLogger(collegeOpenService.class);
@@ -57,7 +58,7 @@ public class collegeOpenService {
 		collegeOpen cOpen = new collegeOpen();
 		cOpen.courseCode = courseCode;
 		
-		collegeOpenRepository.deleteByKey(conn, "course_id", courseCode);
+		collegeOpenRepository.delete(conn, EXP.INS().key("course_id", courseCode));
 	} 
 	/**
 	 * 分页查询
@@ -70,12 +71,13 @@ public class collegeOpenService {
 	public List<collegeOpen> getcollegeOpen(DruidPooledConnection conn,Long collegeId,Integer count,Integer offset)throws ServerException{
 		collegeOpen cOpen = new collegeOpen();
 		cOpen.collegeId = collegeId;
-		return collegeOpenRepository.getListByKey(conn, "college_id",collegeId,count, offset) ;
-		  
+		
+		return collegeOpenRepository.getList(conn, EXP.INS().key("college_id", collegeId), count, offset);
 		  }
 	
 	public collegeOpen gCollegeOpen(DruidPooledConnection conn, Long courseCode )throws Exception {
 		
-		return collegeOpenRepository.getByKey(conn,"college_id",courseCode,"course_name");
+//		return collegeOpenRepository.getByKey(conn,"college_id",courseCode,"course_name");
+		return collegeOpenRepository.get(conn, EXP.INS().key("college_id", courseCode), "course_name");
 	}
 }

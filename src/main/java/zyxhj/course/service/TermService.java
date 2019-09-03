@@ -12,6 +12,7 @@ import zyxhj.course.domain.Term;
 import zyxhj.course.repository.TermRepository;
 import zyxhj.utils.IDUtils;
 import zyxhj.utils.Singleton;
+import zyxhj.utils.data.EXP;
 
 /**
  * @author 16436
@@ -81,7 +82,8 @@ public class TermService {
 		term.remark = remark;
 		createTime = new Date();
 		
-		termRepository.updateByKey(conn, "id", termId, term, true);
+//		termRepository.updateByKey(conn, "id", termId, term, true);
+		termRepository.update(conn, EXP.INS().key("id", termId), term, true);
 		return term;
 	}
 	
@@ -94,7 +96,8 @@ public class TermService {
 	 */
 	public Term getTerm(DruidPooledConnection conn,Long termId) throws Exception{
 		
-		return termRepository.getByKey(conn, "id", termId);
+//		return termRepository.getByKey(conn, "id", termId);
+		return termRepository.get(conn, EXP.INS().key("id", termId));
 	}
 	
 	
@@ -108,7 +111,8 @@ public class TermService {
 	 */
 	public List<Term> queryTerm(DruidPooledConnection conn, Integer count, Integer offset) throws Exception{
 		
-		return termRepository.getList(conn, count, offset);
+//		return termRepository.getList(conn, count, offset);
+		return termRepository.getList(conn, null, count, offset);
 	}
 	
 	/**
@@ -119,6 +123,7 @@ public class TermService {
 	 */
 	public void delTerm(DruidPooledConnection conn,Long termId) throws Exception{
 		
-		termRepository.deleteByKey(conn, "id", termId);
+//		termRepository.deleteByKey(conn, "id", termId);
+		termRepository.delete(conn, EXP.INS().key("id", termId));
 	}
 }
