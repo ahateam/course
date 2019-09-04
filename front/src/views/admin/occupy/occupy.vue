@@ -1,74 +1,5 @@
 <template>
     <div class="changeTable">
-        <el-table
-                class="classScheduleCard"
-                :data="information"
-                :span-method="objectSpanMethod"
-                :cell-class-name="tableRowClassName"
-                border
-                align="center">
-            <el-table-column
-                    prop="time"
-                    label="时间"
-                    width="50"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="section"
-                    label="节数"
-                    width="50"
-                    align="center">
-            </el-table-column>
-
-            <el-table-column
-                    prop="mon"
-                    label="星期一"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="tue"
-                    label="星期二"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="wed"
-                    label="星期三"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="thu"
-                    label="星期四"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="fri"
-                    label="星期五"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="sat"
-                    label="星期六"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="sun"
-                    label="星期天"
-                    align="center">
-                <template slot-scope="scope">
-                    <span v-if="scope.$index%2===0">
-                         <span v-if="tableData[scope.$index].sun!==tableData[scope.$index+1].sun">
-                            {{tableData[scope.$index].sun}}<br/>{{tableData[scope.$index+1].sun}}
-                         </span>
-                        <span v-else >
-                            {{tableData[scope.$index].sun}}
-                        </span>
-                    </span>
-
-                </template>
-            </el-table-column>
-
-        </el-table>
-
         <el-row style="font-size: 14px;margin-left: 2%;text-align: center;width: 96%">
 
             <!--         表头                 -->
@@ -183,71 +114,22 @@
                 tableData:[
                     {mon:0,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
                     {mon:0,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
-                    {mon:0,tue:0,wed:0,thu:0,fri:0,sat:0,sun:1},
-                    {mon:1,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
-                    {mon:1,tue:0,wed:0,thu:0,fri:1,sat:0,sun:1},
-                    {mon:1,tue:0,wed:0,thu:0,fri:0,sat:1,sun:1},
-                    {mon:1,tue:1,wed:1,thu:0,fri:0,sat:0,sun:1},
-                    {mon:1,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
-                    {mon:1,tue:1,wed:1,thu:0,fri:1,sat:1,sun:1},
-                    {mon:1,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
-                    {mon:1,tue:0,wed:1,thu:0,fri:1,sat:1,sun:1},
-                    {mon:0,tue:1,wed:1,thu:0,fri:1,sat:0,sun:1},
+                    {mon:1,tue:0,wed:0,thu:0,fri:0,sat:0,sun:0},
+                    {mon:1,tue:0,wed:0,thu:0,fri:0,sat:0,sun:0},
+                    {mon:0,tue:0,wed:0,thu:0,fri:1,sat:1,sun:1},
+                    {mon:0,tue:0,wed:0,thu:0,fri:1,sat:1,sun:1},
+                    {mon:1,tue:1,wed:1,thu:0,fri:0,sat:1,sun:0},
+                    {mon:1,tue:1,wed:1,thu:0,fri:1,sat:1,sun:0},
+                    {mon:1,tue:1,wed:0,thu:0,fri:1,sat:0,sun:0},
+                    {mon:1,tue:0,wed:0,thu:0,fri:1,sat:0,sun:0},
+                    {mon:0,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
+                    {mon:0,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
                 ]
             };
         },
         methods: {
-            column(){
-
-            },
-            tableRowClassName({row, column, rowIndex, columnIndex}) {
-                var arr = Object.values(this.tableData[rowIndex]); //对象转化为数组
-                if(columnIndex<2) return ""
-                if (this.tableData[rowIndex].mon === 1&&columnIndex===2 &&this.tableData[rowIndex].mon) {
-                    return 'warning-row';
-                } else if(this.tableData[rowIndex].tue === 1 && columnIndex===3 &&this.tableData[rowIndex].tue){
-                    return 'warning-row';
-                }  else  if(this.tableData[rowIndex].wed === 1 &&columnIndex===4 &&this.tableData[rowIndex].wed){
-                    return 'warning-row';
-                }  else   if(this.tableData[rowIndex].thu === 1&&columnIndex===5 &&this.tableData[rowIndex].thu){
-                    return 'warning-row';
-                } else  if(this.tableData[rowIndex].fri === 1&&columnIndex===6 &&this.tableData[rowIndex].fri){
-                    return 'warning-row';
-                }  else  if(this.tableData[rowIndex].sat === 1&&columnIndex===7 &&this.tableData[rowIndex].sat){
-                    return 'warning-row';
-                } else   if(this.tableData[rowIndex].sun === 1&&columnIndex===8 &&this.tableData[rowIndex].sun){
-                    return 'warning-row';
-                } else {
-                    return 'success-row';
-                }
 
 
-                return '';
-            },
-
-            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-                if (columnIndex === 0) {
-                    if (rowIndex  === 0) {
-                        return {rowspan: 4, colspan: 1};
-                    }
-                    if (rowIndex  === 4) {
-                        return {rowspan: 2, colspan: 1};
-                    }
-                    if (rowIndex  === 6) {
-                        return {rowspan: 4, colspan: 1};
-                    }
-                    if (rowIndex  === 10) {
-                        return {rowspan: 4, colspan: 1};
-                    }
-                    else {
-                        return {rowspan: 0, colspan: 0};
-                    }
-                }
-
-                else if(columnIndex >1){
-                    return {rowspan: 2, colspan: 1};
-                }
-            }
         },
         mounted(){
 
@@ -295,10 +177,5 @@
         margin-left: 2%;
         margin-bottom: 30px;
     }
-    .el-table--enable-row-hover .el-table__body tr:hover>td{
-        /*background-color: transparent !important;*/
-    }
-    .el-table--enable-row-hover .el-table__body tr>td:hover{
-        /*background-color: #c4d5e6 !important;*/
-    }
+
 </style>
