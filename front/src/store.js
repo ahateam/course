@@ -13,11 +13,7 @@ export default new Vuex.Store({
     offset:0,
     teacherInformation:JSON.parse(localStorage.getItem("teacherInformation")),
     tableCollege:JSON.parse(localStorage.getItem("tableCollege")),
-    occupy:{
-      username:"",
-      classId:"",
-      roomId:""
-    }
+    occupyTeacher:{}
 
     //获取学院名称
     // getCollegeName(collegeId){

@@ -77,14 +77,18 @@
                             <el-option
                                     value="二">
                             </el-option>
+                            <el-option
+                                    value="三">
+                            </el-option>
                         </el-select> 学期
                         </el-col>
                     </el-row>
 
                 </el-form-item>
                 <el-form-item label="学期周数" label-width="150px" prop="weekCount">
-                    <el-select v-model="addTerm.weekCount" placeholder="请选择" >
+                    <el-select v-model="addTerm.weekCount" placeholder="请选择" @change="getEndDate">
                         <el-option
+
                                 v-for="(item,index) in 25"
                                 :key="index"
                                 :value="item">
@@ -93,14 +97,18 @@
                 </el-form-item>
                 <el-form-item label="开始时间" label-width="150px" prop="startDate">
                     <el-date-picker
+                            :disabled="semester===''"
+                            @change="getEndDate"
                             v-model="addTerm.startDate"
                             type="date"
+                            value-format="timestamp"
                             placeholder="选择日期">
                     </el-date-picker>
 
                 </el-form-item>
-                <el-form-item label="结束时间" label-width="150px" prop="endDate">
+                <el-form-item label="结束时间" label-width="150px" prop="endDate" >
                     <el-date-picker
+                            disabled
                             v-model="addTerm.endDate"
                             type="date"
                             placeholder="选择日期">
@@ -137,7 +145,7 @@
                 //新增学期所需变量
                 addTerm:{
                     termName:'',  //学期名称
-                    weekCount:'20', //周数
+                    weekCount:20, //周数
                     startDate:'',   //开始时间
                     endDate:'',      //结束时间
                     remark:'无',     //备注
@@ -172,6 +180,14 @@
             timerFilter(row,col,val){
                 let timer = new Date(val)
                 return timer.toLocaleDateString()
+            },
+
+            //获取结束时间
+            getEndDate(){
+                if(this.addTerm.startDate==="") return
+
+                console.log( this.addTerm.startDate)
+                this.addTerm.endDate=this.addTerm.startDate+this.addTerm.weekCount*7*24*60*60*1000
             },
 
 

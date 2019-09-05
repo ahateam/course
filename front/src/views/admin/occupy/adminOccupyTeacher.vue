@@ -46,8 +46,7 @@
                 <el-button type="primary"   @click="doUpload"  >确认上传数据表格</el-button>
             </span>
         </el-dialog>
-
-<occupy></occupy>
+        <occupy></occupy>
     </div>
 </template>
 

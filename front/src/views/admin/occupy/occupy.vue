@@ -1,6 +1,6 @@
 <template>
     <div class="changeTable">
-        <el-row style="font-size: 14px;margin-left: 2%;text-align: center;width: 96%">
+        <el-row style="font-size: 14px;margin:10px 0 0 2%;text-align: center;width: 96%">
 
             <!--         表头                 -->
             <el-row style="height:48px;color:#606266;font-weight: 600;line-height: 48px;">
@@ -93,7 +93,6 @@
         data() {
             return {
                 week:["星期一","星期二","星期三","星期四","星期五","星期六","星期天"],
-                mainWitdh:document.body.clientWidth*0.82111-100+"px",
                 information: [
                     {time: '早上', section: '1',},
                     {time: '早上', section: '2',},
@@ -119,7 +118,7 @@
                     {mon:0,tue:0,wed:0,thu:0,fri:1,sat:1,sun:1},
                     {mon:0,tue:0,wed:0,thu:0,fri:1,sat:1,sun:1},
                     {mon:1,tue:1,wed:1,thu:0,fri:0,sat:1,sun:0},
-                    {mon:1,tue:1,wed:1,thu:0,fri:1,sat:1,sun:0},
+                    {mon:1,tue:1,wed:1,thu:0,fri:0,sat:1,sun:0},
                     {mon:1,tue:1,wed:0,thu:0,fri:1,sat:0,sun:0},
                     {mon:1,tue:0,wed:0,thu:0,fri:1,sat:0,sun:0},
                     {mon:0,tue:0,wed:1,thu:0,fri:1,sat:0,sun:1},
@@ -156,8 +155,8 @@
         border-left:1px solid #EBEEF5;;
     }
     .mainBorder{
-        border-bottom: 1px solid #EBEEF5;;
-        border-right: 1px solid #EBEEF5;;
+        border-bottom: 1px solid #fff;;
+        border-right: 1px solid #fff;;
     }
     .timeWidth{
         width: 3%;
@@ -168,8 +167,8 @@
         line-height: 96px;
     }
     .colorBox{
-        width: 100%;
-        height: 47.5px;
+        width: 99.5%;
+        height: 47px;
     }
     .classScheduleCard{
         width: 95%;

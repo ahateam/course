@@ -2,11 +2,36 @@
     <div class="changeTable">
         <page-title title-text="教师档期"></page-title>
         <el-row class="row-box" >
-            <el-col style="width: 150px ">
+            <el-col style="width: 287px" class="term">
                 <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height: 40px;">
                     <el-breadcrumb-item :to="{ path: '/adminTeacher' }">教师管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>教师档期</el-breadcrumb-item>
+                    <el-breadcrumb-item>教师档期 {{teacher.username}} {{teacher.teacherName}}</el-breadcrumb-item>
                 </el-breadcrumb>
+            </el-col>
+
+            <el-col  style="width: 460px" >
+                 <span class="term">
+                    <el-select v-model="termId" placeholder="请选学期" style="border:0" @change="getTermChioce">
+                        <el-option
+                                v-for="item in term"
+                                :key="item.termId"
+                                :label="item.termName"
+                                :value="item.termId">
+                        </el-option>
+                    </el-select>
+                 </span>
+                <el-button @click="week--" :disabled="week===1">上一周</el-button>
+                <span class="week">
+                    <el-select v-model="week" placeholder="选择周">
+                    <el-option
+                            v-for="item in termChioce[0].weekCount"
+                            :key="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
+                </span>
+
+                <el-button @click="week++" :disabled="week===termChioce[0].weekCount">下一周</el-button>
             </el-col>
         </el-row>
         <occupy></occupy>
@@ -17,16 +42,55 @@
     import occupy from "../occupy/occupy"
     export default {
         name: "adminOccupyTeacher",
-        props:["username"],
         data(){
             return{
-
+                teacher:{},
+                options:20,
+                week: '',
+                termId:1231321321,//选择学期
+                term:[{
+                        termId:1231321321,
+                        termName:'2019-2020 第二学期',  //学期名称
+                        weekCount:20, //周数
+                        startDate:'1566748800000',   //开始时间
+                        endDate:'',      //结束时间
+                        remark:'无',     //备注
+                    },
+                    {
+                        termId:123132213215,
+                        termName:'2019-2020 第一学期',  //学期名称
+                        weekCount:5, //周数
+                        startDate:'1551628800000',   //开始时间
+                        endDate:'',      //结束时间
+                        remark:'无',     //备注
+                    }],
+                termChioce:[{
+                    termId:1231321321,
+                    termName:'2019-2020 第二学期',  //学期名称
+                    weekCount:20, //周数
+                    startDate:'1566748800000',   //开始时间
+                    endDate:'',      //结束时间
+                    remark:'无',     //备注
+                }]
             }
         },
         methods:{
+            getTermChioce(){//选择学期后
+                this.termChioce=this.term.filter((val,index,arr)=>{
+                        if(val.termId===this.termId) return val
+                    })
+                this.week=1
+
+                console.log(this.termChioce)
+            }
         },
         mounted(){
+            this.teacher=JSON.parse(sessionStorage.getItem("occupyTeacher"))
 
+
+            let date=(new Date()).valueOf()
+            this.week=parseInt((date-this.termChioce[0].startDate)/(7*24*60*60*1000)) +1
+            console.log(  parseInt((date-this.termChioce[0].startDate)/(7*24*60*60*1000)) +1   )//获取本学期当前周
         },
         components:{
             occupy
@@ -35,13 +99,20 @@
 </script>
 
 <style scoped lang="scss">
-    .changeTable /deep/ .el-table--enable-row-hover .el-table__body tr:hover>td{
-        /*background-color: transparent !important;*/
+
+    .term /deep/ .el-input__inner{
+        border: 0 !important;
+        color:#000000;
+        width: 180px;
     }
+    .week /deep/ .el-select{
+        width: 90px;
+    }
+
     .row-box{
         background: #fff;
         font-size: 1.6rem;
-        color: #666;
+
     }
     .nav-btn {
         float: left;

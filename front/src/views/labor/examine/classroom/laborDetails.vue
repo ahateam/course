@@ -93,7 +93,6 @@
 <script>
 
     export default {
-        name: "details",
         props:['row'],
         data(){
             return{

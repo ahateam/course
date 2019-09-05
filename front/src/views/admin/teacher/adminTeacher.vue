@@ -79,7 +79,7 @@
                     label="操作"
                     width="140">
                 <template slot-scope="scope">
-                    <el-button  type="text" size="small" @click="details(scope.row)">档期</el-button>
+                    <el-button  type="text" size="small" @click="detailOccupy(scope.row)">档期</el-button>
                     <el-button @click="edits(scope.row)" type="text" size="small"
                                 :disabled="scope.row.adminID==='0'">编辑</el-button>
                     <el-button @click="del(scope.row)" type="text" size="small" :disabled="scope.row.adminID==='0'">
@@ -114,7 +114,7 @@
         data(){
             return{
 
-                tableData:[{teacherName:"www",teacherPhone:187852154654,adminID:'1',username:"2017250190"},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
+                tableData:[{teacherName:"王诚",teacherPhone:187852154654,adminID:'1',username:"2017250190"},{teacherName:"存储",teacherPhone:187852154654,adminID:'3'}
                 ,{teacherName:"www",teacherPhone:187852154654,adminID:'0'},{teacherName:"www",teacherPhone:187852154654,adminID:'3'}
                 ],
                 tableCollege:[],//选择学院
@@ -262,9 +262,9 @@
                 if(val==='3') return "教师"
 
             },
-            details(row){
-                console.log(row)
-                this.$store.state.occupy.username=row.username
+            detailOccupy(row){
+                let teacher=JSON.stringify(row)
+                sessionStorage.setItem("occupyTeacher",teacher)
                 this.$router.push("/adminOccupyTeacherPerson")
             }
         },
