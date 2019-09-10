@@ -151,5 +151,23 @@ api.delSchoolMajor = function (cnt,callback) {
     util.call(baseUrl+'/major/delMajor', cnt, callback)
 }
 
+    /***
+     * 档期 occupy
+     */
+    //获取教师档期
+    api.getOccupyTeacher = function (cnt,callback) {
+        util.call(baseUrl+'/occupy/getOccupyTeacher', cnt, callback)
+    }
+
+    //获取班级档期
+    api.getOccupyClass = function (cnt,callback) {
+        util.call(baseUrl+'/occupy/getOccupyClass', cnt, callback)
+    }
+
+    //获取实验室档期
+    api.getOccupyLab = function (cnt,callback) {
+        util.call(baseUrl+'/occupy/getOccupyLab', cnt, callback)
+    }
+
 
 export default api

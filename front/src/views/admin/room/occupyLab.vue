@@ -11,11 +11,11 @@
         data(){
             return{
                 pass:{
-                    path:"/adminTeacher",
-                    title:"教师管理",
-                    id:JSON.parse(sessionStorage.getItem("occupyTeacher")).username,
-                    name:JSON.parse(sessionStorage.getItem("occupyTeacher")).teacherName,
-                    type:"teacher",
+                    path:"/adminRoom",
+                    title:"实验室管理",
+                    id:JSON.parse(sessionStorage.getItem("occupyLab")).labId,
+                    name:JSON.parse(sessionStorage.getItem("occupyLab")).labName,
+                    type:"lab",
                 }
             }
         },

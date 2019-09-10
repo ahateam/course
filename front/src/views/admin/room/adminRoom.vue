@@ -151,7 +151,7 @@
                     label="操作"
                     width="100">
                 <template slot-scope="scope">
-
+                    <el-button  type="text" size="small" @click="detailOccupy(scope.row)">档期</el-button>
                     <el-button @click="editData(scope.row)" type="text" size="small">编辑</el-button>
                     <!--<el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>-->
                 </template>
@@ -373,6 +373,11 @@
                 }
 
                 this.lookupLab()
+            },
+            detailOccupy(row){
+                let lab=JSON.stringify(row)
+                sessionStorage.setItem("occupyLab",lab)
+                this.$router.push("/adminOccupyLab")
             }
         },
         mounted(){

@@ -9,11 +9,19 @@
                 <el-col :span="24">
                     <template>
                         <el-table
+                                :row-class-name="tableRowClassName"
                                 :data="tableData"
                                 class="tableWidthMargin"
                         >
                             <el-table-column
-                                    prop="name"
+                                   width="50"
+                                   >
+                                <template slot-scope="scope">
+                                    <i v-if="scope.row.thisTerm===1" style="color:#4caf50;" class="el-icon-success"></i>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="termName"
                                     label="学期名称">
                             </el-table-column>
                             <el-table-column
@@ -22,7 +30,7 @@
                             >
                             </el-table-column>
                             <el-table-column
-                                    prop="createTime"
+                                    prop="startDate"
                                     label="开始时间"
                                     :formatter="timerFilter"
                             >
@@ -136,13 +144,29 @@
                 pageOver:false,
                 count:10,
                 offset:0,
-                tableData:[{}],
+                tableData:[{
+                    thisTerm:1,
+                    termName:"2019-2020 第一学期",
+                    startDate:123123123132321,
+                    endDate:  123123123132321,
+                    weekCount:10,
+
+                },
+                    {
+                        thisTerm:0,
+                        termName:"2019-2020 第二学期",
+                        startDate:123123123132321,
+                        endDate:  123123123132321,
+                        weekCount:10,
+
+                    }],
                 dialogFormVisible:false,
                 startYear:"",//选择学期开始年
                 endYear:"",  //选择学期结束年
                 semester:"",//选择学期
                 disSemester:true,
                 //新增学期所需变量
+
                 addTerm:{
                     termName:'',  //学期名称
                     weekCount:20, //周数
@@ -180,6 +204,15 @@
             timerFilter(row,col,val){
                 let timer = new Date(val)
                 return timer.toLocaleDateString()
+            },
+
+            //本学期行颜色变
+            tableRowClassName({row, rowIndex}) {
+
+                if (row.thisTerm === 1) {
+                    return 'success-row';
+                }
+                return '';
             },
 
             //获取结束时间
@@ -230,7 +263,7 @@
                             termId:row.id
                         }
                         this.$admin.delTerm(cnt,(res)=>{
-                            if(res.data.rc == this.$util.RC.SUCCESS){
+                            if(res.data.rc === this.$util.RC.SUCCESS){
                                 this.$message.success('删除成功')
                             }else{
                                 this.$message.error('操作失败')
@@ -266,8 +299,13 @@
         }
     }
 </script>
-
+<style>
+    .el-table .success-row {
+        background: #00d4a729;
+    }
+</style>
 <style scoped lang="scss">
+
     .rowbox .el-date-editor{
         width: 100%;
     }

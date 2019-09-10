@@ -45,31 +45,7 @@ const  adminMenu =[
         icon:'course_guanli1',
         child:[]
     },
-    {
-        path:'/adminOccupy',
-        title:'档期管理',
-        icon:'course_guanli1',
-        child:[
-            {
-                path:'/adminOccupyTeacher',
-                title:'教师档期',
-                icon:'course_guanli1',
-                child:[]
-            },
-            {
-                path:'/adminOccupyClass',
-                title:'班级档期',
-                icon:'course_guanli1',
-                child:[]
-            },
-            {
-                path:'/adminOccupyRoom',
-                title:'教室档期',
-                icon:'course_guanli1',
-                child:[]
-            },
-        ]
-    },
+
     {
         path:'/adminExamine',
         title:'审核管理',
